@@ -2,11 +2,11 @@ name: Deploy to cPanel
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - dev
-    paths-ignore:
-        - .github/**
+  # push:
+  #   branches:
+  #     - dev
+  #   paths-ignore:
+  #       - .github/**
 
 jobs: 
   FTP-Deploy:
