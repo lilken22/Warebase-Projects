@@ -1,0 +1,27 @@
+name: Archive File
+
+on:
+  push:
+    branches:
+      - dev
+    paths-ignore:
+        - .github/**
+
+jobs:
+  Archive:
+    name: Archive Files
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Archive Files
+      uses: actions/upload-artifact@v4
+      with:
+        retention-days: 2
+        name: Frontend
+        path: |
+          ./
+          !README.md

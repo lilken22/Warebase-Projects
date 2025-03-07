@@ -1,0 +1,43 @@
+name: Deploy to cPanel
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - dev
+    paths-ignore:
+        - .github/**
+
+jobs: 
+  FTP-Deploy:
+    if: github.ref == 'refs/heads/dev'
+    name: FTP-Deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # - name: SFTP-deploy
+      #   uses: milanmk/actions-file-deployer@master
+      #   with:
+      #     remote-protocol: "sftp"
+      #     remote-host: "dev.warebase.com.ng"
+      #     remote-user: ${{ secrets.SSH_USER }}
+      #     ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      #     remote-path: "/home/gurugeek/public_html/Project-Warebase/Frontend"
+
+      - name: FTP Deployer
+        uses: sand4rt/ftp-deployer@v1.8
+        with:
+          sftp: false
+          host: ${{ secrets.FTP_HOST }}
+          port: 21
+          username: ${{ secrets.FTP_USERNAME }} 
+          password: ${{ secrets.FTP_PASSWORD }}
+          local_folder: "."
+          remote_folder: "/home/gurugeek/public_html/Project-Warebase/Frontend"
+          cleanup: false 
+          exclude: '["README.md", ".github/**"]'
+          passive: false
