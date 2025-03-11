@@ -3,7 +3,7 @@ name: Archive File
 on:
   push:
     branches:
-      - dwayne-ci
+      - dev
     paths-ignore:
         - .github/**
 jobs:
