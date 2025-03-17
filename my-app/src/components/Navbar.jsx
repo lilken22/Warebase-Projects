@@ -28,10 +28,10 @@ export default function Navbar() {
 
         {/* Desktop Buttons */}
         <div className="hidden md:flex items-center gap-4">
-          <button className="bg-black text-white px-5 py-2 rounded-[50px] text-sm font-semibold hover:bg-blue-700 transition">
+          <button className="bg-[#1C1C1C] text-white px-5 py-2 rounded-[50px] text-sm font-semibold hover:bg-blue-700 transition">
             Explore Services
           </button>
-          <button className="bg-gray-100 text-gray-800 px-5 py-2 rounded-lg text-sm font-semibold hover:bg-gray-900 hover:text-white transition">
+          <button className="bg-[#FFFFFF] text-[#1D3F3F] shadow-xl px-5 py-2 rounded-[50px] text-sm font-semibold hover:bg-[#1C1C1C] hover:text-[#FFFFFF] transition">
             Browse Listings
           </button>
         </div>
@@ -61,10 +61,10 @@ export default function Navbar() {
 
         {/* ✅ Mobile Buttons - Reduced Width */}
         <div className="flex flex-col items-center mt-5 space-y-3">
-          <button className="max-w-[200px] bg-black text-white py-2 px-4 rounded-lg text-sm font-semibold hover:bg-blue-700 transition">
+          <button className="max-w-[200px] bg-[#1C1C1C] text-white py-2 px-4 rounded-lg text-sm font-semibold hover:bg-blue-500 transition">
             Explore Services
           </button>
-          <button className="max-w-[200px] bg-gray-500 text-gray-800 py-2 px-4 rounded-lg text-sm font-semibold hover:bg-gray-900 hover:text-white transition">
+          <button className="max-w-[200px] bg-gray-500 text-white  py-2 px-4 rounded-full text-sm font-semibold hover:bg-gray-900 hover:text-white transition">
             Browse Listings
           </button>
         </div>

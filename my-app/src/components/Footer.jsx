@@ -1,96 +1,78 @@
 import React from "react";
-import { FaFacebookF, FaTwitter, FaLinkedinIn, FaInstagram } from "react-icons/fa";
+import { SlSocialInstagram, SlSocialLinkedin } from "react-icons/sl";
+import { FaWhatsapp, FaXTwitter } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
-export default function Footer() {
+const Footer = () => {
   return (
-    <footer className="bg-[#1C1C1C] text-white py-8 w-full">
-      <div className="max-w-7xl px-4 lg:px-0 mx-auto flex flex-col md:flex-row justify-between items-start">
+    <footer className="bg-[#1C1C1C] text-white py-12 px-6 md:px-10 h-auto md:h-[300px] w-full flex flex-col justify-between mt-10">
+      {/* Main Content */}
+      <div className="flex flex-col md:flex-row md:justify-between gap-6">
         
-     {/* Left Section - Logo & Address */}
-<div className="w-full space-y-1">
-  {/* Show text logo on small screens and hide on medium screens and above */}
-  <h3 className="text-lg font-semibold md:hidden">Warebase</h3>
+        {/* Left Section - Logo & Address */}
+        <div className="w-full md:w-auto">
+          <img src="/logo.png" alt="Logo" className="w-16 mb-4 -mt-3" />
+          <p className="text-sm text-[#FDFDFD] w-full font-aeonik font-normal">
+            102 Warehouse Avenue, Industrial Layout,{"\n"} Ikeja Lagos, Nigeria.
+          </p>
+        </div>
 
-  {/* Show image logo on medium screens and above and hide on small screens */}
-  <img src="/logo.png" alt="Warebase Logo" className="w-10 hidden md:block" />
+        {/* Center Section - Contact Info */}
+        <div className="w-full md:w-auto">
+          <h6 className="text-[#FDFDFD45] font-aeonik text-base font-medium">
+            Support
+          </h6>
+          <div className="mt-3 text-[#FDFDFD] text-sm space-y-2 font-aeonik font-normal">
+            <p className="flex items-center gap-2">📞 +234-7003288473</p>
+            <p className="flex items-center gap-2">📧 support@warehouse.com.ng</p>
+          </div>
+        </div>
 
-  <p className="text-sm leading-5">
-    123 Warehouse Avenue, Industrial Layout,<br />
-    Ikeja, Lagos, Nigeria.
-  </p>
-</div>
+        {/* Right Section - Links */}
+        <div className="w-full md:w-auto">
+          <h6 className="text-[#FDFDFD45] font-aeonik text-base font-medium">
+            Links
+          </h6>
+          <div className="grid grid-cols-2 gap-x-8 gap-y-2 mt-4 text-[#FDFDFD] text-sm font-aeonik font-normal">
+            <p>Blog</p>
+            <p>Terms & Conditions</p>
+            <p>Contact</p>
+            <p>Privacy Policy</p>
+          </div>
+        </div>
 
- {/* Combined Sections */}
-<div className="w-full flex flex-col lg:flex-row lg:justify-center items-center mt-4">
-  <div className="flex flex-grow justify-between gap-16 items-center text-center">
-  {/* Contact Info Section */}
-  <div className="w-full lg-w-1/2 flex flex-col items-start lg:items-center space-y-1">
-    <h3 className="font-normal text-md text-gray-700">Support</h3>
-    <p className="text-sm">+234-7022588472</p>
-    <p className="text-sm">support@webbase.com.ng</p>
-  </div>
+        {/* Social Media Section */}
+        <div className="w-full md:w-auto">
+          <h6 className="text-[#FDFDFD45] font-aeonik text-base font-medium mb-2">
+            Connect
+          </h6>
+          <div className="flex space-x-3">
+            <SlSocialInstagram className="text-[#FDFDFD] text-lg" />
+            <FaXTwitter className="text-[#FDFDFD] text-lg" />
+            <SlSocialLinkedin className="text-[#FDFDFD] text-lg" />
+            <FaWhatsapp className="text-[#FDFDFD] text-lg" />
+          </div>
+        </div>
+      </div>
 
-  {/* Links & Policies Section */}
-  <div className=" w-full lg:w-1/3 flex flex-row justify-end space-x-2 ">
-    {/* Links Section */}
-    <div className="flex flex-col space-y-1">
-      <h3 className="font-normal text-sm text-gray-700">Links</h3>
-      <ul className="text-xs space-y-1">
-        <li><Link to="/blog" className="hover:underline">Blog</Link></li>
-        <li><Link to="/contact" className="hover:underline">Contact</Link></li>
-      </ul>
-    </div>
-
-    {/* Policies Section */}
-    <div className="flex flex-col space-y-1">
-      <h3 className="font-normal text-md text-gray-700">Policies</h3>
-      <ul className="text-xs space-y-1">
-        <li><Link to="/terms" className="hover:underline">Terms&Conditions</Link></li>
-        <li><Link to="/privacy" className="hover:underline">Privacy Policy</Link></li>
-      </ul>
-    </div>
-  </div>
-  </div>
-</div>
-        
-        
-      {/* Right Section - Social Media Icons */}
- {/* Bottom Section */}
-<div className="max-w-7xl mx-auto px-4 lg:px-0 text-xs border-t border-gray-700 mt-6 pt-4">
-  {/* Small Screen: Icons & Copyright in Same Row */}
-  <div className="flex flex-col items-center justify-between space-y-2 md:hidden">
-    <div className="flex space-x-3">
-      <Link to="#" className="text-gray-400 hover:text-white"><FaFacebookF size={18} /></Link>
-      <Link to="#" className="text-gray-400 hover:text-white"><FaTwitter size={18} /></Link>
-      <Link to="#" className="text-gray-400 hover:text-white"><FaLinkedinIn size={18} /></Link>
-      <Link to="#" className="text-gray-400 hover:text-white"><FaInstagram size={18} /></Link>
-    </div>
-    <p className="text-gray-400">WebBase © 2025. All rights reserved.</p>
-  </div>
-
-  {/* Large Screen: Original Layout (Unchanged) */}
-  <div className="hidden md:flex flex-row justify-between">
-    <p>WebBase © 2025. All rights reserved.</p>
-    <div className="flex space-x-3">
-      <Link to="#" className="text-gray-400 hover:text-white"><FaFacebookF size={18} /></Link>
-      <Link to="#" className="text-gray-400 hover:text-white"><FaTwitter size={18} /></Link>
-      <Link to="#" className="text-gray-400 hover:text-white"><FaLinkedinIn size={18} /></Link>
-      <Link to="#" className="text-gray-400 hover:text-white"><FaInstagram size={18} /></Link>
-    </div>
-  </div>
-
-  {/* Designed By Section */}
-  <div className="w-full text-center mt-2">
-    <p>Designed by <span className="text-blue-400">Gurugeeks Royalty Limited</span></p>
-  </div>
-</div>
-</div>
-
+      {/* Bottom Section */}
+      <div className="border-t border-gray-600 pt-4 text-center text-gray-500 text-xs flex flex-col md:flex-row md:justify-between">
+        <p>Warebase 2025. All rights reserved.</p>
+        <p>
+          Designed by{" "}
+          <Link to="https://yourdesigncompany.com" className="underline">
+            Gurunation Registry Limited
+          </Link>
+        </p>
+      </div>
     </footer>
   );
-}
+};
+
+export default Footer;
 
 
 
-    
+
+
+
