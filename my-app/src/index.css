@@ -1,3 +1,92 @@
+@import "./fonts.css"; /* Adjust path if needed */
+
+
+.custom-rotate {
+  position: absolute; /* Keeps it inside the image */
+  transform: rotate(37deg);
+  width: 100px;  /* Adjust width */
+  height: 30px;  /* Adjust height */
+  text-align: center;
+  font-weight: 700;
+  font-family: cursive;
+  background-color: white;
+  color: blue;
+  /* color: #1C1C1C; */
+  /* box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+
+  /* ✅ Positioning to match image */
+  top: -10px;  /* Move higher */
+  right: -30px; /* Move left so it stays on top-right */
+}
+@media (max-width: 600px) { /* Applies only on small screens */
+  /* .inner-bar{
+    height: fit-content;
+    padding-inline: 25px; */
+    /* background-color: chartreuse; */
+}
+/* .cards-wrapper{
+  height: fit-content;
+  padding: 1rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+} */
+/* .cards{
+  width: 205px;
+  height: 50px;
+  padding-right: 16px;
+  background-color: white;
+  border: 1px solid gray;
+} */
+  /* .cards:nth-child(5) {
+    width: 426px;
+    height: 50px;
+    padding-right: 16px;
+    background-color: white;
+    border: 1px solid gray;
+  } */
+/* } */
+
+
+
+/* Position for Large Screens (default) */
+@media (min-width: 1024px) {
+  .custom-rotate {
+      /* top: 5.56px; 
+      right: 6px; */
+  }
+}
+
+/* Position for Medium Screens (Tablets) */
+@media (max-width: 1024px) {
+  .custom-rotate {
+      /* top: 2px;
+      right: 2px;
+      width: 80px;
+      height: 30px; */
+  }
+}
+
+/* Position for Small Screens (Phones) */
+@media (max-width: 600px) {
+  .custom-rotate {
+      /* top: 5px;  
+      right: 5px; 
+      width: 90px; 
+      height: 28px;
+      font-size: 12px;  */
+  }
+}
+
+  
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

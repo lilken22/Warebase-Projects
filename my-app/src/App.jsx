@@ -8,6 +8,8 @@ import About from "./Pages/About";
 import Listing from "./Pages/Listing";
 import Blog from "./Pages/Blog";
 import Contact from "./Pages/Contact";
+import './index.css';
+import PropertyDetails from "./components/PropertyDetails";
 
 const App = () => {
   return (
@@ -21,6 +23,7 @@ const App = () => {
           <Route path="/listing" element={<Listing />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/PropertyDetails/:id" element={<PropertyDetails />} /> 
         </Routes>
       </main>
 

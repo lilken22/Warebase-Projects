@@ -1,0 +1,147 @@
+{/* Images Section */}
+      <div className="">
+        <div className="grid grid-cols-4 gap-4 relative">
+          {/* Main Image */}
+          <div className="col-span-3 relative">
+            <img
+              src="/property one.jpg"
+              alt="Main Property"
+              className="w-full h-[380px] object-cover rounded-lg"
+            />
+            {/* Shared Label */}
+            <span className="absolute top-0 right-0  bg-white  text-black text-xs px-3 py-1 rounded font-aeonik shadow-md  rotate-[37deg] transform origin-top-right">
+              Shared (4)
+            </span>
+            {/* For Lease Label */}
+            <span className="absolute top-0 left-0 bg-red-600 text-white text-xs px-3 py-2 rounded">
+              For Lease
+            </span>
+          </div>
+
+          {/* Side Images */}
+          <div className="flex flex-col gap-3">
+            <img
+              src="/sideimage1.jpg"
+              alt="Property 1"
+              className="w-full h-[120px] object-cover rounded-lg"
+            />
+            <img
+              src="/sideimage2.jpg"
+              alt="Property 2"
+              className="w-full h-[120px] object-cover rounded-lg"
+            />
+            <img
+              src="/sideimage3.jpg"
+              alt="Property 3"
+              className="w-full h-[120px] object-cover rounded-lg"
+            />
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+
+
+
+      <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #top-bar{
+            height: 131px;
+            display: flex;
+            flex-direction: column;
+            background-color: aquamarine;
+        }
+        .top-tabs{
+            height: 48px;
+            padding: 1rem;
+            background-color: blue;
+        }
+        .inner-bar{
+            height: 83px;
+            padding-inline: 25px;
+            background-color: chartreuse;
+        }
+        .cards-wrapper{
+            height: 50px;
+            padding: 1rem;
+            background-color: chartreuse;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: nowrap;
+        }
+        .cards{
+            width: 205px;
+            height: 100%;
+            padding-right: 16px;
+            background-color: brown;
+            border-right: 1px solid gray;
+        }
+        @media screen and (max-width: 600px) {
+            .inner-bar{
+                height: fit-content;
+                padding-inline: 25px;
+                background-color: chartreuse;
+            }
+            .cards-wrapper{
+                height: fit-content;
+                padding: 1rem;
+                background-color: red;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            .cards{
+                width: 205px;
+                height: 50px;
+                padding-right: 16px;
+                background-color: white;
+                border: 1px solid gray;
+            }
+            .cards:nth-child(5){
+                width: 426px;
+                height: 50px;
+                padding-right: 16px;
+                background-color: white;
+                border: 1px solid gray;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <div id="top-bar">
+            <div class="top-tabs">
+ 
+            </div>
+            <div class="inner-bar">
+                <div class="cards-wrapper">
+                    <div class="cards">
+                   
+                    </div>
+                    <div class="cards"></div>
+                    <div class="cards"></div>
+                    <div class="cards"></div>
+                    <div class="cards"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
+
+padding{
+    top:10px;
+    right:20px;
+    bottom:10px;
+    left:20px;
+}
