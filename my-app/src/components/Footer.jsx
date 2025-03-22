@@ -5,15 +5,21 @@ import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <footer className="bg-[#1C1C1C] text-white py-12 px-6 md:px-10 h-auto md:h-[300px] w-full flex flex-col justify-between mt-10">
+    <footer className="bg-[#1C1C1C] text-white py-12 px-6 md:px-10 h-none md:h-[250px] w-full flex flex-col justify-between mt-0 md:mt-10">
       {/* Main Content */}
       <div className="flex flex-col md:flex-row md:justify-between gap-6">
-        
         {/* Left Section - Logo & Address */}
         <div className="w-full md:w-auto">
-          <img src="/logo.png" alt="Logo" className="w-16 mb-4 -mt-3" />
+          {/* Logo (hidden on mobile, visible on md and above) */}
+          <img
+            src="/logo.png"
+            alt="Logo"
+            className="hidden md:block w-16 mb-4 -mt-3"
+          />
+          {/* Text (visible on mobile, hidden on md and above) */}
+          <h1 className="md:hidden text-xl font-bold mb-4 -mt-3">Warebase</h1>
           <p className="text-sm text-[#FDFDFD] w-full font-aeonik font-normal">
-            102 Warehouse Avenue, Industrial Layout,{"\n"} Ikeja Lagos, Nigeria.
+            102 Warehouse Avenue, Industrial Layout,<br /> Ikeja Lagos, Nigeria.
           </p>
         </div>
 
@@ -70,9 +76,3 @@ const Footer = () => {
 };
 
 export default Footer;
-
-
-
-
-
-

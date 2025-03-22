@@ -1,11 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom"; // Import useNavigate correctly
+import { Link } from "react-router-dom"; 
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import PropertyModal from "../components/PropertyModal";
 import StateModal from "../components/StateModal";
 import PriceModal from "../components/PriceModal";
 import SizeModal from "../components/SizeModal";
+import WarehouseFormModal from "../components/WarehouseFormModal"
+
 import "../index.css";
 
 export default function Listing() {
@@ -17,10 +19,11 @@ export default function Listing() {
   const [priceModalPosition, setPriceModalPosition] = useState({ top: 0, left: 0 });
   const [isSizeModalOpen, setIsSizeModalOpen] = useState(false);
   const [sizeModalPosition, setSizeModalPosition] = useState({ top: 0, left: 0 });
+  const [isWarehouseFormModalOpen, setIsWarehouseFormModalOpen] = useState(false); // Corrected 
   const dropdownRef = useRef(null);
   const buttonRef = useRef(null);
   const stateModalRef = useRef(null); // Define stateModalRef
-  const navigate = useNavigate(); // Initialize useNavigate at the top level
+  // const navigate = useNavigate();
 
   // Function to toggle dropdown and set its position
   const handleDropdownToggle = () => {
@@ -82,6 +85,9 @@ export default function Listing() {
       });
     }
     setIsSizeModalOpen((prev) => !prev);
+  };
+  const handleWarehouseFormModalToggle = () => {
+    setIsWarehouseFormModalOpen((prev) => !prev); // Corrected function name
   };
 
   // List of property images
@@ -255,7 +261,7 @@ export default function Listing() {
                       </Link>
                       <button
                         className="text-sm px-3 py-2 bg-black text-white rounded-full"
-                        onClick={() => navigate("/Contact")} // Use navigate here
+                        onClick={handleWarehouseFormModalToggle} // Open the modal
                       >
                         Get in touch
                       </button>
@@ -270,6 +276,11 @@ export default function Listing() {
 
       {/* Footer */}
       <Footer />
+        {/* Warehouse Form Modal */}
+      <WarehouseFormModal
+        isOpen={isWarehouseFormModalOpen}
+        onClose={handleWarehouseFormModalToggle}
+      />
     </div>
   );
 }

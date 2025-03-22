@@ -6,6 +6,7 @@ export default {
       fontFamily: {
         yeseva: ['Yeseva One', 'cursive'], // Keep your existing font
         aeonik: ['Aeonik', 'sans-serif'],  // Add Aeonik
+        playfair: ['Playfair Display', 'serif'], // Add Playfair Display
       },
     },
   },
