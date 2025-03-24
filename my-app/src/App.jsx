@@ -10,6 +10,13 @@ import Blog from "./Pages/Blog";
 import Contact from "./Pages/Contact";
 import './index.css';
 import PropertyDetails from "./components/PropertyDetails";
+import Login from "./AdminLogin/Login"
+import EmailReset from "./AdminLogin/EmailReset";
+import CheckMail from "./AdminLogin/CheckMail";
+import PasswordReset from "./AdminLogin/PasswordReset";
+import PasswordSuccessful from "./AdminLogin/PasswordSucessful";
+import EmailTemplate from "./AdminLogin/EmailTemplate";
+import BlogDetails from "./components/BlogDetails";
 
 const App = () => {
   return (
@@ -24,6 +31,14 @@ const App = () => {
           <Route path="/blog" element={<Blog />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/PropertyDetails/:id" element={<PropertyDetails />} /> 
+          <Route path="/Login" element={<Login />} /> 
+          <Route path="/EmailReset" element={<EmailReset />} /> 
+          <Route path="/CheckMail" element={<CheckMail />} /> 
+          <Route path="/PasswordReset" element={<PasswordReset />} /> 
+          <Route path="/PasswordSuccessful" element={<PasswordSuccessful />} />
+          <Route path="/EmailTemplate" element={<EmailTemplate />} />
+          <Route path="/blogdetails" element={<BlogDetails />} />
+
         </Routes>
       </main>
 
