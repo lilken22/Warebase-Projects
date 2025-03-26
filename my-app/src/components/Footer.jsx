@@ -62,12 +62,12 @@ const Footer = () => {
       </div>
 
       {/* Bottom Section */}
-      <div className="border-t border-gray-600 pt-4 text-center text-gray-500 text-xs flex flex-col md:flex-row md:justify-between">
+      <div className="border-t border-gray-600 pt-4 text-center text-[#FDFDFD] text-base flex flex-col md:flex-row md:justify-between font-aeonik">
         <p>Warebase 2025. All rights reserved.</p>
-        <p>
+        <p >
           Designed by{" "}
-          <Link to="https://yourdesigncompany.com" className="underline">
-            Gurunation Registry Limited
+          <Link to="https://yourdesigncompany.com" className="underline text-[#FDFDFD] font-normal font-aeonik text-base">
+           Gurugeeks Royalty Limited
           </Link>
         </p>
       </div>

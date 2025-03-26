@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Navbar from "../components/Navbar"; 
 import Footer from "../components/Footer"; 
 import { Link, useNavigate } from "react-router-dom";
@@ -9,10 +9,10 @@ const LandingPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null); // State to track selected radio button
   const navigate = useNavigate();
+  const servicesRef = useRef(null);
 
-  // Function to handle radio button selection
   const handleRadioChange = (event) => {
-    setSelectedOption(event.target.id); // Set the selected radio button ID
+    setSelectedOption((prev) => (prev === event.target.id ? null : event.target.id));
   };
 
   const handleClick = () => {
@@ -22,10 +22,17 @@ const LandingPage = () => {
     navigate("/blogdetails");
   };
 
+  // Function to scroll to the "Our Services" section
+  const scrollToServices = () => {
+    if (servicesRef.current) {
+      servicesRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-white text-[rgb(26, 24, 24)] font-serif flex flex-col justify-between">
       {/* Navbar */}
-      <Navbar />
+      <Navbar scrollToServices={scrollToServices} />
 
           {/* Warehouse Form Modal (only shows when isModalOpen is true) */}
        {isModalOpen && <WarehouseFormModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />}
@@ -64,6 +71,7 @@ const LandingPage = () => {
               id="want-property" 
               className="w-5 h-5"
               onChange={handleRadioChange} // Handle radio button selection
+              checked={selectedOption === "want-property"} // Ensure controlled state
               />
              <label htmlFor="want-property" className="text-sm md:text-2xl font-aeonik font-normal text-[#1D3F3F]">
               I want a property
@@ -82,6 +90,7 @@ const LandingPage = () => {
               id="have-property" 
               className="w-5 h-5" 
               onChange={handleRadioChange} // Handle radio button selection
+              checked={selectedOption === "have-property"} // Ensure controlled state
               />
               <label htmlFor="have-property" className="text-sm md:text-2xl font-aeonik font-normal text-[#1D3F3F]">
                 I have a property
@@ -96,7 +105,9 @@ const LandingPage = () => {
         {/* Centered Button Below Cards */}
         <div className="mt-8 ">
             <button
-              className="bg-[#1C1C1C] shadow-md text-[#FFF7F2] px-8 py-3 text-xl rounded-[50px] font-normal hover:bg-[#BFBFBF40]"
+              className={`shadow-md text-[#FFF7F2] px-8 py-3 text-xl rounded-[50px] font-normal transition-all 
+                ${selectedOption ? "bg-[#1C1C1C] hover:bg-[#333333]" : "bg-[#BFBFBF40] cursor-not-allowed"}
+              `}
               onClick={() => setIsModalOpen(true)}
               disabled={!selectedOption} // Disable button if no radio button is selected
               >
@@ -147,8 +158,8 @@ const LandingPage = () => {
 
 
 
-  
-<section className="flex flex-col items-center w-full max-w-screen-lg mx-auto mt-14">
+  {/* Our Service Section */}
+<section ref={servicesRef} id="our-services" className="flex flex-col items-center w-full max-w-screen-lg mx-auto mt-14">
   <h2 className="text-xl md:text-5xl font-medium font-yeseva text-center mb-4 text-[#1D3F3F]">Our Services</h2>
   <p className="text-center text-[#1D3F3F] max-w-xs md:max-w-md font-aeonik font-normal text-lg mb-6">
     Browse through our services gallery and choose one or more that align with your needs.
@@ -424,7 +435,7 @@ const LandingPage = () => {
         <h2 className="text-[20px] md:text-[57px] font-normal font-yeseva text-[#1D3F3F] text-center mb-0">Latest Insight</h2>
         <p className="text-center text-[#1D3F3F] font-normal font-yeseva text-sm md:text-lg mb-8">Stay up-to-date with industry trends.</p>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 mb-12">
+  <div className="grid grid-cols-1 lg:grid-cols-2 mb-12">
   {/* Image Section */}
   <div className="flex-1">
     <img

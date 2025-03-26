@@ -148,19 +148,19 @@ const Contact = () => {
                 <input 
                   type="checkbox" 
                   id="privacy-policy" 
-                  className="w-4 h-4 text-black border-gray-300 rounded focus:ring-2 focus:ring-gray-500"
+                  className="w-6 h-6 bg-[#00E5FF] rounded"
                 />
                 <label htmlFor="privacy-policy" className="text-[#627777] text-sm">
                   By ticking the box, I confirm that the information provided above is accurate and that I have read, understood, and agreed to the{" "}
-                  <Link to="/privacy-policy" className="text-[#0B97D1] hover:underline">privacy policy</Link> and{" "}
-                  <Link to="/terms-and-conditions" className="text-[#0B97D1] hover:underline">terms and conditions</Link>.
+                  <Link to="/privacy-policy" className="text-[#00E5FF] hover:underline">privacy policy</Link> and{" "}
+                  <Link to="/terms-and-conditions" className="text-[#00E5FF] hover:underline">terms and conditions</Link>.
                 </label>
               </div>
 
               <div className="flex items-center justify-center gap-4">
                 {/* Main Button - Visible on All Screens */}
               <button 
-                className="w-[152px] md:w-[322px] h-[34px] text-center bg-[#1C1C1C] text-[#FFF7F2] flex items-center justify-center rounded-full font-aeonik md:px[24px] md:[18px] text-sm hover:bg-gray-800 transition"
+                className="w-[152px] md:w-[322px] h-[34px] text-center bg-[#1C1C1C] text-[#FFF7F2] flex items-center justify-center rounded-full font-aeonik md:px-[24px] md:py-[18px] text-sm hover:bg-gray-800 transition"
               >
               Send Message
               </button>

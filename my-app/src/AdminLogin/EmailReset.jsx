@@ -62,7 +62,7 @@ function EmailReset() {
             <input
               type="email"
               onChange={(e) => setEmail(e.target.value)} // Capture user input
-              className="w-full px-3 py-2 border border-[#F3F3F3] bg-[#F3F3F3] italic rounded-md focus:outline-none focus:ring-2 focus:ring-[#627777]"
+              className="w-full px-3 py-2 border border-[#F3F3F3] bg-[#F3F3F3] italic rounded-md focus:outline-none focus:ring-2 focus:ring-[#627777] font-semibold"
               placeholder="example@email.com"
               required
             />

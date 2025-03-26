@@ -1,48 +1,57 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from "react-router-dom";
-import { FaArrowLeft } from "react-icons/fa6";
+import { Link, useNavigate } from 'react-router-dom';
+import { FaArrowLeft, FaEye, FaEyeSlash } from 'react-icons/fa';
 
 function PasswordReset() {
-  const [showPassword, setShowPassword] = useState(false);
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const navigate = useNavigate(); // Initialize useNavigate
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
+  const toggleNewPasswordVisibility = () => {
+    setShowNewPassword(!showNewPassword);
   };
 
-  // Function to handle form submission
-  const handleSubmit = (e) => {
-    e.preventDefault(); // Prevent page refresh
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
 
-    if (newPassword === confirmPassword && newPassword.length >= 6) {
-      navigate("/PasswordSuccessful"); // Navigate after successful password reset
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setError('');
+
+    if (newPassword.length < 6) {
+      setError('Password must be at least 6 characters long.');
+    } else if (newPassword !== confirmPassword) {
+      setError('Passwords do not match. Try again');
     } else {
-      alert("Passwords do not match or are too short!"); // Show error message
+      navigate('/PasswordSuccessful');
     }
   };
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center"
+      className="min-h-screen flex items-center justify-center p-4"
       style={{
-        backgroundImage: "url('/Cloud.jpg')", // Path to the image in the public folder
-        backgroundSize: 'cover', // Ensure the image covers the entire screen
-        backgroundPosition: 'center', // Center the background image
+        backgroundImage: "url('/Cloud.jpg')",
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
       }}
     >
-      <div className="bg-white p-8 rounded-3xl shadow-lg w-full min-h-[680px] max-w-lg flex flex-col justify-center">
-        {/* Centered Logo */}
+      <div className="bg-white p-8 rounded-3xl shadow-lg w-full max-w-md" style={{ minHeight: '600px' }}>
         <div className="flex justify-center">
-          <img src="/logo.png" alt="Logo" className="w-16 mb-16" />
+          <img src="/logo.png" alt="Logo" className="w-14 mb-8" />
         </div>
 
-        <h2 className="text-xl font-medium mb-2 text-[#1D3F3F] font-aeonik text-center">Set new password</h2>
+        <h2 className="text-xl font-medium mb-3 text-[#1D3F3F] font-aeonik text-center">
+          Set New Password
+        </h2>
 
-        <div className="mb-10 text-center text-[#627777] font-normal font-aeonik text-sm">
-          <p>Your new password must be different <br /> from the previous password.</p>
-        </div>
+        <p className="mb-8 text-center text-[#627777] font-normal font-aeonik text-sm">
+          Your new password must be different from the previous one.
+        </p>
 
         <form onSubmit={handleSubmit}>
           {/* New Password Field */}
@@ -52,142 +61,61 @@ function PasswordReset() {
             </label>
             <div className="relative">
               <input
-                type={showPassword ? 'text' : 'password'}
-                className="w-full px-3 py-2 border border-[#F3F3F3] bg-[#F3F3F3] text-[#ACACAC] italic rounded-md focus:outline-none focus:ring-2 focus:ring-[#627777]"
+                type={showNewPassword ? 'text' : 'password'}
+                className="w-full px-4 py-3 border border-gray-300 bg-gray-100 text-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#627777]"
                 placeholder="*********"
-                required
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
               />
-              {/* Eye icon button positioned inside input */}
               <button
                 type="button"
                 className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700"
-                onClick={togglePasswordVisibility}
+                onClick={toggleNewPasswordVisibility}
               >
-                {showPassword ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                    />
-                  </svg>
-                ) : (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7 1.274-4.057 5.064-7 9.542-7 1.048 0 2.062.18 3 .534M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M2 2l20 20"
-                    />
-                  </svg>
-                )}
+                {showNewPassword ? <FaEyeSlash size={18} /> : <FaEye size={18} />}
               </button>
             </div>
           </div>
 
           {/* Confirm Password Field */}
           <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Confirm Password</label>
+            <label className="block text-base font-medium text-[#627777] mb-2">
+              Confirm Password
+            </label>
             <div className="relative">
               <input
-                type={showPassword ? 'text' : 'password'}
-                className="w-full px-3 py-2 border border-[#F3F3F3] rounded-md focus:outline-none focus:ring-2 focus:ring-[#627777] bg-[#F3F3F3]"
-                placeholder="**********"
-                required
+                type={showConfirmPassword ? 'text' : 'password'}
+                className="w-full px-4 py-3 border border-gray-300 bg-gray-100 text-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#627777]"
+                placeholder="*********"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
               <button
                 type="button"
-                className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm text-gray-500 hover:text-gray-700"
-                onClick={togglePasswordVisibility}
+                className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700"
+                onClick={toggleConfirmPasswordVisibility}
               >
-                {showPassword ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                    />
-                  </svg>
-                ) : (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7 1.274-4.057 5.064-7 9.542-7 1.048 0 2.062.18 3 .534M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M2 2l20 20"
-                    />
-                  </svg>
-                )}
+                {showConfirmPassword ? <FaEyeSlash size={18} /> : <FaEye size={18} />}
               </button>
             </div>
           </div>
 
-          {/* Reset Password Button */}
-          <button
-            type="submit"
-            className="w-full bg-[#1C1C1C] text-[#FFF7F2] py-[10px] px-3 rounded-3xl hover:bg-[#333333] focus:outline-none focus:ring-2 focus:ring-[#1C1C1C]"
+          {/* Error Message */}
+          {error && <p className="text-red-500 text-sm mb-6">{error}</p>}
+
+          <button 
+            type="submit" 
+            className="w-full bg-[#1C1C1C] text-white py-3 rounded-xl hover:bg-[#333333] mb-6"
           >
             Reset Password
           </button>
 
-          {/* Back to Login Link */}
-          <div className="mt-8 flex justify-center items-center text-center">
-            <Link to="/Login" className="text-base font-normal font-aeonik text-[#1D3F3F] hover:underline flex items-center">
-              <FaArrowLeft aria-label="Back to Login" className="mr-2" /> Back to Login
+          <div className="text-center">
+            <Link 
+              to="/Login" 
+              className="text-base font-medium text-[#1D3F3F] hover:underline flex justify-center items-center"
+            >
+              <FaArrowLeft className="mr-2" /> Back to Login
             </Link>
           </div>
         </form>
