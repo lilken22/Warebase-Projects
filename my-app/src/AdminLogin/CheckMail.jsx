@@ -63,13 +63,12 @@ function CheckMail() {
         </div>
 
         {/* Open Mail App Button */}
-        <button
-          onClick={handleOpenMailApp}
-          className="w-full bg-[#1C1C1C] text-[#FFF7F2] py-[10px] px-3 rounded-3xl hover:bg-[#333333] focus:outline-none focus:ring-2 focus:ring-[#1C1C1C]"
-          aria-label="Open mail app"
+        <p
+          className=" text-[#627777] text-lg font-normal font-aeonik"
+          
         >
           Open mail app
-        </button>
+        </p>
 
         {/* Resend Email Section */}
         <div className="mt-6 text-center text-[#627777] font-aeonik font-normal text-sm">

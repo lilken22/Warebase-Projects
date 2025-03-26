@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Link } from "react-router-dom"; 
+import { Link,  useNavigate } from "react-router-dom"; 
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import PropertyModal from "../components/PropertyModal";
@@ -7,7 +7,7 @@ import StateModal from "../components/StateModal";
 import PriceModal from "../components/PriceModal";
 import SizeModal from "../components/SizeModal";
 import WarehouseFormModal from "../components/WarehouseFormModal"
-
+import { FaLongArrowAltLeft, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import "../index.css";
 
 export default function Listing() {
@@ -23,7 +23,8 @@ export default function Listing() {
   const dropdownRef = useRef(null);
   const buttonRef = useRef(null);
   const stateModalRef = useRef(null); // Define stateModalRef
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1); // State to track the current page
 
   // Function to toggle dropdown and set its position
   const handleDropdownToggle = () => {
@@ -90,6 +91,11 @@ export default function Listing() {
     setIsWarehouseFormModalOpen((prev) => !prev); // Corrected function name
   };
 
+  // Function to handle page change
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
   // List of property images
   const propertyImages = [
     "/property one.jpg",
@@ -111,9 +117,21 @@ export default function Listing() {
       {/* Navbar */}
       <Navbar />
 
-      <div className="w-full max-w-6xl mx-auto p-4 rounded-md mt-20">
+
+           {/* Fixed Back Link */}
+            <Link
+              to="/" // Replace with the actual path to your blog page
+              className="fixed top-1/4 left-0 transform -translate-y-1/2  text-[#00E5FF] p-4 transition-colors duration-300 flex flex-row gap-3 items-center justify-between"
+              style={{ zIndex: 1000 }} // Ensure it stays on top
+            >
+              <FaLongArrowAltLeft className='w-5 h-5'/>
+              <span className='font-aeonik font-normal text-lg'>Back</span> 
+            </Link>
+
+      <div className="w-full mx-auto p-4 rounded-md mt-20">
         {/* Filter Bar */}
-        <div className="h-[131px] flex flex-col bg-orange-">
+        <div className="h-[131px] flex flex-col items-center">
+          <div className="w-full max-w-[1200px]">
           <div className="h-[48px] w-[200px] flex items-center justify-between">
             <button className="bg-[#FFFFFF] w-[95px] h-[48px] rounded-tl-xl rounded-tr-xl py-[10px] px-[20px] gap-[10px] font-medium font-aeonik text-sm text-[#1D3F3F] shadow-sm">
               For Sale
@@ -123,10 +141,10 @@ export default function Listing() {
             </button>
           </div>
 
-          <div className="h-fit md:h-[83px] md:px-[25px] pr-[] bg-[#FFFFFF] shadow-lg inner-bar">
+          <div className="h-fit md:h-[70px] md:px-[25px] pr-[] bg-[#FFFFFF] shadow-lg inner-bar">
             <div className="grid grid-cols-2 md:flex md:flex-nowrap text-center justify-center flex-wrap gap-1 md:gap-0">
               {/* Property Type Dropdown */}
-              <div className="h-[50px] w-full md:w-[210px] pr-4 bg-[#FFFFFF] shadow-md md:bg-[#FFFFFF] border-r border-gray-400 cards">
+              <div className="h-[70px] w-full md:w-[210px] pr-4 bg-[#FFFFFF] shadow-md md:bg-[#FFFFFF] border-r border-gray-400 cards">
                 <p className="text-base font-aeonik font-medium text-[#1D3F3FDE]">Property Type</p>
                 <div className="flex justify-around items-center text-start w-full">
                   <div className="max-w-[90%] sm:max-w-full truncate text-xs md:text-sm text-[#CDCDCD] italic text-start">
@@ -139,7 +157,7 @@ export default function Listing() {
               </div>
 
               {/* Location Dropdown */}
-              <div className="h-[50px] w-full md:w-[210px] pr-4 bg-[#FFFFFF] shadow-md md:bg-[#FFFFFF] border-r border-gray-400 cards">
+              <div className="h-[70px] w-full md:w-[210px] pr-4 bg-[#FFFFFF] shadow-md md:bg-[#FFFFFF] border-r border-gray-400 cards">
                 <p className="text-base font-aeonik font-medium text-[#1D3F3FDE]">Location</p>
                 <div className="flex justify-around">
                   <div className="max-w-[90%] sm:max-w-full truncate text-sm text-[#CDCDCD] italic">e.g Lagos, Abuja</div>
@@ -150,7 +168,7 @@ export default function Listing() {
               </div>
 
               {/* Price Range Dropdown */}
-              <div className="h-[50px] w-full md:w-[210px] pr-4 bg-[#FFFFFF] shadow-md md:bg-[#FFFFFF] border-r border-gray-400 cards">
+              <div className="h-[70px] w-full md:w-[210px] pr-4 bg-[#FFFFFF] shadow-md md:bg-[#FFFFFF] border-r border-gray-400 cards">
                 <p className="text-base font-aeonik font-medium text-[#1D3F3FDE]">Price Range</p>
                 <div className="flex justify-around">
                   <div className="max-w-[90%] sm:max-w-full truncate text-sm text-[#CDCDCD] italic">Min.Price - Max.Price</div>
@@ -161,7 +179,7 @@ export default function Listing() {
               </div>
 
               {/* Size Range Dropdown */}
-              <div className="h-[50px] w-full md:w-[210px] pr-4 bg-[#FFFFFF] shadow-md md:bg-[#FFFFFF] border-r border-gray-400 cards">
+              <div className="h-[70px] w-full md:w-[210px] pr-4 bg-[#FFFFFF] shadow-md md:bg-[#FFFFFF] border-r border-gray-400 cards">
                 <p className="text-base font-aeonik font-medium text-[#1D3F3FDE]">Size Range</p>
                 <div className="flex justify-around items-baseline">
                   <div className="max-w-[90%] sm:max-w-full truncate text-sm text-[#CDCDCD] italic">Min.Size - Max.Size</div>
@@ -174,13 +192,13 @@ export default function Listing() {
               {/* Buttons */}
               <div className="grid grid-cols-2 h-[50px] md:h-[100%] md:gap-1 md:flex md:flex-grow-0 md:w-[full] md:pl-2 md:px-4 mt-2 md:mt-2">
                 <div>
-                  <button className="bg-[#1C1C1C] text-[#FFFFFF] h-[35px] w-[85px] md:w-[120px] text-xs md:text-sm rounded-lg">
+                  <button className="bg-[#1C1C1C] text-[#FFFFFF] h-[45px] w-[85px] md:w-[120px] text-xs md:text-sm rounded-lg">
                     Reset Filter ↺
                   </button>
                 </div>
 
                 <div>
-                  <button className="bg-[#0B97D1] text-[#FFFFFF] h-[35px] w-[80px] md:w-[120px] text-xs md:text-sm rounded-lg">
+                  <button className="bg-[#0B97D1] text-[#FFFFFF] h-[45px] w-[80px] md:w-[120px] text-xs md:text-sm rounded-lg">
                     Search
                   </button>
                 </div>
@@ -216,20 +234,22 @@ export default function Listing() {
             onClose={() => setIsSizeModalOpen(false)}
             position={sizeModalPosition}
           />
+          </div>
         </div>
 
         {/* Grid Section */}
-        <div className="bg-[#F4F4F4] px-5 rounded-md">
-          <div className="grid grid-cols-1 gap-4 mt-24 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
+        <div className="bg-[#F4F4F4] px-3 mx-auto rounded-md max-w-[1320px] items-center">
+          <div className="max-w-[1300px] ">
+          <div className="grid grid-cols-1 gap-4 mt-16 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 justify-start">
             {propertyImages.map((image, index) => {
               const isFeatured = image.includes("property one.jpg") || image.includes("property two.jpg");
 
               return (
-                <div key={index} className="border rounded-lg bg-[#FFFFFF] shadow-md overflow-hidden">
+                <div key={index} className="md:w-[320px] border rounded-lg bg-[#FFFFFF] shadow-md overflow-hidden">
                   <div className="relative">
                     <img src={image} alt={`Property ${index + 1}`} className="w-full h-40 object-cover" />
                     {/* Red Button */}
-                    <span className="absolute top-0 left-0 bg-red-500 text-white text-xs px-2 py-1 rounded">
+                    <span className="absolute top-0 left-0 bg-[#F11414] text-white text-xs px-2 py-1 rounded">
                       {isFeatured ? "For Lease" : "For Sale"}
                     </span>
                     {/* Shared Badge - Fixed Position with Rotation */}
@@ -240,27 +260,27 @@ export default function Listing() {
                     )}
                   </div>
                   <div className="p-4 leading-relaxed">
-                    <p className="text-sm text-gray-600">
-                      Property Name: <span className="font-yeseva font-normal text-sm">Property Name</span>
+                    <p className="text-sm text-[#627777DE]">
+                      Property Name: <span className="font-yeseva font-light text-sm">Property Name</span>
                     </p>
-                    <p className="text-sm text-gray-600">
-                      Property ID: <span className="font-yeseva font-normal text-sm">WB01</span>
+                    <p className="text-sm text-[#627777DE]">
+                      Property ID: <span className="font-yeseva font-light text-sm">WB01</span>
                     </p>
-                    <p className="text-sm text-gray-600">
-                      Location: <span className="font-yeseva font-normal text-sm">Lagos</span>
+                    <p className="text-sm text-[#627777DE]">
+                      Location: <span className="font-yeseva font-light text-sm">Lagos</span>
                     </p>
-                    <p className="text-sm text-gray-600">
-                      Price: <span className="font-yeseva font-normal text-sm">₦5,250,000/Month</span>
+                    <p className="text-sm text-[#627777DE]">
+                      Price: <span className="font-yeseva font-light text-sm">₦5,250,000/Month</span>
                     </p>
                     <div className="mt-4 flex justify-between">
                       <Link
                         to={`/PropertyDetails/${index}`}
-                        className="text-sm py-2 text-start text-gray-600 hover:underline rounded"
+                        className="text-sm py-2 text-start text-[#627777DE] hover:underline rounded"
                       >
                         See Description
                       </Link>
                       <button
-                        className="text-sm px-3 py-2 bg-black text-white rounded-full"
+                        className="text-sm px-3 py-2 bg-[#1C1C1C] text-[#FFFFFF] rounded-full"
                         onClick={handleWarehouseFormModalToggle} // Open the modal
                       >
                         Get in touch
@@ -271,11 +291,64 @@ export default function Listing() {
               );
             })}
           </div>
+          </div>
         </div>
+
+          {/* Pagination Section */}
+                  <div className="flex justify-center items-center mt-12 space-x-2">
+                    {/* Previous Button */}
+                    <button
+                      onClick={() => handlePageChange(currentPage - 1)}
+                      disabled={currentPage === 1}
+                      className="p-2 px-4 rounded-md border border-gray-200 bg-[#FFFFFF] hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      <FaChevronLeft className="text-[#1D3F3F]" />
+                    </button>
+          
+                    {/* Page Numbers */}
+                    {[1, 2, 3 ].map((page) => (
+                      <button
+                        key={page}
+                        onClick={() => handlePageChange(page)}
+                        className={`px-4 py-1 rounded-md  border border-gray-200 shadow-sm ${
+                          currentPage === page
+                            ? "bg-[#E2E8F0] text-[#021816]"
+                            : "bg-[#FFFFFF] text-[#021816] hover:bg-gray-100"
+                        }`}
+                      >
+                        {page}
+                      </button>
+                    ))}
+          
+                    {/* Ellipsis */}
+                    <span className="text-[#1D3F3F]">....</span>
+          
+                    {/* Last Page */}
+                    <button
+                      onClick={() => handlePageChange(50)}
+                      className={`px-4 py-1 rounded-md border border-gray-200 shadow-sm ${
+                        currentPage === 50
+                          ? "bg-[#E2E8F0] text-[#021816]"
+                          : "bg-[#FFFFFF] text-[#021816] hover:bg-gray-100"
+                      }`}
+                    >
+                      50
+                    </button>
+          
+                    {/* Next Button */}
+                    <button
+                      onClick={() => handlePageChange(currentPage + 1)}
+                      disabled={currentPage === 50}
+                      className="px-4 py-2 rounded-md bg-[#FFFFFF] border border-gray-300 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      <FaChevronRight className="text-[#1D3F3F]" />
+                    </button>
+                  </div>
       </div>
 
       {/* Footer */}
       <Footer />
+
         {/* Warehouse Form Modal */}
       <WarehouseFormModal
         isOpen={isWarehouseFormModalOpen}

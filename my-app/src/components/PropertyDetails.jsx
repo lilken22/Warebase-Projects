@@ -1,15 +1,34 @@
-import React from "react";
+import React, {useState} from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
+import { FaLongArrowAltLeft } from "react-icons/fa";
+import WarehouseFormModal from "../components/WarehouseFormModal"
 
 const PropertyDetails = () => {
+   const [isWarehouseFormModalOpen, setIsWarehouseFormModalOpen] = useState(false); // Corrected
+
+
+   const handleWarehouseFormModalToggle = () => {
+    setIsWarehouseFormModalOpen((prev) => !prev); // Corrected function name
+  };
+
   return (
     <div className="min-h-screen bg-white text-gray-900 font-serif flex flex-col">
        {/* Navbar */}
             <Navbar />
 
-    <div className="max-w-4xl mx-auto px-4 py-24">
+            {/* Fixed Back Link */}
+             <Link
+               to="/listing"
+               className="fixed top-1/4 left-0 transform -translate-y-1/2  text-[#00E5FF] p-4 transition-colors duration-300 flex flex-row gap-3 items-center justify-between"
+               style={{ zIndex: 1000 }} // Ensure it stays on top
+             >
+               <FaLongArrowAltLeft className='w-5 h-5'/>
+               <span className='font-aeonik font-normal text-lg'>Back</span> 
+             </Link>     
+
+    <div className="max-w-5xl mx-auto px-4 py-24">
 
       {/* Images Section */}
 <div className="">
@@ -19,25 +38,25 @@ const PropertyDetails = () => {
       <img
         src="/property one.jpg"
         alt="Main Property"
-        className="w-full h-[380px] object-cover rounded-lg"
+        className="w-full h-[280px] md:h-[380px] object-cover rounded-lg"
       />
       {/* Shared Label - Now Properly Positioned */}
-      <span className="absolute top-4 -right-0 bg-white text-black text-xs px-2 py-1 rounded font-aeonik shadow-md rotate-[37deg] overflow-hidden">
+      <span className="absolute top-4 -right-0 bg-[#FFFFFF] text-[#1C1C1C] text-xs px-2 py-1 rounded font-aeonik shadow-md rotate-[37deg] overflow-hidden">
         Shared (4)
       </span>
       {/* For Lease Label */}
-      <span className="absolute top-0 left-0 bg-red-600 text-white text-xs px-3 py-2 rounded">
+      <span className="absolute top-0 left-0 bg-[#F11414] text-[#FFFF] text-xs px-3 py-2 rounded">
         For Lease
       </span>
     </div>
 
     {/* Side Images */}
-    <div className="hidden sm:block">
+    <div className="hidden md:block">
     <div className="flex flex-col gap-3">
       <img
         src="/sideimage1.jpg"
         alt="Property 1"
-        className="w-full h-[120px] object-cover rounded-lg"
+        className=" md:w-full h-[120px] object-cover rounded-lg"
       />
       <img
         src="/sideimage2.jpg"
@@ -101,12 +120,21 @@ const PropertyDetails = () => {
         </div>
         {/* Action Button */}
         <div className="mt-12 flex justify-center md:justify-start">
-        <button className="bg-black gap-[26px] text-white px-8 py-4 rounded-full hover:bg-gray-800">
+        <button className="bg-[#1C1C1C] text-[#FFFFFF] gap-[26px] px-8 py-4 rounded-full hover:bg-gray-800"
+        onClick={handleWarehouseFormModalToggle} // Open the modal
+        >
           Get in touch
         </button>  
       </div>
       </div>
      </div>
+
+
+        {/* Warehouse Form Modal */}
+      <WarehouseFormModal
+        isOpen={isWarehouseFormModalOpen}
+        onClose={handleWarehouseFormModalToggle}
+      />
 
      {/* Footer */}
           <Footer />
@@ -115,4 +143,3 @@ const PropertyDetails = () => {
 };
 
 export default PropertyDetails;
-

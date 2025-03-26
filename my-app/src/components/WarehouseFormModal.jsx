@@ -1,10 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 const WarehouseFormModal = ({ isOpen, onClose }) => {
   const [showConfirmation, setShowConfirmation] = useState(false);
-  const [isLoading, setIsLoading] = useState(true); // State for loading animation
-  const navigate = useNavigate(); // Initialize useNavigate
+  const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
+  const modalRef = useRef();
+
+  // Close modal when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (modalRef.current && !modalRef.current.contains(event.target) && isOpen) {
+        onClose();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isOpen, onClose]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -18,12 +31,10 @@ const WarehouseFormModal = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     if (showConfirmation) {
-      // Simulate a 2-second loading period
       const timer = setTimeout(() => {
-        setIsLoading(false); // Stop loading and show the checkmark
+        setIsLoading(false);
       }, 2000);
-
-      return () => clearTimeout(timer); // Cleanup the timer
+      return () => clearTimeout(timer);
     }
   }, [showConfirmation]);
 
@@ -31,12 +42,13 @@ const WarehouseFormModal = ({ isOpen, onClose }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 p-4 pt-20 z-40">
-      {/* Form Container with max height and overflow hidden */}
-      {!showConfirmation && (
-        <div className="bg-white p-8 rounded-3xl shadow-lg w-full md:max-w-[751px] max-h-[80vh] relative overflow-hidden">
-          {/* Scrollable Content */}
+      {/* Form Container */}
+      {!showConfirmation ? (
+        <div 
+          ref={modalRef} 
+          className="bg-white p-8 rounded-3xl shadow-lg w-full md:max-w-[751px] max-h-[80vh] relative overflow-hidden"
+        >
           <div className="h-[70vh] overflow-y-auto pr-3">
-            {/* Close Button */}
             <button
               onClick={onClose}
               className="absolute top-3 right-4 text-gray-500 hover:text-gray-700 text-lg"
@@ -44,7 +56,6 @@ const WarehouseFormModal = ({ isOpen, onClose }) => {
               ✖
             </button>
 
-            {/* Header Section */}
             <div className="md:max-w-[666px] min-h-[84px] gap-[4px] mt-4">
               <h2 className="text-2xl font-medium text-[#1D3F3F] font-yeseva text-start">
                 Get Started with Your Warehouse Space
@@ -54,7 +65,6 @@ const WarehouseFormModal = ({ isOpen, onClose }) => {
               </p>
             </div>
 
-            {/* Form Section */}
             <form className="mt-4 space-y-2" onSubmit={handleSubmit}>
               {/* Full Name & Email */}
               <div className="grid grid-cols-2 md:max-w-[674px] gap-[39px]">
@@ -135,8 +145,8 @@ const WarehouseFormModal = ({ isOpen, onClose }) => {
                 />
                 <label htmlFor="privacy-policy" className="text-[#627777] text-sm">
                   By ticking the box, I confirm that the information provided is accurate and I agree to the{" "}
-                  <Link to="/privacy-policy" className="text-[#0B97D1] hover:underline">privacy policy</Link> and{" "}
-                  <Link to="/terms-and-conditions" className="text-[#0B97D1] hover:underline">terms and conditions</Link>.
+                  <Link to="/privacy-policy" className="text-[#00E5FF] hover:underline">privacy policy</Link> and{" "}
+                  <Link to="/terms-and-conditions" className="text-[#00E5FF] hover:underline">terms and conditions</Link>.
                 </label>
               </div>
 
@@ -160,12 +170,12 @@ const WarehouseFormModal = ({ isOpen, onClose }) => {
             </form>
           </div>
         </div>
-      )}
-
-      {/* Confirmation Modal */}
-      {showConfirmation && (
-        <div className="bg-white p-6 rounded-3xl shadow-lg w-[100%] max-w-lg min-h-[442px] flex flex-col items-center justify-center">
-          {/* Spinner or Checkmark */}
+      ) : (
+        /* Confirmation Modal (also gets the outside-click close) */
+        <div 
+          ref={modalRef} 
+          className="bg-white p-6 rounded-3xl shadow-lg w-[100%] max-w-lg min-h-[442px] flex flex-col items-center justify-center"
+        >
           {isLoading ? (
             <div className="w-12 h-12 border-4 border-gray-300 border-t-blue-500 rounded-full animate-spin mb-4"></div>
           ) : (
@@ -177,27 +187,21 @@ const WarehouseFormModal = ({ isOpen, onClose }) => {
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M5 13l4 4L19 7"
-                />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
             </div>
           )}
-
-          {/* Success Message */}
           <h2 className="text-lg font-semibold text-gray-900 text-center">
             Successfully submitted
           </h2>
           <p className="text-gray-600 text-sm text-center mt-2">
             Thank you for contacting us, we will be in touch shortly.
           </p>
-
-          {/* Button */}
           <button
-            onClick={() => navigate("/Listing")} // Navigate to the page
+            onClick={() => {
+            closeConfirmation(); // Close the modal first
+            navigate("/listing")
+          }}
             className="mt-4 bg-black text-white px-6 py-2 rounded-full hover:bg-gray-800 text-sm"
           >
             See available properties
@@ -209,4 +213,3 @@ const WarehouseFormModal = ({ isOpen, onClose }) => {
 };
 
 export default WarehouseFormModal;
-
