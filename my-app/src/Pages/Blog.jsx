@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { Link, useNavigate } from "react-router-dom";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa"; // Icons for previous and next
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { FaArrowRight } from "react-icons/fa6"; // Icons for previous and next
 
 export default function Blog() {
   const navigate = useNavigate();
@@ -110,9 +111,9 @@ export default function Blog() {
               {/* Read More Link */}
               <Link
                 to="/blogdetails"
-                className="text-[#1D3F3F] font-aeonik font-bold text-[10px] md:text-lg mt-auto block"
+                className="text-[#1D3F3F] font-aeonik font-bold text-[10px] md:text-lg mt-auto flex text-center items-center justify-start gap-3"
               >
-                Read More →
+                Read More <FaArrowRight />
               </Link>
             </div>
           </div>
@@ -139,9 +140,9 @@ export default function Blog() {
               {/* Read More Link */}
               <Link
                 to="/blogdetails"
-                className="text-[#1D3F3F] font-aeonik font-bold text-[10px] md:text-lg mt-auto block"
+                className="text-[#1D3F3F] font-aeonik font-bold text-[10px] md:text-lg mt-auto flex text-center items-center justify-start gap-3"
               >
-                Read More →
+                Read More <FaArrowRight />
               </Link>
             </div>
           </div>
@@ -167,9 +168,9 @@ export default function Blog() {
               {/* Read More Link */}
               <Link
                 to="/blogdetails"
-                className="text-[#1D3F3F] font-aeonik font-bold text-[10px] md:text-lg mt-auto block"
+                className="text-[#1D3F3F] font-aeonik font-bold text-[10px] md:text-lg mt-auto flex text-center items-center justify-start gap-3"
               >
-                Read More →
+                Read More <FaArrowRight />
               </Link>
             </div>
           </div>
@@ -195,15 +196,16 @@ export default function Blog() {
               {/* Read More Link */}
               <Link
                 to="/blogdetails"
-                className="text-[#1D3F3F] font-aeonik font-bold text-[10px] md:text-lg mt-auto block"
+                className="text-[#1D3F3F] font-aeonik font-bold text-[10px] md:text-lg mt-auto flex text-center items-center justify-start gap-3"
               >
-                Read More →
+                Read More <FaArrowRight />
               </Link>
             </div>
           </div>
 
+          
           {/* Article Card 5 */}
-          <div className="flex flex-col shadow-lg rounded-lg overflow-hidden h-[190px] md:h-[440px] w-[170px] md:w-[330px]">
+          <div className="flex flex-col shadow-lg rounded-lg overflow-hidden h-[190px] md:h-[440px] w-[170px] md:w-[330px] mt-6">
             {/* Image Section */}
             <img
               src="/max.jpeg"
@@ -226,15 +228,15 @@ export default function Blog() {
               {/* Read More Link */}
               <Link
                 to="/blogdetails"
-                className="text-[#1D3F3F] font-aeonik font-bold text-[10px] md:text-lg mt-auto block"
+                className="text-[#1D3F3F] font-aeonik font-bold text-[10px] md:text-lg mt-auto flex text-center items-center justify-start gap-3"
               >
-                Read More →
+                Read More <FaArrowRight />
               </Link>
             </div>
           </div>
 
            {/* Article Card 6 */}
-           <div className="flex flex-col shadow-lg rounded-lg overflow-hidden h-[190px] md:h-[440px] w-[170px] md:w-[330px]">
+           <div className="flex flex-col shadow-lg rounded-lg overflow-hidden h-[190px] md:h-[440px] w-[170px] md:w-[330px] mt-6">
             <img
               src="/phone.jpeg"
               alt="Shared Warehousing"
@@ -255,15 +257,15 @@ export default function Blog() {
               {/* Read More Link */}
               <Link
                 to="/blogdetails"
-                className="text-[#1D3F3F] font-aeonik font-bold text-[10px] md:text-lg mt-auto block"
+                className="text-[#1D3F3F] font-aeonik font-bold text-[10px] md:text-lg mt-auto flex text-center items-center justify-start gap-3"
               >
-                Read More →
+                Read More <FaArrowRight />
               </Link>
             </div>
           </div>
 
                   {/* Article Card 7 */}
-                  <div className="flex flex-col shadow-lg rounded-lg overflow-hidden h-[190px] md:h-[440px] w-[170px] md:w-[330px]">
+                  <div className="flex flex-col shadow-lg rounded-lg overflow-hidden h-[190px] md:h-[440px] w-[170px] md:w-[330px] mt-6">
             <img
               src="/key.jpeg"
               alt="Listing Your Warehouse"
@@ -283,15 +285,15 @@ export default function Blog() {
               {/* Read More Link */}
               <Link
                 to="/blogdetails"
-                className="text-[#1D3F3F] font-aeonik font-bold text-[10px] md:text-lg mt-auto block"
+                className="text-[#1D3F3F] font-aeonik font-bold text-[10px] md:text-lg mt-auto flex text-center items-center justify-start gap-3"
               >
-                Read More →
+                Read More <FaArrowRight />
               </Link>
             </div>
           </div>
 
           {/* Article Card 8 */}
-          <div className="flex flex-col shadow-lg rounded-lg overflow-hidden h-[190px] md:h-[440px] w-[170px] md:w-[330px]">
+          <div className="flex flex-col shadow-lg rounded-lg overflow-hidden h-[190px] md:h-[440px] w-[170px] md:w-[330px] mt-6">
             <img
               src="/board.jpeg"
               alt="Key Factors for Leasing"
@@ -311,17 +313,20 @@ export default function Blog() {
               {/* Read More Link */}
               <Link
                 to="/blogdetails"
-                className="text-[#1D3F3F] font-aeonik font-bold text-[10px] md:text-lg mt-auto block"
+                className="text-[#1D3F3F] font-aeonik font-bold text-[10px] md:text-lg mt-auto flex text-center items-center justify-start gap-3"
               >
-                Read More →
+                Read More <FaArrowRight />
               </Link>
             </div>
           </div>
 
         </div>
 
-        {/* Pagination Section */}
-        <div className="flex justify-center items-center mt-12 space-x-2">
+        </section>
+
+
+         {/* Pagination Section */}
+       <div className="flex justify-center items-center space-x-2">
           {/* Previous Button */}
           <button
             onClick={() => handlePageChange(currentPage - 1)}
@@ -371,11 +376,10 @@ export default function Blog() {
           </button>
         </div>
 
-
-      </section>
+       
 
       {/* Stay Up to Date Section */}
-      <section className="py-16 px-4 text-center bg-white">
+      <section className="py-16 px-4 text-center bg-white ">
         {/* Heading */}
         <h2 className="md:text-[57px] font-normal text-[#1D3F3F] font-yeseva mb-2">
           Stay up to date

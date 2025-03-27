@@ -141,11 +141,12 @@ export default function Listing() {
             </button>
           </div>
 
-          <div className="h-fit md:h-[70px] md:px-[25px] pr-[] bg-[#FFFFFF] shadow-lg inner-bar">
-            <div className="grid grid-cols-2 md:flex md:flex-nowrap text-center justify-center flex-wrap gap-1 md:gap-0">
+          <div className="h-fit md:h-[80px] bg-[#FFFFFF] rounded-xl shadow-lg inner-bar">
+            <div className="grid grid-cols-2 md:flex md:flex-nowrap text-center justify-start flex-wrap gap-1 md:gap-0">
               {/* Property Type Dropdown */}
-              <div className="h-[70px] w-full md:w-[210px] pr-4 bg-[#FFFFFF] shadow-md md:bg-[#FFFFFF] border-r border-gray-400 cards">
-                <p className="text-base font-aeonik font-medium text-[#1D3F3FDE]">Property Type</p>
+              <div className="h-[80px] w-full md:w-[210px] pr-4 bg-[#FFFFFF] shadow-md md:bg-[#FFFFFF] relative">
+              <div className="absolute right-0 top-1/2 transform -translate-y-1/2 h-12 border-r border-gray-400"></div>
+                <p className="text-base font-aeonik font-medium text-[#1D3F3FDE] mt-4">Property Type</p>
                 <div className="flex justify-around items-center text-start w-full">
                   <div className="max-w-[90%] sm:max-w-full truncate text-xs md:text-sm text-[#CDCDCD] italic text-start">
                     Select Property Type
@@ -157,8 +158,9 @@ export default function Listing() {
               </div>
 
               {/* Location Dropdown */}
-              <div className="h-[70px] w-full md:w-[210px] pr-4 bg-[#FFFFFF] shadow-md md:bg-[#FFFFFF] border-r border-gray-400 cards">
-                <p className="text-base font-aeonik font-medium text-[#1D3F3FDE]">Location</p>
+              <div className="h-[80px] w-full md:w-[210px] pr-4 bg-[#FFFFFF] shadow-md md:bg-[#FFFFFF] relative">
+              <div className="absolute right-0 top-1/2 transform -translate-y-1/2 h-12 border-r border-gray-400"></div>
+                <p className="text-base font-aeonik font-medium text-[#1D3F3FDE] mt-4">Location</p>
                 <div className="flex justify-around">
                   <div className="max-w-[90%] sm:max-w-full truncate text-sm text-[#CDCDCD] italic">e.g Lagos, Abuja</div>
                   <button onClick={handleStateModalToggle} className="w-[24px] h-[24px] flex justify-center items-center">
@@ -168,8 +170,9 @@ export default function Listing() {
               </div>
 
               {/* Price Range Dropdown */}
-              <div className="h-[70px] w-full md:w-[210px] pr-4 bg-[#FFFFFF] shadow-md md:bg-[#FFFFFF] border-r border-gray-400 cards">
-                <p className="text-base font-aeonik font-medium text-[#1D3F3FDE]">Price Range</p>
+              <div className="h-[80px] w-full md:w-[210px] pr-4 bg-[#FFFFFF] shadow-md md:bg-[#FFFFFF] relative">
+              <div className="absolute right-0 top-1/2 transform -translate-y-1/2 h-12 border-r border-gray-400"></div>
+                <p className="text-base font-aeonik font-medium text-[#1D3F3FDE] mt-4">Price Range</p>
                 <div className="flex justify-around">
                   <div className="max-w-[90%] sm:max-w-full truncate text-sm text-[#CDCDCD] italic">Min.Price - Max.Price</div>
                   <button onClick={handlePriceModalToggle} className="w-[24px] h-[24px] flex justify-center items-center">
@@ -179,8 +182,9 @@ export default function Listing() {
               </div>
 
               {/* Size Range Dropdown */}
-              <div className="h-[70px] w-full md:w-[210px] pr-4 bg-[#FFFFFF] shadow-md md:bg-[#FFFFFF] border-r border-gray-400 cards">
-                <p className="text-base font-aeonik font-medium text-[#1D3F3FDE]">Size Range</p>
+              <div className="h-[80px] w-full md:w-[210px] pr-4 bg-[#FFFFFF] shadow-md md:bg-[#FFFFFF] relative">
+              <div className="absolute right-0 top-1/2 transform -translate-y-1/2 h-12 border-r border-gray-400"></div>
+                <p className="text-base font-aeonik font-medium text-[#1D3F3FDE] mt-4">Size Range</p>
                 <div className="flex justify-around items-baseline">
                   <div className="max-w-[90%] sm:max-w-full truncate text-sm text-[#CDCDCD] italic">Min.Size - Max.Size</div>
                   <button onClick={handleSizeModalToggle} className="w-[24px] h-[24px] flex justify-center items-center">
@@ -190,7 +194,7 @@ export default function Listing() {
               </div>
 
               {/* Buttons */}
-              <div className="grid grid-cols-2 h-[50px] md:h-[100%] md:gap-1 md:flex md:flex-grow-0 md:w-[full] md:pl-2 md:px-4 mt-2 md:mt-2">
+              <div className="grid grid-cols-2 h-[50px] md:h-[100%] md:gap-1 md:flex md:flex-grow-0 md:w-[full] md:pl-2 md:px-4 mt-2 md:mt-4">
                 <div>
                   <button className="bg-[#1C1C1C] text-[#FFFFFF] h-[45px] w-[85px] md:w-[120px] text-xs md:text-sm rounded-lg">
                     Reset Filter ↺
@@ -204,7 +208,8 @@ export default function Listing() {
                 </div>
               </div>
             </div>
-          </div>
+            </div>
+          
 
           {/* Property Modal (Imported) */}
           <PropertyModal

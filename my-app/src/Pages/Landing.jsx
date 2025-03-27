@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer"; 
 import { Link, useNavigate } from "react-router-dom";
 import WarehouseFormModal from "../components/WarehouseFormModal"; 
+import { FaArrowRight } from "react-icons/fa6";
 
 
 const LandingPage = () => {
@@ -20,6 +21,9 @@ const LandingPage = () => {
   };
   const handleReadMoreClick = () => {
     navigate("/blogdetails");
+  };
+  const handlePropertyClick = () => {
+    navigate("/listing");
   };
 
   // Function to scroll to the "Our Services" section
@@ -254,8 +258,9 @@ const LandingPage = () => {
           title: "Fill out the required forms",
           descriptions: [
             "Fill out the services form on the homepage, and we will identify properties that meet your requirements on our platform.",
+            "OR",  
             <>
-              Browse through available properties on the{" "}
+              Browse through available properties on the {" "}
               <Link to="/listing" className="font-bold text-[#627777] font-aeonik text-sm md:text-lg hover:underline">
                 listing page
               </Link>{" "}
@@ -289,12 +294,16 @@ const LandingPage = () => {
         {
           number: "5",
           title: "Unpack and settle-in",
-          descriptions: ["We ensure you take possession in record time."],
+          descriptions: [ 
+            <>
+            We ensure you take possession in record time.
+            </>
+          ],
         },
       ].map((step, index) => (
         <li
           key={index}
-          className={`flex flex-col sm:flex-row items-start sm:items-center gap-6 pb-6 ${index !== 4 ? "border-b border-gray-300" : ""}`}
+          className="flex flex-col md:flex-row items-start md:items-center gap-0 md:gap-5"
         >
           {/* Number Circle */}
           <div className="w-10 h-10 flex justify-center items-center bg-[#00E5FF] text-white rounded-full text-sm md:text-lg font-bold">
@@ -302,18 +311,51 @@ const LandingPage = () => {
           </div>
 
           {/* Step Details */}
-          <div className="flex-1 flex flex-col sm:flex-row sm:items-center gap-6">
+          <div className={`flex-1 ${index !== 4 ? "border-b border-gray-300 pb-3 mt-5" : ""} ` }>
+          <div className="flex-1 flex flex-col sm:flex-row sm:items-center gap-1 md:gap-6 ">
             {/* Title */}
             <h4 className="text-sm md:text-lg font-bold text-[#1D3F3F] font-aeonik min-w-[280px] whitespace-nowrap">
               {step.title}:
             </h4>
 
             {/* Descriptions - Step 1 has special spacing */}
-            <div className={`flex-1 flex flex-col sm:flex-row ${step.number === "1" ?  "gap-8 md:gap-16" : ""}`}>
-              {step.descriptions.map((desc, idx) => (
-                <p key={idx} className="flex-1 text-[#627777] text-sm md:text-base">{desc}</p>
-              ))}
-            </div>
+            <div className={`flex-1 relative flex ${step.number === "1" ? "gap-8 md:gap-16" : ""}`}>
+          {step.number === "1" ? (
+            <>
+                 {/* Mobile: Column layout */}
+                 <div className="md:hidden space-y-4">
+                  <p className="text-[#627777] text-sm md:text-base">
+                    {step.descriptions[0]}
+                  </p>
+                  <div className="flex justify-start">
+                    <span className="font-bold text-[#627777] px-2">OR</span>
+                  </div>
+                  <p className="text-[#627777] text-sm md:text-base">
+                    {step.descriptions[2]}
+                  </p>
+                </div>
+
+                 {/* Desktop: Row layout */}
+                 <div className="hidden md:flex relative items-center gap-8">
+                  <p className="flex-1 text-[#627777] text-base">
+                    {step.descriptions[0]}
+                  </p>
+                  <span className="font-bold text-[#627777] px-2">OR</span>
+                  <p className="flex-1 text-[#627777] text-base">
+                    {step.descriptions[2]}
+                  </p>
+                </div>
+            </>
+          ) : (
+            // Normal rendering for other steps
+            step.descriptions.map((desc, idx) => (
+              <p key={idx} className="flex-1 text-[#627777] text-sm md:text-base">
+                {desc}
+              </p>
+            ))
+          )}
+          </div>
+          </div>
           </div>
         </li>
       ))}
@@ -324,8 +366,10 @@ const LandingPage = () => {
       <p className="text-lg md:text-3xl text-[#1D3F3FDE] text-center md:text-start font-yeseva font-normal leading-relaxed">
         Looking for an industrial property tailored to <br /> your needs? Let’s get you started.
       </p>
-      <button className="bg-[#1C1C1C] text-[#FFF7F2] text-lg md:text-xl px-8 py-3 rounded-full font-medium hover:bg-gray-800 transition">
-        Explore our services
+      <button className="bg-[#1C1C1C] text-[#FFF7F2] text-lg md:text-xl px-8 py-3 rounded-full font-medium hover:bg-gray-800 transition"
+      onClick={handlePropertyClick}
+      >
+      Find a property
       </button>
     </div>
   </div>
@@ -510,11 +554,11 @@ const LandingPage = () => {
 
   {/* Read More Link */}
   <Link
-    to="/blogdetails"
-    className="text-[#1D3F3F] font-aeonik font-bold text-[10px] md:text-lg mt-auto block"
-  >
-    Read More →
-  </Link>
+                  to="/blogdetails"
+                  className="text-[#1D3F3F] font-aeonik font-bold text-[10px] md:text-lg mt-auto flex text-center items-center justify-start gap-3"
+                >
+                  Read More <FaArrowRight />
+                </Link>
 </div>
 </div>
 
@@ -536,11 +580,11 @@ const LandingPage = () => {
 
   {/* Read More Link */}
   <Link
-    to="/blogdetails"
-    className="text-[#1D3F3F] font-aeonik font-bold text-[10px] md:text-lg mt-auto block"
-  >
-    Read More →
-  </Link>
+                  to="/blogdetails"
+                  className="text-[#1D3F3F] font-aeonik font-bold text-[10px] md:text-lg mt-auto flex text-center items-center justify-start gap-3"
+                >
+                  Read More <FaArrowRight />
+                </Link>
 </div>
   </div>
 
@@ -561,12 +605,12 @@ const LandingPage = () => {
   </p>
 
   {/* Read More Link */}
-  <Link
-    to="/blogdetails"
-    className="text-[#1D3F3F] font-aeonik font-bold text-[10px] md:text-lg mt-auto block"
-  >
-    Read More →
-  </Link>
+ <Link
+                 to="/blogdetails"
+                 className="text-[#1D3F3F] font-aeonik font-bold text-[10px] md:text-lg mt-auto flex text-center items-center justify-start gap-3"
+               >
+                 Read More <FaArrowRight />
+               </Link>
 </div>
   </div>
 
@@ -587,12 +631,12 @@ const LandingPage = () => {
   </p>
 
   {/* Read More Link */}
-  <Link
-    to="/blogdetails"
-    className="text-[#1D3F3F] font-aeonik font-bold text-[10px] md:text-lg mt-auto block"
-  >
-    Read More →
-  </Link>
+ <Link
+                 to="/blogdetails"
+                 className="text-[#1D3F3F] font-aeonik font-bold text-[10px] md:text-lg mt-auto flex text-center items-center justify-start gap-3"
+               >
+                 Read More <FaArrowRight />
+               </Link>
 </div>
   </div>
 </div>
@@ -604,7 +648,7 @@ const LandingPage = () => {
        <section className="py-16 px-4 text-center bg-white">
   {/* Heading */}
   <h2 className="md:text-[57px] font-normal text-[#1D3F3F] font-yeseva mb-2">Stay up to date</h2>
-  <p className="text-[#1D3F3F] max-w-xl mx-auto font-aeonik md:text-lg font-normal">
+  <p className="text-[#1D3F3F] max-w-2xl mx-auto font-aeonik md:text-lg font-normal">
     Subscribe to our newsletter for industry insights, expert tips, and exclusive updates on warehouse rentals, leasing, and sharing opportunities!
   </p>
 

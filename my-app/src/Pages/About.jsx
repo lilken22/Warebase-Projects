@@ -166,7 +166,7 @@ export default function About() {
                 <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
                     {/* Team Member 1 */}
                   <div className="flex flex-col items-center bg-white shadow-md rounded-[4px]   overflow-hidden">
-                   <img src="/Gbenga.jpeg" alt="Chidi Okafor" className="w-full md:h-[208px]" />
+                   <img src="/Gbenga.jpeg" alt="Chidi Okafor" className="w-full md:h-[208px]"/>
                     <div className="p-3 text-start">
                       <h3 className="md:text-xl font-normal font-yeseva text-[#1D3F3FDE]">Chidi Okafor</h3>
                       <p className="text-base font-normal font-aeonik text-[#1D3F3F75]">Chief Executive Officer (CEO)</p>
@@ -175,7 +175,7 @@ export default function About() {
 
                         {/* Team Member 2 */}
                   <div className="flex flex-col items-center bg-white shadow-md rounded-lg overflow-hidden">
-                       <img src="/amina.jpg" alt="Amina Balogun" className="w-full md:h-[208px]" />
+                       <img src="/amina.jpg" alt="Amina Balogun" className="w-full md:h-[208px] object-cover" />
                     <div className="p-4 text-start">
                       <h3 className="md:text-xl font-normal font-yeseva text-[#1D3F3FDE]">Amina Balogun</h3>
                       <p className="text-base font-normal font-aeonik text-[#1D3F3F75]">Head of Real Estate & Property Listings</p>
@@ -184,7 +184,7 @@ export default function About() {
 
               {/* Team Member 3 */}
                 <div className="flex flex-col shadow-md rounded-lg bg-white overflow-hidden text-center">
-                            <img src="/tunde.jpg" alt="" className="w-full md:h-[208px]" />
+                            <img src="/tunde.jpg" alt="" className="w-full md:h-[208px] object-cover" />
                             <div className="p-4 text-start">
                               <h2 className="md:text-xl font-normal font-yeseva text-[#1D3F3FDE]">Tunde Adeyemi</h2>
                               <p className="text-base font-normal font-aeonik text-[#1D3F3F75]">Surveyor</p>
@@ -194,7 +194,7 @@ export default function About() {
 
                       {/* Team Member 4 */}
                 <div className="flex flex-col items-center bg-white shadow-md rounded-lg overflow-hidden">
-                    <img src="/kemi.jpg" alt="Kemi Oluwole" className="w-full md:h-[208px]" />
+                    <img src="/kemi.jpg" alt="Kemi Oluwole" className="w-full md:h-[208px] object-cover" />
                     <div className="p-3 text-start">
                     <h3 className="md:text-xl font-normal font-yeseva text-[#1D3F3FDE]">Kemi Oluwole</h3>
                     <p className="text-base font-normal font-aeonik text-[#1D3F3F75]">Customer Success Manager</p>
