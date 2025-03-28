@@ -146,16 +146,18 @@ const Contact = () => {
               {/* Checkbox with Text */}
               <div className="flex items-start gap-2">
                 <input 
-                  type="checkbox" 
-                  id="privacy-policy" 
-                  className="w-6 h-6 bg-[#00E5FF] rounded"
+                 type="checkbox" 
+                 id="privacy-policy" 
+                 className="w-8 h-5 appearance-none border border-gray-400 checked:bg-[#00E5FF] checked:border-[#00E5FF] focus:ring-2 focus:ring-[#00E5FF] cursor-pointer relative 
+                 after:content-['✔'] after:text-black after:text-[10px] after:font-bold after:absolute after:top-[1px] after:left-1/2 after:-translate-x-1/2 after:opacity-0 checked:after:opacity-100"
                 />
-                <label htmlFor="privacy-policy" className="text-[#627777] text-sm">
-                  By ticking the box, I confirm that the information provided above is accurate and that I have read, understood, and agreed to the{" "}
-                  <Link to="/privacy-policy" className="text-[#00E5FF] hover:underline">privacy policy</Link> and{" "}
-                  <Link to="/terms-and-conditions" className="text-[#00E5FF] hover:underline">terms and conditions</Link>.
-                </label>
+              <label htmlFor="privacy-policy" className="text-[#627777] text-sm">
+                By ticking the box, I confirm that the information provided above is accurate and that I have read, understood, and agreed to the{" "}
+                <Link to="/privacy-policy" className="text-[#00E5FF] hover:underline">privacy policy</Link> and{" "}
+                <Link to="/terms-and-conditions" className="text-[#00E5FF] hover:underline">terms and conditions</Link>.
+              </label>
               </div>
+
 
               <div className="flex items-center justify-center gap-4">
                 {/* Main Button - Visible on All Screens */}

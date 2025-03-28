@@ -38,14 +38,14 @@ const PropertyDetails = () => {
       <img
         src="/property one.jpg"
         alt="Main Property"
-        className="w-full h-[280px] md:h-[380px] object-cover rounded-lg"
+        className="w-full max-w-full h-auto sm:h-[280px] md:h-[380px] object-cover rounded-lg"
       />
       {/* Shared Label - Now Properly Positioned */}
-      <span className="absolute top-4 -right-0 bg-[#FFFFFF] text-[#1C1C1C] text-xs px-2 py-1 rounded font-aeonik shadow-md rotate-[37deg] overflow-hidden">
-        Shared (4)
+      <span className="absolute top-6 right-0 bg-white text-[#1C1C1C] text-sm px-4 py-1 rounded shadow-md text-center font-aeonik custom-rotate">
+        Shared(4)
       </span>
       {/* For Lease Label */}
-      <span className="absolute top-0 left-0 bg-[#F11414] text-[#FFFF] text-xs px-3 py-2 rounded">
+      <span className="absolute top-0 left-0 bg-[#F11414] h-[33px] w-[88px] text-[#FFFF] text-xs px-3 py-2 rounded">
         For Lease
       </span>
     </div>
