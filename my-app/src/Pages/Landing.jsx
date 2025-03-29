@@ -443,7 +443,7 @@ const LandingPage = () => {
       We needed a short-term warehouse solution, and this platform connected us with the perfect space. The transparency and ease of use exceeded our expectations!
       </p>
       <div className="flex items-center mt-4 md:mt-6 gap-2 md:gap-5">
-        <img src="/Adebayo.jpeg" alt="" className="w-10 h-10 rounded-full" />
+        <img src="/Gbenga.jpeg" alt="" className="w-10 h-10 rounded-full" />
         <div className="flex flex-col">
           <p className="font-semibold">Adebayo Akinyemi</p>
           <p className="text-sm text-gray-500">Supply Chain Director</p>
@@ -631,15 +631,15 @@ const LandingPage = () => {
   </p>
 
   {/* Read More Link */}
- <Link
+              <Link
                  to="/blogdetails"
                  className="text-[#1D3F3F] font-aeonik font-bold text-[10px] md:text-lg mt-auto flex text-center items-center justify-start gap-3"
                >
                  Read More <FaArrowRight />
-               </Link>
-</div>
-  </div>
-</div>
+              </Link>
+          </div>
+          </div>
+          </div>
           </section>
 
        

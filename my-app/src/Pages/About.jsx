@@ -96,7 +96,7 @@ export default function About() {
   </p>
 
   <div className="flex items-center mt-4 sm:mt-6 gap-2 md:gap-5">
-    <img src="/Gbenga.jpeg" alt="" className="w-8 sm:w-10 h-8 sm:h-10 rounded-full" />
+    <img src="/Gbenga.jpeg" alt="" className="w-8 md:w-10 h-8 md:h-10 rounded-full" />
     <div className="flex flex-col">
       <p className="text-xs md:text-sm font-semibold">Gbenga Osuntokun</p>
       <p className="text-[10px] sm:text-xs text-gray-500">Operation Manager</p>
@@ -128,7 +128,7 @@ export default function About() {
       We needed a short-term warehouse solution, and this platform connected us with the perfect space. The transparency and ease of use exceeded our expectations!
       </p>
       <div className="flex items-center mt-4 md:mt-6 gap-2 md:gap-5">
-        <img src="/Adebayo.jpeg" alt="" className="w-10 h-10 rounded-full" />
+        <img src="/Gbenga.jpeg" alt="" className="w-10 h-10 rounded-full" />
         <div className="flex flex-col">
           <p className="font-semibold">Adebayo Akinyemi</p>
           <p className="text-sm text-gray-500">Supply Chain Director</p>
@@ -166,7 +166,7 @@ export default function About() {
                 <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
                     {/* Team Member 1 */}
                   <div className="flex flex-col items-center bg-white shadow-md rounded-[4px]   overflow-hidden">
-                   <img src="/Gbenga.jpeg" alt="Chidi Okafor" className="w-full md:h-[208px]"/>
+                   <img src="/Chidi.png" alt="Chidi Okafor" className="w-full md:h-[208px] object-fill"/>
                     <div className="p-3 text-start">
                       <h3 className="md:text-xl font-normal font-yeseva text-[#1D3F3FDE]">Chidi Okafor</h3>
                       <p className="text-base font-normal font-aeonik text-[#1D3F3F75]">Chief Executive Officer (CEO)</p>
@@ -175,7 +175,7 @@ export default function About() {
 
                         {/* Team Member 2 */}
                   <div className="flex flex-col items-center bg-white shadow-md rounded-lg overflow-hidden">
-                       <img src="/amina.jpg" alt="Amina Balogun" className="w-full md:h-[208px] object-cover" />
+                       <img src="/Amina.png" alt="Amina Balogun" className="w-full md:h-[208px] object-fill" />
                     <div className="p-4 text-start">
                       <h3 className="md:text-xl font-normal font-yeseva text-[#1D3F3FDE]">Amina Balogun</h3>
                       <p className="text-base font-normal font-aeonik text-[#1D3F3F75]">Head of Real Estate & Property Listings</p>
@@ -183,18 +183,29 @@ export default function About() {
                   </div>
 
               {/* Team Member 3 */}
-                <div className="flex flex-col shadow-md rounded-lg bg-white overflow-hidden text-center">
-                            <img src="/tunde.jpg" alt="" className="w-full md:h-[208px] object-cover" />
-                            <div className="p-4 text-start">
-                              <h2 className="md:text-xl font-normal font-yeseva text-[#1D3F3FDE]">Tunde Adeyemi</h2>
-                              <p className="text-base font-normal font-aeonik text-[#1D3F3F75]">Surveyor</p>
-                            </div>
-                          </div>
+              <div className="flex flex-col shadow-md rounded-lg bg-white overflow-hidden text-center">
+                  {/* Image container with cropping */}
+               <div className="w-full h-52 overflow-hidden relative">
+                <img 
+                  src="/tunde.png"            
+                  alt="Tunde Adeyemi"
+                  className="absolute w-full h-[208px] object-fill"
+                  style={{ 
+                    top:"", 
+                    objectPosition: "top 10%"
+                  }} 
+                />
+                </div>
+              <div className="p-4 text-start">
+              <h2 className="md:text-xl font-normal font-yeseva text-[#1D3F3FDE]">Tunde Adeyemi</h2>
+               <p className="text-base font-normal font-aeonik text-[#1D3F3F75]">Surveyor</p>
+            </div>
+            </div>
 
 
                       {/* Team Member 4 */}
                 <div className="flex flex-col items-center bg-white shadow-md rounded-lg overflow-hidden">
-                    <img src="/kemi.jpg" alt="Kemi Oluwole" className="w-full md:h-[208px] object-cover" />
+                    <img src="/kemi.png" alt="Kemi Oluwole" className="w-full md:h-[208px] object-fill" />
                     <div className="p-3 text-start">
                     <h3 className="md:text-xl font-normal font-yeseva text-[#1D3F3FDE]">Kemi Oluwole</h3>
                     <p className="text-base font-normal font-aeonik text-[#1D3F3F75]">Customer Success Manager</p>

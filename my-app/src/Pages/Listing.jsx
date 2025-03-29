@@ -115,18 +115,7 @@ export default function Listing() {
   return (
     <div className="min-h-screen bg-white text-gray-900 font-serif flex flex-col">
       {/* Navbar */}
-      <Navbar />
-
-
-           {/* Fixed Back Link */}
-            <Link
-              to="/" // Replace with the actual path to your blog page
-              className="fixed top-1/4 left-0 transform -translate-y-1/2  text-[#00E5FF] p-4 transition-colors duration-300 flex flex-row gap-3 items-center justify-between"
-              style={{ zIndex: 1000 }} // Ensure it stays on top
-            >
-              <FaLongArrowAltLeft className='w-5 h-5'/>
-              <span className='font-aeonik font-normal text-lg'>Back</span> 
-            </Link>
+      <Navbar />        
 
       <div className="w-full mx-auto p-4 rounded-md mt-20">
         {/* Filter Bar */}
