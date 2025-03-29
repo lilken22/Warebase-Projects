@@ -86,9 +86,9 @@ export default function Blog() {
         </div>
 
         {/* Grid of Articles */}
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 px-4 md:px-6 mx-auto ">
           {/* Article Card 1 */}
-          <div className="flex flex-col shadow-lg rounded-lg overflow-hidden h-[190px] md:h-[440px] w-[170px] md:w-[330px]">
+          <div className="flex flex-col shadow-lg rounded-lg overflow-hidden h-full w-full">
             {/* Image Section */}
             <img
               src="/max.jpeg"
@@ -99,12 +99,12 @@ export default function Blog() {
             {/* Content Section */}
             <div className="bg-white p-4 pb-4 flex flex-col flex-grow">
               {/* Date */}
-              <p className="text-[10px] md:text-base text-[#1D3F3F75] md:mt-3">
+              <p className="text-[10px] md:text-base text-[#1D3F3F75] md:mt-0">
                 February 25, 2024
               </p>
 
               {/* Title */}
-              <p className="font-medium font-yeseva text-[8px] md:text-lg text-[#1D3F3FDE] mt-2">
+              <p className="font-medium font-yeseva text-[8px] md:text-base text-[#1D3F3FDE] mt-1">
                 Maximizing Warehouse Efficiency: Tips for Businesses
               </p>
 
@@ -119,7 +119,7 @@ export default function Blog() {
           </div>
 
           {/* Article Card 2 */}
-          <div className="flex flex-col shadow-lg rounded-lg overflow-hidden h-[190px] md:h-[440px] w-[170px] md:w-[330px]">
+          <div className="flex flex-col shadow-lg rounded-lg overflow-hidden h-full w-full max-w-[330px] mx-auto">
             <img
               src="/phone.jpeg"
               alt="Shared Warehousing"
@@ -127,12 +127,12 @@ export default function Blog() {
             />
             <div className="bg-white p-4 pb-4 flex flex-col flex-grow">
               {/* Date */}
-              <p className="text-[10px] md:text-base text-[#1D3F3F75] md:mt-3">
+              <p className="text-[10px] md:text-sm text-[#1D3F3F75] md:mt-0">
                 February 25, 2024
               </p>
 
               {/* Title */}
-              <p className="font-medium font-yeseva text-[8px] md:text-lg text-[#1D3F3FDE] mt-2">
+              <p className="font-medium font-yeseva text-[8px] md:text-base text-[#1D3F3FDE] mt-1">
                 Shared Warehousing: A Cost-Effective Solution for Small
                 Businesses
               </p>
@@ -140,7 +140,7 @@ export default function Blog() {
               {/* Read More Link */}
               <Link
                 to="/blogdetails"
-                className="text-[#1D3F3F] font-aeonik font-bold text-[10px] md:text-lg mt-auto flex text-center items-center justify-start gap-3"
+                className="text-[#1D3F3F] font-aeonik font-bold text-[10px] md:text-lg mt-5 flex text-center items-center justify-start gap-3"
               >
                 Read More <FaArrowRight />
               </Link>
@@ -148,7 +148,7 @@ export default function Blog() {
           </div>
 
           {/* Article Card 3 */}
-          <div className="flex flex-col shadow-lg rounded-lg overflow-hidden h-[190px] md:h-[440px] w-[170px] md:w-[330px]">
+          <div className="flex flex-col shadow-lg rounded-lg overflow-hidden h-full w-full max-w-[330px] mx-auto">
             <img
               src="/key.jpeg"
               alt="Listing Your Warehouse"
@@ -156,12 +156,12 @@ export default function Blog() {
             />
             <div className="bg-white p-4 pb-4 flex flex-col flex-grow">
               {/* Date */}
-              <p className="text-[10px] md:text-base text-[#1D3F3F75] md:mt-3">
+              <p className="text-[10px] md:text-base text-[#1D3F3F75] md:mt-0">
                 February 25, 2024
               </p>
 
               {/* Title */}
-              <p className="font-medium font-yeseva text-[8px] md:text-lg text-[#1D3F3FDE] mt-2">
+              <p className="font-medium font-yeseva text-[8px] md:text-base text-[#1D3F3FDE] mt-1">
                 How to List Your Warehouse for Rent and Attract Tenants Quickly
               </p>
 
@@ -176,7 +176,7 @@ export default function Blog() {
           </div>
 
           {/* Article Card 4 */}
-          <div className="flex flex-col shadow-lg rounded-lg overflow-hidden h-[190px] md:h-[440px] w-[170px] md:w-[330px]">
+          <div className="flex flex-col shadow-lg rounded-lg overflow-hidden h-full w-full max-w-[330px] mx-auto">
             <img
               src="/board.jpeg"
               alt="Key Factors for Leasing"
@@ -184,12 +184,12 @@ export default function Blog() {
             />
             <div className="bg-white p-4 pb-4 flex flex-col flex-grow">
               {/* Date */}
-              <p className="text-[10px] md:text-base text-[#1D3F3F75] md:mt-3">
+              <p className="text-[10px] md:text-base text-[#1D3F3F75] md:mt-0">
                 February 25, 2024
               </p>
 
               {/* Title */}
-              <p className="font-medium font-yeseva text-[8px] md:text-lg text-[#1D3F3FDE] mt-2">
+              <p className="font-medium font-yeseva text-[8px] md:text-base text-[#1D3F3FDE] mt-">
                 Key Factors to Consider Before Leasing a Warehouse
               </p>
 
@@ -205,7 +205,7 @@ export default function Blog() {
 
           
           {/* Article Card 5 */}
-          <div className="flex flex-col shadow-lg rounded-lg overflow-hidden h-[190px] md:h-[440px] w-[170px] md:w-[330px] mt-6">
+          <div className="flex flex-col shadow-lg rounded-lg overflow-hidden h-full w-full max-w-[330px] mx-auto">
             {/* Image Section */}
             <img
               src="/max.jpeg"
@@ -221,7 +221,7 @@ export default function Blog() {
               </p>
 
               {/* Title */}
-              <p className="font-medium font-yeseva text-[8px] md:text-lg text-[#1D3F3FDE] mt-2">
+              <p className="font-medium font-yeseva text-[8px] md:text-base text-[#1D3F3FDE] mt-1">
                 Maximizing Warehouse Efficiency: Tips for Businesses
               </p>
 
@@ -236,7 +236,7 @@ export default function Blog() {
           </div>
 
            {/* Article Card 6 */}
-           <div className="flex flex-col shadow-lg rounded-lg overflow-hidden h-[190px] md:h-[440px] w-[170px] md:w-[330px] mt-6">
+           <div className="flex flex-col shadow-lg rounded-lg overflow-hidden h-full w-full max-w-[330px] mx-auto">
             <img
               src="/phone.jpeg"
               alt="Shared Warehousing"
@@ -249,7 +249,7 @@ export default function Blog() {
               </p>
 
               {/* Title */}
-              <p className="font-medium font-yeseva text-[8px] md:text-lg text-[#1D3F3FDE] mt-2">
+              <p className="font-medium font-yeseva text-[8px] md:text-base text-[#1D3F3FDE] mt-1">
                 Shared Warehousing: A Cost-Effective Solution for Small
                 Businesses
               </p>
@@ -257,7 +257,7 @@ export default function Blog() {
               {/* Read More Link */}
               <Link
                 to="/blogdetails"
-                className="text-[#1D3F3F] font-aeonik font-bold text-[10px] md:text-lg mt-auto flex text-center items-center justify-start gap-3"
+                className="text-[#1D3F3F] font-aeonik font-bold text-[10px] md:text-lg mt-5 flex text-center items-center justify-start gap-3"
               >
                 Read More <FaArrowRight />
               </Link>
@@ -265,7 +265,7 @@ export default function Blog() {
           </div>
 
                   {/* Article Card 7 */}
-                  <div className="flex flex-col shadow-lg rounded-lg overflow-hidden h-[190px] md:h-[440px] w-[170px] md:w-[330px] mt-6">
+                  <div className="flex flex-col shadow-lg rounded-lg overflow-hidden h-full w-full max-w-[330px] mx-auto">
             <img
               src="/key.jpeg"
               alt="Listing Your Warehouse"
@@ -278,7 +278,7 @@ export default function Blog() {
               </p>
 
               {/* Title */}
-              <p className="font-medium font-yeseva text-[8px] md:text-lg text-[#1D3F3FDE] mt-2">
+              <p className="font-medium font-yeseva text-[8px] md:text-base text-[#1D3F3FDE] mt-1">
                 How to List Your Warehouse for Rent and Attract Tenants Quickly
               </p>
 
@@ -293,7 +293,7 @@ export default function Blog() {
           </div>
 
           {/* Article Card 8 */}
-          <div className="flex flex-col shadow-lg rounded-lg overflow-hidden h-[190px] md:h-[440px] w-[170px] md:w-[330px] mt-6">
+          <div className="flex flex-col shadow-lg rounded-lg overflow-hidden h-full w-full max-w-[330px] mx-auto">
             <img
               src="/board.jpeg"
               alt="Key Factors for Leasing"
@@ -306,7 +306,7 @@ export default function Blog() {
               </p>
 
               {/* Title */}
-              <p className="font-medium font-yeseva text-[8px] md:text-lg text-[#1D3F3FDE] mt-2">
+              <p className="font-medium font-yeseva text-[8px] md:text-base text-[#1D3F3FDE] mt-">
                 Key Factors to Consider Before Leasing a Warehouse
               </p>
 
@@ -322,7 +322,7 @@ export default function Blog() {
 
         </div>
 
-        </section>
+      </section>
 
 
          {/* Pagination Section */}
