@@ -337,7 +337,7 @@ export default function Listing() {
                     >
                       <FaChevronRight className="text-[#1D3F3F]" />
                     </button>
-                  </div>
+          </div>
       </div>
 
       {/* Footer */}

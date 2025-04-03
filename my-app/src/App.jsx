@@ -18,6 +18,15 @@ import PasswordReset from "./AdminLogin/PasswordReset";
 import PasswordSuccessful from "./AdminLogin/PasswordSucessful";
 import EmailTemplate from "./AdminLogin/EmailTemplate";
 import BlogDetails from "./components/BlogDetails";
+import DashBoard from "./AdminDashboard/DashBoard";
+import Overview from "./AdminDashboard/Overview";
+import Blogs from "./AdminDashboard/Blogs";
+import Portfolio from "./AdminDashboard/Portfolio";
+import AddProperty from "./AdminDashboard/AddProperty"; 
+import Settings from "./AdminDashboard/Settings";
+import Logout from "./AdminDashboard/Logout";
+
+
 
 const App = () => {
   return (
@@ -27,6 +36,7 @@ const App = () => {
       <main className="flex-grow">
 
         <Routes>
+           {/* Public Routes */}
           <Route path="/" element={<Landing />} />
           <Route path="/about" element={<About />} />
           <Route path="/listing" element={<Listing />} />
@@ -41,7 +51,19 @@ const App = () => {
           <Route path="/EmailTemplate" element={<EmailTemplate />} />
           <Route path="/blogdetails" element={<BlogDetails />} />
 
+          {/* Dashboard Routes */}
+          <Route path="/dashboard" element={<DashBoard />} />
+            {/* <Route index element={<Overview />} /> */}
+            <Route path="/overview" element={<Overview/>} />
+            <Route path="/blogs" element={<Blogs/>} />
+            <Route path="/portfolio" element={<Portfolio/>} />
+            <Route path="/add-property" element={<AddProperty />} />
+            <Route path="/settings" element={<Settings/>} />
+            <Route path="/logout" element={<Logout/>} />
+          {/* </Route> */}
         </Routes>
+
+        
       </main>
 
       {/* <Footer /> */}
