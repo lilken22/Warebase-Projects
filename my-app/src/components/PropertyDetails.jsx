@@ -30,12 +30,12 @@ const PropertyDetails = () => {
 
     <div className="max-w-5xl mx-auto px-4 py-24">
 
-      {/* Images Section */}
-<div className="">
-  <div className="grid grid-cols-1 md:grid-cols-4 gap-4 relative">
-    {/* Main Image */}
-    <div className="w-full md:col-span-3 relative">
-      <img
+        {/* Images Section */}
+       <div className="">
+    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 relative">
+        {/* Main Image */}
+      <div className="w-full md:col-span-3 relative">
+        <img
         src="/property one.jpg"
         alt="Main Property"
         className="w-full max-w-full h-auto sm:h-[280px] md:h-[380px] object-cover rounded-lg"

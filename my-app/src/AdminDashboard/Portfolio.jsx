@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
-import { Outlet, Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { 
   FaSyncAlt, 
   FaChevronDown, 
@@ -12,7 +12,7 @@ import {
 } from "react-icons/fa";
 import TenureModal from "../components/TenureModal";
 import OrderModal from "../components/OrderModal";
-
+import ListModal from '../components/ListModal';
 
 export default function Portfolio() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -21,21 +21,22 @@ export default function Portfolio() {
   const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
   const [isOrderOpen, setIsOrderOpen] = useState(false);
   const [orderPosition, setOrderPosition] = useState({ top: 0, left: 0 });
+  const [listModalOpen, setListModalOpen] = useState(false);
+  const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
+  const [selectedPropertyId, setSelectedPropertyId] = useState(null);
   
-  
-  // Router hooks
   const navigate = useNavigate();
-   const dropdownRef = useRef(null);
-    const buttonRef = useRef(null);
-    const orderModalRef = useRef(null);
+  const dropdownRef = useRef(null);
+  const buttonRef = useRef(null);
+  const orderModalRef = useRef(null);
+  const listModalRef = useRef(null);
   
-   // Function to toggle dropdown and set its position
   const handleDropdownToggle = () => {
     if (buttonRef.current) {
       const buttonRect = buttonRef.current.getBoundingClientRect();
       setDropdownPosition({
-        top: buttonRect.bottom + window.scrollY, // Position below the button
-        left: buttonRect.left + window.scrollX, // Align with the button
+        top: buttonRect.bottom + window.scrollY,
+        left: buttonRect.left + window.scrollX,
       });
     }
     setIsDropdownOpen((prev) => !prev);
@@ -45,151 +46,175 @@ export default function Portfolio() {
     if (buttonRef.current) {
       const buttonRect = buttonRef.current.getBoundingClientRect();
       setOrderPosition({
-        top: buttonRect.bottom + window.scrollY, // Position below the button
-        left: buttonRect.left + window.scrollX, // Align with the button
+        top: buttonRect.bottom + window.scrollY,
+        left: buttonRect.left + window.scrollX,
       });
     }
     setIsOrderOpen((prev) => !prev);
   };
 
-  // Close dropdown when clicking outside
-    useEffect(() => {
-      const handleClickOutside = (event) => {
-        if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-          setIsDropdownOpen(false);
-        }
-        if (orderModalRef.current && !orderModalRef.current.contains(event.target)) {
-          setIsOrderOpen(false);
-        }
-      };
-  
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    }, []);
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+      if (orderModalRef.current && !orderModalRef.current.contains(event.target)) {
+        setIsOrderOpen(false);
+      }
+      // if (listModalRef.current && !listModalRef.current.contains(event.target)) {
+      //   setListModalOpen(false);
+      // }
 
-  // Handler functions
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        listModalOpen && 
+        !event.target.closest(".list-modal") && // Add this class to ListModal
+        !event.target.closest(".Un-list-modal") && // Add this class to ListModal
+        !event.target.closest(".three-dots-button") // Ignore the button that opens the modal
+      ) {
+        setListModalOpen(false);
+      }
+    };
+  
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+  
+
+  const handleThreeDotsClick = (e, propertyId) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setSelectedPropertyId(propertyId);
+    setModalPosition({
+      top: rect.bottom + window.scrollY,
+      left: rect.left + window.scrollX,
+    });
+    setListModalOpen(true);
+  };
+
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
 
-  // Mock data for properties
+  // Mock data with proper image paths
   const properties = [
-    { id: 1, image: "/property four.jpg", type: "For Sale", shared: false, name: "Fidel Warehouse", price: "₦5,250,000/Month" },
-    { id: 2, image: "/property five.jpg", type: "For Rent", shared: false, name: "Fidel Warehouse", price: "₦5,250,000/Month" },
-    { id: 3, image: "/property three.jpg", type: "For Lease", shared: true, name: "Fidel Warehouse", price: "₦5,250,000/Month" },
-    { id: 4, image: "/property six.jpg", type: "For Sale", shared: false, name: "Fidel Warehouse", price: "₦5,250,000/Month" },
+    { id: "WB01", image: "/property four.jpg", type: "For Sale", shared: false, name: "Fidel Warehouse", price: "₦5,250,000/Month" },
+    { id: "WB02", image: "/property five.jpg", type: "For Rent", shared: false, name: "Fidel Warehouse", price: "₦5,250,000/Month" },
+    { id: "WB03", image: "/property three.jpg", type: "For Lease", shared: true, name: "Fidel Warehouse", price: "₦5,250,000/Month" },
+    { id: "WB04", image: "/property six.jpg", type: "For Sale", shared: false, name: "Fidel Warehouse", price: "₦5,250,000/Month" },
   ];
 
   return (
     <div className="flex min-h-screen bg-[#F8F9FA]">
-      {/* Persistent Sidebar */}
       <Sidebar />
-
+      
       <div className='flex-1 flex flex-col'>
-        {/* Persistent Header */}
         <Header />
 
-        {/* Main Content Area */}
         <div className='p-3 md:p-5 bg-[#F8F9FA] min-h-screen relative'>
-          {/* Decorative Border */}
           <div className="absolute inset-1 border-[3px] border-[#E0E0E0] pointer-events-none rounded-lg"></div>
-        
-          {/* {showAddProperty ? (
-            <AddProperty onClose={() => setShowAddProperty(false)} />
-          ) : ( */}
-            <div className='bg-white p-6 md:p-8 rounded-lg shadow-md w-full h-full mx-auto my-auto border-[3px] border-[#E0E0E0]'>
-              {/* Action Bar Section */}
-              <div className="flex justify-between items-center mb-6">
-                <div className="flex items-center gap-4">
-                  <h2 className="text-lg font-medium text-[#1D3F3F] font-aeonik">Property</h2>
-                  <div className='flex bg-gray-100 rounded-full px-2 py-2 overflow-hidden'>
-                    <TabButton 
-                      active={selectedTab === "Listed"}
-                      onClick={() => setSelectedTab("Listed")}
-                      count={160}
-                    >
-                      Listed
-                    </TabButton>
-                    <TabButton 
-                      active={selectedTab === "Unlisted"}
-                      onClick={() => setSelectedTab("Unlisted")}
-                      count={40}
-                    >
-                      Unlisted
-                    </TabButton>
-                  </div>
+          
+          <div className='bg-white p-6 md:p-8 rounded-lg shadow-md w-full h-full mx-auto my-auto border-[3px] border-[#E0E0E0]'>
+            <div className="flex justify-between items-center mb-6">
+              <div className="flex items-center gap-4">
+                <h2 className="text-lg font-medium text-[#1D3F3F] font-aeonik">Property</h2>
+                <div className='flex bg-gray-100 rounded-full px-2 py-2 overflow-hidden'>
+                  <TabButton 
+                    active={selectedTab === "Listed"}
+                    onClick={() => setSelectedTab("Listed")}
+                    count={160}
+                  >
+                    Listed
+                  </TabButton>
+                  <TabButton 
+                    active={selectedTab === "Unlisted"}
+                    onClick={() => setSelectedTab("Unlisted")}
+                    count={40}
+                  >
+                    Unlisted
+                  </TabButton>
                 </div>
+              </div>
 
-                <button
-                 onClick={() => navigate('/add-property')}
-                  className="bg-[#00E5FF] text-white font-medium font-Poppins px-4 py-4 rounded-lg flex items-center"
-                >
-                  <FaPlus className="mr-2" /> Add Property
+              <button
+                onClick={() => navigate('/add-property')}
+                className="bg-[#00E5FF] text-white font-medium font-Poppins px-4 py-4 rounded-lg flex items-center"
+              >
+                <FaPlus className="mr-2" /> Add Property
+              </button>
+            </div>
+
+            <div className="w-full rounded-lg flex justify-between items-start mt-10">
+              <div className="flex gap-2 bg-[#F9F9F9] rounded-full px-4 py-4">
+                <FilterButton ref={buttonRef} onClick={handleDropdownToggle}>
+                  Tenure <FaChevronDown className="ml-2" />
+                </FilterButton>
+                <FilterButton ref={buttonRef} onClick={handleOrderToggle}>
+                  Order <FaChevronDown className="ml-2" />
+                </FilterButton>
+                <button className="px-4 py-2 flex items-center bg-black text-white rounded-full">
+                  Reset Filter <FaSyncAlt className="ml-2" />
                 </button>
               </div>
 
-              {/* Filter Controls */}
-              <div className="w-full rounded-lg flex justify-between items-start mt-10">
-                <div className="flex gap-2 bg-[#F9F9F9] rounded-full px-4 py-4">
-                  <FilterButton ref={buttonRef} onClick={handleDropdownToggle}>
-                    Tenure <FaChevronDown className="ml-2" />
-                  </FilterButton>
-                  <FilterButton ref={buttonRef} onClick={handleOrderToggle}>
-                    Order <FaChevronDown className="ml-2" />
-                  </FilterButton>
-                  <button className="px-4 py-2 flex items-center bg-black text-white rounded-full">
-                    Reset Filter <FaSyncAlt className="ml-2" />
-                  </button>
-                </div>
+              <SearchBar />
 
-                <SearchBar />
-
-                {/* Tenure Modal (Imported) */}
-                <TenureModal
-                  isOpen={isDropdownOpen}
-                  onClose={() => setIsDropdownOpen(false)}
-                  position={dropdownPosition} // Pass position to TenureModal
-                />
-                {/* Order Modal (Imported) */}
-                <OrderModal
-                  isOpen={isOrderOpen}
-                  onClose={() => setIsOrderOpen(false)}
-                  position={orderPosition} // Pass position to OrderModal
-                />
-
-              </div>
-
-              {/* Property Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-10">
-                {properties.map(property => (
-                  <PropertyCard 
-                    key={property.id}
-                    image={property.image}
-                    type={property.type}
-                    shared={property.shared}
-                    name={property.name}
-                    price={property.price}
-                  />
-                ))}
-              </div>
-
-              {/* Pagination */}
-              <Pagination 
-                currentPage={currentPage}
-                totalPages={50}
-                onPageChange={handlePageChange}
+              <TenureModal
+                isOpen={isDropdownOpen}
+                onClose={() => setIsDropdownOpen(false)}
+                position={dropdownPosition}
+              />
+              
+              <OrderModal
+                isOpen={isOrderOpen}
+                onClose={() => setIsOrderOpen(false)}
+                position={orderPosition}
               />
             </div>
-          {/* )} */}
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-10">
+              {properties.map(property => (
+                <PropertyCard 
+                  key={property.id}
+                  image={property.image}
+                  type={property.type}
+                  shared={property.shared}
+                  name={property.name}
+                  price={property.price}
+                  onThreeDotsClick={(e) => handleThreeDotsClick(e, property.id)}
+                />
+              ))}
+            </div>
+
+            <Pagination 
+              currentPage={currentPage}
+              totalPages={50}
+              onPageChange={handlePageChange}
+            />
+          </div>
         </div>
       </div>
+
+      <ListModal
+        isOpen={listModalOpen}
+        onClose={() => setListModalOpen(false)}
+        position={modalPosition}
+        propertyId={selectedPropertyId}
+      />
     </div>
   );
 }
 
-// Reusable Components (keep these the same as in your original code)
+// Reusable Components
 const TabButton = ({ active, onClick, count, children }) => (
   <button
     className={`px-3 py-3 text-sm font-bold font-aeonik rounded-full ${
@@ -201,14 +226,15 @@ const TabButton = ({ active, onClick, count, children }) => (
   </button>
 );
 
-const FilterButton = ({ onClick, children }) => (
+const FilterButton = React.forwardRef(({ onClick, children }, ref) => (
   <button
+    ref={ref}
     className="px-7 py-3 flex items-center bg-[#FFFFFF] text-[#7B7B7B] rounded-full"
     onClick={onClick}
   >
     {children}
   </button>
-);
+));
 
 const SearchBar = () => (
   <div className="bg-gray-200 p-2 rounded-full w-[400px] flex items-center">
@@ -225,13 +251,17 @@ const SearchBar = () => (
   </div>
 );
 
-const PropertyCard = ({ image, type, shared, name, price }) => (
+const PropertyCard = ({ image, type, shared, name, price, onThreeDotsClick }) => (
   <div className="bg-[#F9F9F9] p-4 rounded-lg shadow-md">
-    <div className="relative rounded-xl overflow-hidden">
+    <div className="relative rounded-xl overflow-hidden bg-gray-100 h-52">
       <img
         src={image}
         alt={name}
-        className="w-full h-52 object-cover rounded-2xl"
+        className="w-full h-full object-cover rounded-2xl"
+        onError={(e) => {
+          e.target.onerror = null;
+          e.target.src = "https://via.placeholder.com/400x300";
+        }}
       />
       <span className="absolute top-0 left-0 bg-[#F11414] text-white text-xs px-2 py-1 rounded">
         {type}
@@ -243,11 +273,23 @@ const PropertyCard = ({ image, type, shared, name, price }) => (
       )}
     </div>
 
-    <div className="bg-white p-4 rounded-2xl shadow-md mt-3">
-      <p className="text-lg font-bold font-aeonik text-[#1D3F3F]">{name}</p>
+    <div className="bg-white p-4 rounded-2xl shadow-md mt-3 relative">
+      <div className='flex justify-between items-start'>
+        <p className="text-lg font-bold font-aeonik text-[#1D3F3F]">{name}</p>
+        <button  
+          onClick={onThreeDotsClick}
+          className="text-[#1D3F3F] p-1 rounded-full"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="6" r="1.5" fill="currentColor"/>
+            <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
+            <circle cx="12" cy="18" r="1.5" fill="currentColor"/>
+          </svg>
+        </button>
+      </div>
       <p className="text-base font-aeonik font-normal text-[#1D3F3F]">{price}</p>
       <div className="mt-2">
-        <Link to="#" className="text-sm text-[#1D3F3FDE] font-medium font-aeonik underline">
+        <Link to="/desciption-property" className="text-sm text-[#1D3F3FDE] font-medium font-aeonik underline">
           See Description
         </Link>
       </div>
@@ -297,5 +339,3 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => (
     </button>
   </div>
 );
-
-
