@@ -25,6 +25,7 @@ import Portfolio from "./AdminDashboard/Portfolio";
 import AddProperty from "./AdminDashboard/AddProperty"; 
 import Settings from "./AdminDashboard/Settings";
 import Logout from "./AdminDashboard/Logout";
+import DesciptionProperty from "./AdminDashboard/DesciptionProperty";
 
 
 
@@ -58,6 +59,7 @@ const App = () => {
             <Route path="/blogs" element={<Blogs/>} />
             <Route path="/portfolio" element={<Portfolio/>} />
             <Route path="/add-property" element={<AddProperty />} />
+            <Route path="/desciption-property" element={<DesciptionProperty />} />
             <Route path="/settings" element={<Settings/>} />
             <Route path="/logout" element={<Logout/>} />
           {/* </Route> */}

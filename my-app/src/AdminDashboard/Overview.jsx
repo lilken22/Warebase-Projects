@@ -1,10 +1,48 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Sidebar from "../components/Sidebar"; 
 import Header from "../components/Header"; 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { CgNotes } from "react-icons/cg";
+import ListModal from '../components/ListModal';
 
 const Overview = () => {
+   const [listModalOpen, setListModalOpen] = useState(false);
+   const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
+   const [selectedPropertyId, setSelectedPropertyId] = useState(null);
+
+   const navigate = useNavigate();
+   const listModalRef = useRef(null);
+
+
+
+
+   useEffect(() => {
+      const handleClickOutside = (event) => {
+        if (
+          listModalOpen && 
+          !event.target.closest(".list-modal") && // Add this class to ListModal
+          !event.target.closest(".Un-list-modal") && // Add this class to ListModal
+          !event.target.closest(".three-dots-button") // Ignore the button that opens the modal
+        ) {
+          setListModalOpen(false);
+        }
+      };
+    
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+    
+  
+    const handleThreeDotsClick = (e, propertyId) => {
+      const rect = e.currentTarget.getBoundingClientRect();
+      setSelectedPropertyId(propertyId);
+      setModalPosition({
+        top: rect.bottom + window.scrollY,
+        left: rect.left + window.scrollX,
+      });
+      setListModalOpen(true);
+    };
+
   return (
     <div className="flex min-h-screen bg-[#F8F9FA]">
       {/* Sidebar */}
@@ -77,7 +115,7 @@ const Overview = () => {
             <div className="mt-10">
               <div className="flex justify-between items-center">
                 <h3 className="text-lg font-semibold">Recent listed properties</h3>
-                <Link to="/dashboard/portfolio" className="text-[#1D3F3FDE] text-sm font-medium hover:underline">
+                <Link to="/portfolio" className="text-[#1D3F3FDE] text-sm font-medium hover:underline">
                   View All
                 </Link>
               </div>
@@ -110,13 +148,28 @@ const Overview = () => {
 
               {/* Property Details */}
             <div className="bg-white p-4 rounded-2xl shadow-md mt-3">
+             <div className="flex justify-between items-start">
+             <div>
              <p className="text-lg font-bold font-aeonik text-[#1D3F3F]">Fidel Warehouse</p>
+             </div>
+               {/* Three Dots Button - Now aligned with text */}
+              <button 
+               className="text-[#1D3F3F] p-1 rounded-full"
+               onClick={handleThreeDotsClick}
+               >
+               <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="6" r="1.5" fill="currentColor"/>
+                <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
+                <circle cx="12" cy="18" r="1.5" fill="currentColor"/>
+               </svg>
+              </button>
+             </div>
              <p className="text-base font-aeonik font-normal text-[#1D3F3F]">₦5,250,000/Month</p>
 
               {/* "See Description" Link */}
              <div className="mt-2">
               <Link
-                to={`/PropertyDetails/${index}`}
+                to="/desciption-property"
                 className="text-sm text-[#1D3F3FDE] font-medium font-aeonik underline"
               >
                See Description
@@ -126,7 +179,12 @@ const Overview = () => {
            </div>
            ))}
            </div>
-
+           <ListModal
+             isOpen={listModalOpen}
+             onClose={() => setListModalOpen(false)}
+             position={modalPosition}
+             propertyId={selectedPropertyId}
+            />
             </div>
 
           </div>
