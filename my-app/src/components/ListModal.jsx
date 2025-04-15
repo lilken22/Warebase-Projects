@@ -1,30 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, forwardRef } from "react";
 import { IoMdCreate } from "react-icons/io";
 import { RiDeleteBack2Fill } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
- import UnlistModal from "../components/UnlistModal";
+import UnlistModal from "../components/UnlistModal";
 
-const ListModal = ({ isOpen, onClose, position, propertyId }) => {
+const ListModal = forwardRef(({ isOpen, onClose, position, propertyId }, ref) => {
   const navigate = useNavigate();
   const [isUnlistModalOpen, setIsUnlistModalOpen] = useState(false);
 
   if (!isOpen) return null;
 
   const handleEdit = (e) => {
-    e.stopPropagation(); // Prevent bubbling to parent
+    e.stopPropagation();
     navigate('/add-property');
-    setTimeout(onClose, 10); // 10ms delay
-    onClose();
+    setTimeout(onClose, 50); // slight delay so navigation happens
   };
 
   const handleUnlist = (e) => {
     e.stopPropagation();
-    setIsUnlistModalOpen(true); // Open Unlist Modal
+    setIsUnlistModalOpen(true);
   };
 
   return (
     <div
-      className="absolute w-[92px] h-20 bg-white shadow-lg  border rounded-lg z-50"
+      ref={ref}
+      className="absolute w-[92px] h-20 bg-white shadow-lg border rounded-lg z-50"
       style={{
         top: `${position.top}px`,
         left: `${position.left}px`,
@@ -34,28 +34,25 @@ const ListModal = ({ isOpen, onClose, position, propertyId }) => {
     >
       <div className="p-2">
         <div className="space-y-0">
-          {/* Edit Button */}
           <button
             onClick={handleEdit}
             className="flex items-center w-full p-1 rounded text-left"
           >
             <IoMdCreate className="text-[#AAAAAA] w-5 h-6" />
-            <span className="text-[#1D3F3FDE] font-aeonik text-base font-medium ml-2 ">Edit</span>
+            <span className="text-[#1D3F3FDE] font-aeonik text-base font-medium ml-2">Edit</span>
           </button>
 
-          {/* Unlist Button */}
           <button
             onClick={handleUnlist}
-            className="flex items-center w-full p-1  rounded text-left"
+            className="flex items-center w-full p-1 rounded text-left"
           >
             <RiDeleteBack2Fill className="text-[#AAAAAA] w-6 h-6" />
-            <span className="text-[#1D3F3FDE] font-aeonik text-base font-medium ml-2 ">Unlist</span>
+            <span className="text-[#1D3F3FDE] font-aeonik text-base font-medium ml-2">Unlist</span>
           </button>
         </div>
       </div>
 
-       {/* Unlist Modal */}
-        <UnlistModal
+      <UnlistModal
         isOpen={isUnlistModalOpen}
         onClose={() => setIsUnlistModalOpen(false)}
         propertyId={propertyId}
@@ -63,6 +60,6 @@ const ListModal = ({ isOpen, onClose, position, propertyId }) => {
       />
     </div>
   );
-};
+});
 
 export default ListModal;

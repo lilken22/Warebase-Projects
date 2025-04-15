@@ -31,7 +31,7 @@ export default function Header() {
      }, []); 
     
     return (
-        <header className="w-full p-4 bg-[#F9F9F9] border-gray-200"> 
+        <header className="w-full p-4 bg-[#F9F9F9] border-gray-200 hidden md:block"> 
             {/* Top Section - Title and Icons */}
             <div className="flex justify-start items-center">
                 {/* Right Side - Icons */}

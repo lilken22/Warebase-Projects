@@ -5,12 +5,10 @@ const OrderModal = ({ isOpen, onClose, position }) => {
 
   return (
     <div
-      className="absolute w-44 h-20 bg-white shadow-lg border border-gray-300 rounded-lg z-50"
+      className="fixed w-44 h-20 bg-white shadow-lg border border-gray-300 rounded-lg z-50"
       style={{
-        top: `${position.top + 220}px`, // Adjust top position (add 8px for spacing)
-        left: `${position.left + 190}px`,
-        borderRadius: "12px", // Custom border radius
-        boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)", // Custom shadow
+        top: `${position.top + 8}px`, // small gap between button and modal
+        left: `${position.left}px`,
       }}
     >
       {/* Modal Content */}

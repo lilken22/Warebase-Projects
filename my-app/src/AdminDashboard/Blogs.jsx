@@ -1,7 +1,12 @@
-import React from 'react'
+import ResponsiveWrapper from "../components/ResponsiveWrapper";
+import BlogsDesktop from "./BlogsDesktop";
+import BlogsMobile from "../components/BlogsMobile";
 
 export default function Blogs() {
   return (
-    <div>Blogs Page (Work in Progress)</div>
-  )
+    <ResponsiveWrapper
+      MobileComponent={BlogsMobile}
+      DesktopComponent={BlogsDesktop}
+    />
+  );
 }

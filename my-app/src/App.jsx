@@ -24,8 +24,22 @@ import Blogs from "./AdminDashboard/Blogs";
 import Portfolio from "./AdminDashboard/Portfolio";
 import AddProperty from "./AdminDashboard/AddProperty"; 
 import Settings from "./AdminDashboard/Settings";
-import Logout from "./AdminDashboard/Logout";
+// import Logout from "./AdminDashboard/Logout";
 import DesciptionProperty from "./AdminDashboard/DesciptionProperty";
+import CreateBlog from "./AdminDashboard/CreateBlog";
+import SeeDetails from "./AdminDashboard/SeeDetails";
+import PortfolioMobile from "./components/PortfolioMobile";
+import BottomNav from "./components/BottomNav";
+import OverviewMobile from "./components/OverviewMobile";
+import PropertyDetailsMobile from "./components/PropertyDetailsMobile";
+import BlogsMobile from "./components/BlogsMobile";
+import BlogDetailsMobile from "./components/BlogDetailsMobile";
+import CreateBlogMobile from "./components/CreateBlogMobile";
+import SettingsMobile from "./components/SettingsMobile";
+import SettingsProfile from "./components/SettingsProfile";
+import SettingsPortfolio from "./components/SettingsPortfolio";
+import SettingsSecurity from "./components/SettingsSecurity";
+import AddPropertyMobile from "./components/AddPropertyMobile";
 
 
 
@@ -61,7 +75,21 @@ const App = () => {
             <Route path="/add-property" element={<AddProperty />} />
             <Route path="/desciption-property" element={<DesciptionProperty />} />
             <Route path="/settings" element={<Settings/>} />
-            <Route path="/logout" element={<Logout/>} />
+            {/* <Route path="/logout" element={<Logout/>} /> */}
+            <Route path="/create-blog" element={<CreateBlog/>} />
+            <Route path="/see-details" element={<SeeDetails/>} />
+            <Route path="/portfolio-mobile" element={<PortfolioMobile/>} />
+            <Route path="/bottom-nav" element={<BottomNav/>} />
+            <Route path="/overview-mobile" element={<OverviewMobile/>} />
+            <Route path="/propertydetails-mobile" element={<PropertyDetailsMobile/>} />
+            <Route path="/blog-mobile" element={<BlogsMobile/>} />
+            <Route path="/blogdetails-mobile" element={<BlogDetailsMobile/>} />
+            <Route path="/createblog-mobile" element={<CreateBlogMobile/>} />
+            <Route path="/settings-mobile" element={<SettingsMobile/>} />
+            <Route path="/settings/profile" element={<SettingsProfile/>} />
+            <Route path="/settings/portfolio" element={<SettingsPortfolio/>} />
+            <Route path="/settings/security" element={<SettingsSecurity/>} />
+            <Route path="/addproperty-mobile" element={<AddPropertyMobile/>} />
           {/* </Route> */}
         </Routes>
 
