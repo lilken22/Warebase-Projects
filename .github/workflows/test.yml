@@ -21,11 +21,11 @@ jobs:
         with:
           node-version: 20
 
-      # - name: Run Lint
-      #   run: |
-      #     npm install
-      #     npm run lint
-      #   working-directory: my-app
+      - name: Run Lint
+        run: |
+          npm install
+          # npm run lint
+        working-directory: my-app
         
       - name: Run build
         run: npm run build
