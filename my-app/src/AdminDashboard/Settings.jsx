@@ -1,7 +1,12 @@
-import React from 'react'
+import ResponsiveWrapper from "../components/ResponsiveWrapper";
+import OverviewDesktop from "./OverviewDesktop";
+import OverviewMobile from "../components/OverviewMobile";
 
-export default function Settings() {
+export default function Overview() {
   return (
-    <div>Settings</div>
-  )
+    <ResponsiveWrapper
+      MobileComponent={OverviewMobile}
+      DesktopComponent={OverviewDesktop}
+    />
+  );
 }

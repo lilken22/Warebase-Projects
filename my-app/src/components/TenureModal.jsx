@@ -5,10 +5,10 @@ const TenureModal = ({ isOpen, onClose, position }) => {
 
   return (
     <div
-      className="absolute w-[148px] h-[110px] bg-white shadow-lg border border-gray-300 rounded-lg p-2 z-50"
+      className="fixed w-[148px] h-[110px] bg-white shadow-lg border border-gray-300 rounded-lg p-2 z-50"
       style={{
-        top: `${position.top + 212}px`,
-        left: `${position.left + 35}px`,
+        top: `${position.top + 8}px`, // small gap between button and modal
+        left: `${position.left}px`,
       }}
     >
       {/* Modal Content */}
