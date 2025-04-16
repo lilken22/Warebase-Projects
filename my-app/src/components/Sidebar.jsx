@@ -9,7 +9,7 @@ import { CiMenuFries } from "react-icons/ci";
 import { FiSettings } from "react-icons/fi";
 import { PiCirclesFourFill, PiBriefcaseMetalFill } from "react-icons/pi";
 
-const Sidebar = () => {
+const SideBar = () => {
   const location = useLocation();
   const navigate = useNavigate(); 
   const [isOpen, setIsOpen] = useState(false);
@@ -168,4 +168,4 @@ const SidebarLink = ({ to, icon, label, active }) => (
   </Link>
 );
 
-export default Sidebar;
+export default SideBar;
