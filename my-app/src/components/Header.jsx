@@ -1,7 +1,7 @@
 import React, { useState, useEffect} from "react";
 
 export default function Header() {
-    const [isOpen, setIsOpen] = useState(false);
+    // const [isOpen, setIsOpen] = useState(false);
 
        // Function to format current date and time
     const getCurrentDateTime = () => {

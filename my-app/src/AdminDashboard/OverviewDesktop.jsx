@@ -1,7 +1,7 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { CgNotes } from "react-icons/cg";
 import ListModal from "../components/ListModal";
 
@@ -20,10 +20,10 @@ const StatCard = ({ title, value, icon }) => (
 
 const OverviewDesktop = () => {
   const [listModalOpen, setListModalOpen] = useState(false);
-  const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
-  const [selectedPropertyId, setSelectedPropertyId] = useState(null);
   const [activeTab, setActiveTab] = useState("total");
 
+   //   const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
+   //   const [selectedPropertyId, setSelectedPropertyId] = useState(null);
   //  const navigate = useNavigate();
   //  const listModalRef = useRef(null);
 
@@ -137,7 +137,7 @@ const OverviewDesktop = () => {
                     }
                   />
                 </div>
-                
+
                 <div className="hidden lg:block col-span-1">
                   <StatCard
                     title="Properties For Lease"

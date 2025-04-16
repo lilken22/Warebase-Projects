@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom"; 
+import React, { useState, useRef, useEffect, useCallback } from "react";
+import { Link } from "react-router-dom"; 
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import PropertyModal from "../components/PropertyModal";
@@ -10,101 +10,9 @@ import WarehouseFormModal from "../components/WarehouseFormModal";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import "../index.css";
 
-export default function Listing() {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
-  const [isStateModalOpen, setIsStateModalOpen] = useState(false);
-  const [stateModalPosition, setStateModalPosition] = useState({
-    top: 0,
-    left: 0,
-  });
-  const [isPriceModalOpen, setIsPriceModalOpen] = useState(false);
-  const [priceModalPosition, setPriceModalPosition] = useState({
-    top: 0,
-    left: 0,
-  });
-  const [isSizeModalOpen, setIsSizeModalOpen] = useState(false);
-  const [sizeModalPosition, setSizeModalPosition] = useState({
-    top: 0,
-    left: 0,
-  });
-  const [isWarehouseFormModalOpen, setIsWarehouseFormModalOpen] = useState(false);
-  const dropdownRef = useRef(null);
-  const buttonRef = useRef(null);
-  const stateModalRef = useRef(null);
-  const navigate = useNavigate();
-  const [currentPage, setCurrentPage] = useState(1);
-  const [toggleData, setToggleData] = useState(true);
-  const [propertyImages, setPropertyImages] = useState([]);
 
-  const handleDropdownToggle = () => {
-    if (buttonRef.current) {
-      const buttonRect = buttonRef.current.getBoundingClientRect();
-      setDropdownPosition({
-        top: buttonRect.bottom + window.scrollY,
-        left: buttonRect.left + window.scrollX,
-      });
-    }
-    setIsDropdownOpen((prev) => !prev);
-  };
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsDropdownOpen(false);
-      }
-      if (stateModalRef.current && !stateModalRef.current.contains(event.target)) {
-        setIsStateModalOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
-  const handleStateModalToggle = (event) => {
-    if (event.target) {
-      const buttonRect = event.target.getBoundingClientRect();
-      setStateModalPosition({
-        top: buttonRect.bottom + window.scrollY,
-        left: buttonRect.left + window.scrollX,
-      });
-    }
-    setIsStateModalOpen((prev) => !prev);
-  };
-
-  const handlePriceModalToggle = (event) => {
-    if (event.target) {
-      const buttonRect = event.target.getBoundingClientRect();
-      setPriceModalPosition({
-        top: buttonRect.bottom + window.scrollY,
-        left: buttonRect.left + window.scrollX,
-      });
-    }
-    setIsPriceModalOpen((prev) => !prev);
-  };
-
-  const handleSizeModalToggle = (event) => {
-    if (event.target) {
-      const buttonRect = event.target.getBoundingClientRect();
-      setSizeModalPosition({
-        top: buttonRect.bottom + window.scrollY,
-        left: buttonRect.left + window.scrollX,
-      });
-    }
-    setIsSizeModalOpen((prev) => !prev);
-  };
-
-  const handleWarehouseFormModalToggle = () => {
-    setIsWarehouseFormModalOpen((prev) => !prev);
-  };
-
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-  };
-
+  // data array moved here 
   const data = [
     {
       imageUrl: "/property one.jpg",
@@ -204,17 +112,112 @@ export default function Listing() {
     },
   ];
 
-  const filterData = () => {
-    const result = data.filter((item) => {
-      return item.isForSale === toggleData;
-    });
-    if (!result) return;
-    setPropertyImages(result);
+export default function Listing() {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
+  const [isStateModalOpen, setIsStateModalOpen] = useState(false);
+  const [stateModalPosition, setStateModalPosition] = useState({
+    top: 0,
+    left: 0,
+  });
+  const [isPriceModalOpen, setIsPriceModalOpen] = useState(false);
+  const [priceModalPosition, setPriceModalPosition] = useState({
+    top: 0,
+    left: 0,
+  });
+  const [isSizeModalOpen, setIsSizeModalOpen] = useState(false);
+  const [sizeModalPosition, setSizeModalPosition] = useState({
+    top: 0,
+    left: 0,
+  });
+  const [isWarehouseFormModalOpen, setIsWarehouseFormModalOpen] = useState(false);
+  const dropdownRef = useRef(null);
+  const buttonRef = useRef(null);
+  const stateModalRef = useRef(null);
+  // const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [toggleData, setToggleData] = useState(true);
+  const [propertyImages, setPropertyImages] = useState([]);
+
+  const handleDropdownToggle = () => {
+    if (buttonRef.current) {
+      const buttonRect = buttonRef.current.getBoundingClientRect();
+      setDropdownPosition({
+        top: buttonRect.bottom + window.scrollY,
+        left: buttonRect.left + window.scrollX,
+      });
+    }
+    setIsDropdownOpen((prev) => !prev);
   };
 
   useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+      if (stateModalRef.current && !stateModalRef.current.contains(event.target)) {
+        setIsStateModalOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const handleStateModalToggle = (event) => {
+    if (event.target) {
+      const buttonRect = event.target.getBoundingClientRect();
+      setStateModalPosition({
+        top: buttonRect.bottom + window.scrollY,
+        left: buttonRect.left + window.scrollX,
+      });
+    }
+    setIsStateModalOpen((prev) => !prev);
+  };
+
+  const handlePriceModalToggle = (event) => {
+    if (event.target) {
+      const buttonRect = event.target.getBoundingClientRect();
+      setPriceModalPosition({
+        top: buttonRect.bottom + window.scrollY,
+        left: buttonRect.left + window.scrollX,
+      });
+    }
+    setIsPriceModalOpen((prev) => !prev);
+  };
+
+  const handleSizeModalToggle = (event) => {
+    if (event.target) {
+      const buttonRect = event.target.getBoundingClientRect();
+      setSizeModalPosition({
+        top: buttonRect.bottom + window.scrollY,
+        left: buttonRect.left + window.scrollX,
+      });
+    }
+    setIsSizeModalOpen((prev) => !prev);
+  };
+
+  const handleWarehouseFormModalToggle = () => {
+    setIsWarehouseFormModalOpen((prev) => !prev);
+  };
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  
+
+  const filterData = useCallback(() => {
+    const result = data.filter((item) => item.isForSale === toggleData);
+    if (!result) return;
+    setPropertyImages(result);
+  }, [toggleData, data]); // include dependencies here
+
+  useEffect(() => {
     filterData();
-  }, [toggleData]);
+  }, [filterData]);
 
   useEffect(() => {
     setPropertyImages(data);

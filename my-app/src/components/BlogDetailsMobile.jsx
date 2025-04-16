@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { IoMdArrowDropleft } from "react-icons/io";
 import BottomNav from "../components/BottomNav";
 
-export default function () {
+function BlogDetailsMobile () {
   const navigate = useNavigate();
 
   const handleBackClick = () => {
@@ -141,3 +141,5 @@ export default function () {
     </div>
   );
 }
+
+export default BlogDetailsMobile;

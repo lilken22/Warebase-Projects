@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
-export default function ResponsiveWrapper({ MobileComponent, DesktopComponent }) {
+export default function ResponsiveWrapper(props) {
+  const { MobileComponent, DesktopComponent } = props;
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 500);
 
   useEffect(() => {
@@ -14,3 +15,4 @@ export default function ResponsiveWrapper({ MobileComponent, DesktopComponent })
 
   return isMobile ? <MobileComponent /> : <DesktopComponent />;
 }
+

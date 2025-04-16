@@ -1,6 +1,6 @@
 import React from "react";
 
-const PriceModal = ({ isOpen, onClose, position }) => {
+const PriceModal = ({ isOpen, position }) => {
   if (!isOpen) return null;
 
   return (

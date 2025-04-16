@@ -1,6 +1,6 @@
 import React from "react";
 
-const TenureModal = ({ isOpen, onClose, position }) => {
+const TenureModal = ({ isOpen, position }) => {
   if (!isOpen) return null;
 
   return (

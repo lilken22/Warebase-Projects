@@ -1,6 +1,6 @@
 import React from "react";
 
-const PropertyModal = ({ isOpen, onClose, position }) => {
+const PropertyModal = ({ isOpen, position }) => {
   if (!isOpen) return null;
 
   return (

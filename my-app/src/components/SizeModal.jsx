@@ -1,6 +1,6 @@
 import React from "react";
 
-const SizeModal = ({ isOpen, onClose, position }) => {
+const SizeModal = ({ isOpen, position }) => {
   if (!isOpen) return null;
 
   return (

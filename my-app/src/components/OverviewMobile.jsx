@@ -1,16 +1,8 @@
 import React, { useState } from "react";
 import { Menu } from "lucide-react";
-// import { PiSlidersHorizontalFill } from "react-icons/pi";
 import BottomNav from "../components/BottomNav";
 import { useNavigate } from "react-router-dom";
-import {
-//   FaSyncAlt,
-//   FaChevronDown,
-//   FaPlus,
-//   FaChevronLeft,
-//   FaChevronRight,
-  FaSearch,
-} from "react-icons/fa";
+import { FaSearch } from "react-icons/fa";
 import { CgNotes } from "react-icons/cg";
 
 // StatCard component definition
@@ -56,14 +48,8 @@ const properties = [
 ];
 
 const OverviewMobile = () => {
-  const [selectedTab, setSelectedTab] = useState("listed");
-  const [currentPage, setCurrentPage] = useState(1);
   const [activeTab, setActiveTab] = useState("total");
-  const navigate = useNavigate();
-
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-  };
+  // const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-white flex justify-center">
@@ -182,12 +168,6 @@ const OverviewMobile = () => {
             ))}
           </div>
 
-          {/* <Pagination
-            currentPage={currentPage}
-            totalPages={50}
-            onPageChange={handlePageChange}
-          /> */}
-
           {/* Bottom Navigation */}
           <BottomNav />
         </div>
@@ -195,79 +175,5 @@ const OverviewMobile = () => {
     </div>
   );
 };
-
-// Reusable Components
-const TabButton = ({ active, onClick, count, children }) => (
-  <button
-    className={`px-3 py-3 text-sm font-bold font-aeonik rounded-full ${
-      active ? "bg-[#1C1C1C] text-[#FFFFFF]" : "text-[#7B7B7B]"
-    }`}
-    onClick={onClick}
-  >
-    {children} {count}
-  </button>
-);
-
-const SearchBar = () => (
-  <div className="p-2 rounded-full w-[400px] flex items-center">
-    <div className="flex items-center bg-[#FFFFfF] shadow-sm px-3 py-3 border border-gray-100 rounded-full w-full">
-      <input
-        type="text"
-        placeholder="Search property by name or ID"
-        className="bg-transparent outline-none flex-grow text-[#CCCCCC] placeholder-[#CCCCCC] font-Poppins text-[10px]"
-      />
-      <button className="text-gray-600">
-        <FaSearch />
-      </button>
-    </div>
-  </div>
-);
-
-// const Pagination = ({ currentPage, totalPages, onPageChange }) => (
-//   <div className="flex justify-center items-center mt-6 gap-1 text-[12px]">
-//     <button
-//       onClick={() => onPageChange(currentPage - 1)}
-//       disabled={currentPage === 1}
-//       className="p-2 px-2 rounded-md border border-gray-200 bg-white hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed"
-//     >
-//       <FaChevronLeft className="text-[#1D3F3F]" size={12} />
-//     </button>
-
-//     {[1, 2, 3].map((page) => (
-//       <button
-//         key={page}
-//         onClick={() => onPageChange(page)}
-//         className={`px-2 py-1 rounded-md border text-sm ${
-//           currentPage === page
-//             ? "bg-[#E2E8F0] text-[#1D3F3F]"
-//             : "bg-white text-gray-600 hover:bg-gray-100"
-//         }`}
-//       >
-//         {page}
-//       </button>
-//     ))}
-
-//     <span className="text-[#1D3F3F] px-1">...</span>
-
-//     <button
-//       onClick={() => onPageChange(totalPages)}
-//       className={`px-2 py-1 rounded-md border text-sm ${
-//         currentPage === totalPages
-//           ? "bg-[#E2E8F0] text-[#1D3F3F]"
-//           : "bg-white text-gray-600 hover:bg-gray-100"
-//       }`}
-//     >
-//       {totalPages}
-//     </button>
-
-//     <button
-//       onClick={() => onPageChange(currentPage + 1)}
-//       disabled={currentPage === totalPages}
-//       className="p-2 px-2 rounded-md border bg-white hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed"
-//     >
-//       <FaChevronRight className="text-[#1D3F3F]" size={12} />
-//     </button>
-//   </div>
-// );
 
 export default OverviewMobile;

@@ -1,6 +1,6 @@
 import React from "react";
 
-const StatesModal = ({ isOpen, onClose, position }) => {
+const StatesModal = ({ isOpen, position }) => {
   if (!isOpen) return null;
 
   // List of the 36 states in Nigeria

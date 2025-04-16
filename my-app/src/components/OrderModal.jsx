@@ -1,6 +1,6 @@
 import React from "react";
 
-const OrderModal = ({ isOpen, onClose, position }) => {
+const OrderModal = ({ isOpen,  position }) => {
   if (!isOpen) return null;
 
   return (

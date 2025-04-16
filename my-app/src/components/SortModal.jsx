@@ -1,6 +1,6 @@
 import React from "react";
 
-const SortModal = ({ isOpen, onClose, position }) => {
+const SortModal = ({ isOpen, position }) => {
   if (!isOpen) return null;
 
   return (
