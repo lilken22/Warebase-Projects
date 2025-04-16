@@ -246,8 +246,8 @@ const OverviewDesktop = () => {
               <ListModal
                 isOpen={listModalOpen}
                 onClose={() => setListModalOpen(false)}
-                position={modalPosition}
-                propertyId={selectedPropertyId}
+                // position={modalPosition}
+                // propertyId={selectedPropertyId}
               />
             </div>
           </div>

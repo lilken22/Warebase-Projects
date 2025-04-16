@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Menu } from "lucide-react";
 import BottomNav from "../components/BottomNav";
-import { useNavigate } from "react-router-dom";
-import { FaSearch } from "react-icons/fa";
+// import { useNavigate } from "react-router-dom";
+// import { FaSearch } from "react-icons/fa";
 import { CgNotes } from "react-icons/cg";
 
 // StatCard component definition

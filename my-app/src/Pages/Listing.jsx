@@ -213,7 +213,7 @@ export default function Listing() {
     const result = data.filter((item) => item.isForSale === toggleData);
     if (!result) return;
     setPropertyImages(result);
-  }, [toggleData, data]); // include dependencies here
+  }, [toggleData]); // include dependencies here
 
   useEffect(() => {
     filterData();

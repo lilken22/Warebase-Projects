@@ -29,7 +29,8 @@ function EmailReset() {
 
       setResendSuccess(true); // Email resend successful
     } catch (error) {
-      setResendError(true); // Email resend failed
+      setResendError(true);
+      console.log(error) // Email resend failed
     } finally {
       setIsResending(false); // End resend process
     }
