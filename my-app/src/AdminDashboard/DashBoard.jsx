@@ -1,13 +1,13 @@
 import React from "react";
 // import { Outlet } from "react-router-dom";
-import SideBar from "../components/SideBar";
+import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 
 const DashBoard = () => {
   return (
     <div className="flex min-h-screen">
       {/* Sidebar - Fixed width */}
-      <SideBar />
+      <Sidebar />
 
       {/* Main Content Area - Flex column */}
       <div className="flex-1 flex flex-col">

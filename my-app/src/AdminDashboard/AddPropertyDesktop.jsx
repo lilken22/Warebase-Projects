@@ -187,7 +187,7 @@ const AddPropertyDesktop = () => {
                     </label>
                     <textarea
                       className="w-full p-3 border rounded-lg min-h-[120px] bg-[#F3F3F3]"
-                      placeholder="Enter Ur description details"
+                      placeholder="Enter your description details"
                     />
                   </div>
                 </div>
