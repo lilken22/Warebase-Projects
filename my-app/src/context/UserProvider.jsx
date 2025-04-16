@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { userContext } from "./userContext"; // ✅ correct path
+// import { userContext } from "./userContext"; // ✅ correct path
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
