@@ -130,7 +130,7 @@ const AddPropertyDesktop = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-[#627777] font-normal font-aeonik text-base mb-1">
-                      Rent/Price{" "}
+                      Price{" "}
                       <span className=" font-aeonik font-normal text-red-600 text-lg">
                         *
                       </span>
