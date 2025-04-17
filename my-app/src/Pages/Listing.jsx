@@ -9,7 +9,9 @@ import SizeModal from "../components/SizeModal";
 import WarehouseFormModal from "../components/WarehouseFormModal";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import "../index.css";
-
+import { useSelector, useDispatch } from "react-redux";
+import { selectPropertiesSlice } from "../redux/selectors/property.selector";
+import { fetchProperties } from "../redux/slices/property.slice";
 
 
   // data array moved here 
@@ -113,6 +115,8 @@ import "../index.css";
   ];
 
 export default function Listing() {
+  const {properties} = useSelector(selectPropertiesSlice)
+  const dispatch = useDispatch()
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
   const [isStateModalOpen, setIsStateModalOpen] = useState(false);
@@ -137,7 +141,7 @@ export default function Listing() {
   // const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [toggleData, setToggleData] = useState(true);
-  const [propertyImages, setPropertyImages] = useState([]);
+  const [propertyImages, setPropertyImages] = useState(properties ?? []);
 
   const handleDropdownToggle = () => {
     if (buttonRef.current) {
@@ -210,7 +214,7 @@ export default function Listing() {
   
 
   const filterData = useCallback(() => {
-    const result = data.filter((item) => item.isForSale === toggleData);
+    const result = properties?.filter((item) => item.isShared === toggleData);
     if (!result) return;
     setPropertyImages(result);
   }, [toggleData]); // include dependencies here
@@ -220,7 +224,11 @@ export default function Listing() {
   }, [filterData]);
 
   useEffect(() => {
-    setPropertyImages(data);
+    setPropertyImages(properties);
+  }, []);
+
+  useEffect(() => {
+    dispatch(fetchProperties()).unwrap();
   }, []);
 
   return (

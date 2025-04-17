@@ -1,16 +1,18 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Navbar from "../components/Navbar"; 
 import Footer from "../components/Footer"; 
 import { Link, useNavigate } from "react-router-dom";
 import WarehouseFormModal from "../components/WarehouseFormModal"; 
 import { FaArrowRight } from "react-icons/fa6";
-
+import { useDispatch, useSelector } from "react-redux";
+import { testApiCalls } from "../redux/slices/auth.slice";
 
 const LandingPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null); // State to track selected radio button
   const navigate = useNavigate();
   const servicesRef = useRef(null);
+  const dispatch = useDispatch()
 
   const handleRadioChange = (event) => {
     setSelectedOption((prev) => (prev === event.target.id ? null : event.target.id));
@@ -32,6 +34,11 @@ const LandingPage = () => {
       servicesRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
+
+
+  useEffect(()=>{
+    dispatch(testApiCalls()).unwrap()
+  },[])
 
   return (
     <div className="min-h-screen bg-white text-[rgb(26, 24, 24)] font-serif flex flex-col justify-between">

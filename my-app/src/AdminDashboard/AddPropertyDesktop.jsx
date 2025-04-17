@@ -5,71 +5,98 @@ import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 import { FaTimes, FaCloudUploadAlt } from "react-icons/fa";
 
+import { useDispatch, useSelector } from "react-redux";
+import { createProperty } from "../redux/slices/property.slice";
+import { toast } from "react-toastify";
+
 const AddPropertyDesktop = () => {
-    const navigate = useNavigate();
-    const [previewImages, setPreviewImages] = useState([]);
-    const [isDragging, setIsDragging] = useState(false);
-    const fileInputRef = useRef(null);
+  const navigate = useNavigate();
+  const [previewImages, setPreviewImages] = useState([]);
+  const [isDragging, setIsDragging] = useState(false);
+  const fileInputRef = useRef(null);
 
-    const handleImageUpload = (files) => {
-      const validFiles = Array.from(files).filter(file => 
-          file.type.startsWith('image/') && file.size <= 5 * 1024 * 1024 // 5MB
-      );
-      
-      if (validFiles.length !== files.length) {
-          alert('Some files were invalid. Only images under 5MB are allowed.');
-      }
+  const handleImageUpload = (files) => {
+    const validFiles = Array.from(files).filter(
+      (file) => file.type.startsWith("image/") && file.size <= 5 * 1024 * 1024 // 5MB
+    );
 
-      const imagePreviews = validFiles.map(file => URL.createObjectURL(file));
-      setPreviewImages([...previewImages, ...imagePreviews]);
+    if (validFiles.length !== files.length) {
+      alert("Some files were invalid. Only images under 5MB are allowed.");
+    }
+
+    const imagePreviews = validFiles.map((file) => URL.createObjectURL(file));
+    setPreviewImages([...previewImages, ...imagePreviews]);
   };
 
   const handleFileInputChange = (e) => {
-      if (e.target.files.length) {
-          handleImageUpload(e.target.files);
-      }
+    if (e.target.files.length) {
+      handleImageUpload(e.target.files);
+    }
   };
 
   const handleClickUpload = () => {
-      fileInputRef.current.click();
+    fileInputRef.current.click();
   };
 
   const removeImage = (index) => {
-      const updatedImages = [...previewImages];
-      URL.revokeObjectURL(updatedImages[index]); // Clean up memory
-      updatedImages.splice(index, 1);
-      setPreviewImages(updatedImages);
+    const updatedImages = [...previewImages];
+    URL.revokeObjectURL(updatedImages[index]); // Clean up memory
+    updatedImages.splice(index, 1);
+    setPreviewImages(updatedImages);
   };
 
   const handleDragEnter = (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      setIsDragging(true);
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
   };
 
   const handleDragLeave = (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      setIsDragging(false);
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
   };
 
   const handleDragOver = (e) => {
-      e.preventDefault();
-      e.stopPropagation();
+    e.preventDefault();
+    e.stopPropagation();
   };
 
   const handleDrop = (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      setIsDragging(false);
-      
-      if (e.dataTransfer.files.length) {
-          handleImageUpload(e.dataTransfer.files);
-      }
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+
+    if (e.dataTransfer.files.length) {
+      handleImageUpload(e.dataTransfer.files);
+    }
   };
 
   const handleBackClick = () => {
     navigate("/portfolio");
+  };
+
+  const dispatch = useDispatch();
+
+  const createNewProperty = async (data = {}) => {
+    const body = {
+      isShared: data?.isShared,
+      sharePropertyNumber: data?.sharePropertyNumber,
+      propertyName: data?.propertyName,
+      propertyId: data?.propertyId,
+      propertyPrice: data?.propertyPrice,
+      description: data?.description,
+      location: data?.location,
+    };
+
+    try {
+      const response = await dispatch(createProperty(body)).unwrap();
+      return;
+    } catch (error) {
+      console.error(error);
+      toast.error(error.message || "An error occured while creating property");
+      return;
+    }
   };
 
   return (
@@ -158,24 +185,21 @@ const AddPropertyDesktop = () => {
                 </div>
 
                 <div className="mt-5">
-                 <div className="col-span-2"> 
+                  <div className="col-span-2">
                     <div>
-                        <label className="block text-[#627777] font-normal font-aeonik text-base">
-                         Warehouse Size {" "}
-                         <span className="text-center font-aeonik font-normal text-red-600 text-lg">
-                           *
-                         </span>
-                        </label>
-                       <input
-                         type="text"
-                         className="w-full p-3 border rounded-lg bg-[#F3F3F3] mt-1"
-                          placeholder="Enter Size"
-                        />
+                      <label className="block text-[#627777] font-normal font-aeonik text-base">
+                        Warehouse Size{" "}
+                        <span className="text-center font-aeonik font-normal text-red-600 text-lg">
+                          *
+                        </span>
+                      </label>
+                      <input
+                        type="text"
+                        className="w-full p-3 border rounded-lg bg-[#F3F3F3] mt-1"
+                        placeholder="Enter Size"
+                      />
                     </div>
-                  
                   </div>
-
-
 
                   {/* intended usage */}
                   <div>
@@ -196,7 +220,14 @@ const AddPropertyDesktop = () => {
               {/* Image Upload Section */}
               <div className="mt-6">
                 <label className="block text-base text-[#627777] font-normal font-aeonik mb-0">
-                Upload Image <span className="font-aeonik text-sm font-normal text-[#9FA0A0]"> (max of 4 images)</span> <span className=" font-aeonik font-normal text-red-600 text-lg text-center">*</span>
+                  Upload Image{" "}
+                  <span className="font-aeonik text-sm font-normal text-[#9FA0A0]">
+                    {" "}
+                    (max of 4 images)
+                  </span>{" "}
+                  <span className=" font-aeonik font-normal text-red-600 text-lg text-center">
+                    *
+                  </span>
                 </label>
                 <div
                   className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
@@ -265,23 +296,29 @@ const AddPropertyDesktop = () => {
               </div>
 
               <div className="flex items-center gap-2 mt-4 ">
-                <input 
-                 type="checkbox" 
-                 id="privacy-policy" 
-                 className="w-3 h-3 appearance-none border border-gray-400 checked:bg-[#00E5FF]  focus:ring-2  cursor-pointer relative 
+                <input
+                  type="checkbox"
+                  id="privacy-policy"
+                  className="w-3 h-3 appearance-none border border-gray-400 checked:bg-[#00E5FF]  focus:ring-2  cursor-pointer relative 
                  after:content-['✔'] after:text-black after:text-[10px] after:font-bold after:absolute after:top-[1px] after:left-1/2 after:-translate-x-1/2 after:opacity-0 checked:after:opacity-100"
                 />
-              <label htmlFor="privacy-policy" className="text-[#627777] text-sm font-medium text-center">
-              Phone number visible on website
-              </label>
+                <label
+                  htmlFor="privacy-policy"
+                  className="text-[#627777] text-sm font-medium text-center"
+                >
+                  Phone number visible on website
+                </label>
               </div>
-
 
               {/* Buttons */}
               <div className="flex justify-center space-x-4 mt-8">
-          <button className="px-16 py-2 bg-black text-white rounded-3xl hover:bg-gray-800 transition-colors focus:outline-none  focus:ring-black text-lg font-aeonik font-medium">Submit</button>
-          <button className="px-16 py-2 bg-white text-gray-600 rounded-3xl border border-gray-100 hover:bg-gray-50 transition-colors focus:outline-none font-aeonik font-medium text-lg shadow-lg focus:ring-gray-300 ">Cancel</button>
-        </div>
+                <button className="px-16 py-2 bg-black text-white rounded-3xl hover:bg-gray-800 transition-colors focus:outline-none  focus:ring-black text-lg font-aeonik font-medium">
+                  Submit
+                </button>
+                <button className="px-16 py-2 bg-white text-gray-600 rounded-3xl border border-gray-100 hover:bg-gray-50 transition-colors focus:outline-none font-aeonik font-medium text-lg shadow-lg focus:ring-gray-300 ">
+                  Cancel
+                </button>
+              </div>
             </div>
           </div>
         </div>
