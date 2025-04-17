@@ -3,9 +3,10 @@ import { AiFillInstagram } from "react-icons/ai";
 import { FaLinkedin } from "react-icons/fa6";
 import { BsTwitterX } from "react-icons/bs";
 import { IoLogoWhatsapp } from "react-icons/io";
+import { Link } from "react-router-dom";
 
 
-const EmailTemplate = ({ userEmail = "user@example.com", resetLink = "#" }) => {
+const EmailTemplate = ({ userEmail = "user@example.com", resetLink = "/PasswordReset" }) => {
   return (
     <div className="h-screen flex items-center justify-center px-7">
       <div className="bg-white shadow-md rounded-md w-full max-w-xl border border-gray-300 min-h-[660px] flex flex-col justify-between">
@@ -27,12 +28,12 @@ const EmailTemplate = ({ userEmail = "user@example.com", resetLink = "#" }) => {
 
           {/* Reset Password Button */}
           <div className="mt-4 text-start">
-            <a
-              href={resetLink}
+            <Link
+              to={resetLink}
               className="inline-block bg-[#0B97D1] text-[#FFF7F2] py-2 px-4 rounded-full text-sm font-medium hover:bg-[#0B97D1] transition duration-300"
             >
               Reset password
-            </a>
+            </Link>
           </div>
 
           {/* Security Notice */}

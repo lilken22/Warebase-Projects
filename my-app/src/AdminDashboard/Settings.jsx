@@ -1,12 +1,12 @@
 import ResponsiveWrapper from "../components/ResponsiveWrapper";
-import OverviewDesktop from "./OverviewDesktop";
-import OverviewMobile from "../components/OverviewMobile";
+import SettingsDesktop from "./SettingsDesktop";
+import SettingsMobile from "../components/SettingsMobile";
 
 export default function Overview() {
   return (
     <ResponsiveWrapper
-      MobileComponent={OverviewMobile}
-      DesktopComponent={OverviewDesktop}
+      MobileComponent={SettingsMobile}
+      DesktopComponent={SettingsDesktop}
     />
   );
 }

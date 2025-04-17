@@ -13,7 +13,12 @@ const AddPropertyDesktop = () => {
   const navigate = useNavigate();
   const [previewImages, setPreviewImages] = useState([]);
   const [isDragging, setIsDragging] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
   const fileInputRef = useRef(null);
+
+  const handleCheckboxChange = () => {
+    setIsChecked(!isChecked);
+  };
 
   const handleImageUpload = (files) => {
     const validFiles = Array.from(files).filter(
@@ -134,11 +139,13 @@ const AddPropertyDesktop = () => {
 
               {/* Share Checkbox + Warehouse ID - Fixed at start */}
               <div className="flex justify-between items-center mt-5 border-b border-gray-200 py-3 w-full">
-                <div className="flex items-center bg-gray-100 px-6 py-3">
+                <div className="flex items-center bg-gray-100 px-6 py-3 rounded-md">
                   <input
                     type="checkbox"
                     id="share"
-                    className="w-5 h-5 border-[#AAAAAA]"
+                    checked={isChecked}
+                    onChange={handleCheckboxChange}
+                    className="w-5 h-5 border-[#AAAAAA] accent-red-700"
                   />
                   <label
                     htmlFor="share"
@@ -146,7 +153,17 @@ const AddPropertyDesktop = () => {
                   >
                     Share
                   </label>
+
+                  {/* Conditionally show input when checkbox is checked */}
+                  {isChecked && (
+                    <input
+                      type="number"
+                      placeholder="Enter digit"
+                      className="ml-4 px-3 w-28 py-2 border border-gray-300 rounded-md text-[#1D3F3FDE] placeholder:text-gray-400 focus:outline-none"
+                    />
+                  )}
                 </div>
+
                 <div className="text-2xl font-bold text-[#1D3F3F] font-aeonik">
                   WB01
                 </div>
@@ -157,7 +174,7 @@ const AddPropertyDesktop = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-[#627777] font-normal font-aeonik text-base mb-1">
-                      Rent/Price{" "}
+                      Property Name{" "}
                       <span className=" font-aeonik font-normal text-red-600 text-lg">
                         *
                       </span>
@@ -165,7 +182,7 @@ const AddPropertyDesktop = () => {
                     <input
                       type="number"
                       className="w-full p-3 border rounded-lg bg-[#F3F3F3]"
-                      placeholder="#"
+                      placeholder="Enter property name"
                     />
                   </div>
 
@@ -185,7 +202,7 @@ const AddPropertyDesktop = () => {
                 </div>
 
                 <div className="mt-5">
-                  <div className="col-span-2">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <label className="block text-[#627777] font-normal font-aeonik text-base">
                         Warehouse Size{" "}
@@ -199,12 +216,26 @@ const AddPropertyDesktop = () => {
                         placeholder="Enter Size"
                       />
                     </div>
+
+                    <div>
+                      <label className="block text-[#627777] font-normal font-aeonik text-base mb-1">
+                        Price{" "}
+                        <span className=" font-aeonik font-normal text-red-600 text-lg">
+                          *
+                        </span>
+                      </label>
+                      <input
+                        type="number"
+                        className="w-full p-3 border rounded-lg bg-[#F3F3F3]"
+                        placeholder="#"
+                      />
+                    </div>
                   </div>
 
                   {/* intended usage */}
                   <div>
                     <label className="block text-[#627777] font-normal font-aeonik text-base mt-5">
-                      Description{" "}
+                      Property Type/Description{" "}
                       <span className=" font-aeonik font-normal text-red-600 text-lg text-center">
                         *
                       </span>
