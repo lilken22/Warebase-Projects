@@ -99,12 +99,12 @@ export default function Navbar({ scrollToServices }) {
             Browse Listings
           </button>
 
-          <Link
+          {/* <Link
             to="/Login"
             className="bg-transparent shadow-2xl border border-[] text-[#1D3F3F] px-5 py-2 rounded-[50px] text-lg font-normal hover:bg-[#1D3F3F] hover:text-white transition"
           >
             Login
-          </Link>
+          </Link> */}
         </div>
 
         {/* Mobile Menu Button */}
@@ -195,13 +195,13 @@ export default function Navbar({ scrollToServices }) {
             Browse Listings
           </button>
 
-          <Link
+          {/* <Link
             to="/login"
             onClick={() => setMenuOpen(false)} // close the menu after click
             className="max-w-[200px] shadow-2xl border border-[] text-[#1D3F3F] py-2 px-4 rounded-full text-sm font-semibold hover:bg-[#1D3F3F] hover:text-white transition"
           >
             Login
-          </Link>
+          </Link> */}
         </div>
       </div>
     </header>

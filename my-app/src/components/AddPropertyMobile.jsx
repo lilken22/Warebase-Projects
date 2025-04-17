@@ -112,7 +112,7 @@ export default function AddPropertyMobile() {
         <div className="mt-5 grid grid-cols-1 min-[360px]:grid-cols-2 gap-4">
           <div>
             <label className="text-[#627777] text-xs block mb-1 h-[16px]">
-              Rent/Price <span className="text-red-600">*</span>
+            Property Name <span className="text-red-600">*</span>
             </label>
             <input
               type="number"
@@ -140,6 +140,17 @@ export default function AddPropertyMobile() {
               type="text"
               className="w-full p-3 border rounded-lg bg-[#F3F3F3]"
               placeholder="Enter Location"
+            />
+          </div>
+
+          <div>
+            <label className="text-[#627777] text-xs block mb-1 h-[16px]">
+            Price <span className="text-red-600">*</span>
+            </label>
+            <input
+              type="number"
+              className="w-full p-3 border rounded-lg bg-[#F3F3F3]"
+              placeholder="#"
             />
           </div>
         

@@ -6,66 +6,71 @@ import Header from "../components/Header";
 import { FaTimes, FaCloudUploadAlt } from "react-icons/fa";
 
 const AddPropertyDesktop = () => {
-    const navigate = useNavigate();
-    const [previewImages, setPreviewImages] = useState([]);
-    const [isDragging, setIsDragging] = useState(false);
-    const fileInputRef = useRef(null);
+  const navigate = useNavigate();
+  const [previewImages, setPreviewImages] = useState([]);
+  const [isDragging, setIsDragging] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
+  const fileInputRef = useRef(null);
 
-    const handleImageUpload = (files) => {
-      const validFiles = Array.from(files).filter(file => 
-          file.type.startsWith('image/') && file.size <= 5 * 1024 * 1024 // 5MB
-      );
-      
-      if (validFiles.length !== files.length) {
-          alert('Some files were invalid. Only images under 5MB are allowed.');
-      }
+  const handleCheckboxChange = () => {
+    setIsChecked(!isChecked);
+  };
 
-      const imagePreviews = validFiles.map(file => URL.createObjectURL(file));
-      setPreviewImages([...previewImages, ...imagePreviews]);
+  const handleImageUpload = (files) => {
+    const validFiles = Array.from(files).filter(
+      (file) => file.type.startsWith("image/") && file.size <= 5 * 1024 * 1024 // 5MB
+    );
+
+    if (validFiles.length !== files.length) {
+      alert("Some files were invalid. Only images under 5MB are allowed.");
+    }
+
+    const imagePreviews = validFiles.map((file) => URL.createObjectURL(file));
+    setPreviewImages([...previewImages, ...imagePreviews]);
   };
 
   const handleFileInputChange = (e) => {
-      if (e.target.files.length) {
-          handleImageUpload(e.target.files);
-      }
+    if (e.target.files.length) {
+      handleImageUpload(e.target.files);
+    }
   };
 
   const handleClickUpload = () => {
-      fileInputRef.current.click();
+    fileInputRef.current.click();
   };
 
   const removeImage = (index) => {
-      const updatedImages = [...previewImages];
-      URL.revokeObjectURL(updatedImages[index]); // Clean up memory
-      updatedImages.splice(index, 1);
-      setPreviewImages(updatedImages);
+    const updatedImages = [...previewImages];
+    URL.revokeObjectURL(updatedImages[index]); // Clean up memory
+    updatedImages.splice(index, 1);
+    setPreviewImages(updatedImages);
   };
 
   const handleDragEnter = (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      setIsDragging(true);
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
   };
 
   const handleDragLeave = (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      setIsDragging(false);
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
   };
 
   const handleDragOver = (e) => {
-      e.preventDefault();
-      e.stopPropagation();
+    e.preventDefault();
+    e.stopPropagation();
   };
 
   const handleDrop = (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      setIsDragging(false);
-      
-      if (e.dataTransfer.files.length) {
-          handleImageUpload(e.dataTransfer.files);
-      }
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+
+    if (e.dataTransfer.files.length) {
+      handleImageUpload(e.dataTransfer.files);
+    }
   };
 
   const handleBackClick = () => {
@@ -107,11 +112,13 @@ const AddPropertyDesktop = () => {
 
               {/* Share Checkbox + Warehouse ID - Fixed at start */}
               <div className="flex justify-between items-center mt-5 border-b border-gray-200 py-3 w-full">
-                <div className="flex items-center bg-gray-100 px-6 py-3">
+                <div className="flex items-center bg-gray-100 px-6 py-3 rounded-md">
                   <input
                     type="checkbox"
                     id="share"
-                    className="w-5 h-5 border-[#AAAAAA]"
+                    checked={isChecked}
+                    onChange={handleCheckboxChange}
+                    className="w-5 h-5 border-[#AAAAAA] accent-red-700"
                   />
                   <label
                     htmlFor="share"
@@ -119,7 +126,17 @@ const AddPropertyDesktop = () => {
                   >
                     Share
                   </label>
+
+                  {/* Conditionally show input when checkbox is checked */}
+                  {isChecked && (
+                    <input
+                      type="number"
+                      placeholder="Enter digit"
+                      className="ml-4 px-3 w-28 py-2 border border-gray-300 rounded-md text-[#1D3F3FDE] placeholder:text-gray-400 focus:outline-none"
+                    />
+                  )}
                 </div>
+
                 <div className="text-2xl font-bold text-[#1D3F3F] font-aeonik">
                   WB01
                 </div>
@@ -130,7 +147,7 @@ const AddPropertyDesktop = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-[#627777] font-normal font-aeonik text-base mb-1">
-                      Price{" "}
+                      Property Name{" "}
                       <span className=" font-aeonik font-normal text-red-600 text-lg">
                         *
                       </span>
@@ -138,7 +155,7 @@ const AddPropertyDesktop = () => {
                     <input
                       type="number"
                       className="w-full p-3 border rounded-lg bg-[#F3F3F3]"
-                      placeholder="#"
+                      placeholder="Enter property name"
                     />
                   </div>
 
@@ -158,29 +175,40 @@ const AddPropertyDesktop = () => {
                 </div>
 
                 <div className="mt-5">
-                 <div className="col-span-2"> 
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label className="block text-[#627777] font-normal font-aeonik text-base">
-                         Warehouse Size {" "}
-                         <span className="text-center font-aeonik font-normal text-red-600 text-lg">
-                           *
-                         </span>
-                        </label>
-                       <input
-                         type="text"
-                         className="w-full p-3 border rounded-lg bg-[#F3F3F3] mt-1"
-                          placeholder="Enter Size"
-                        />
+                      <label className="block text-[#627777] font-normal font-aeonik text-base">
+                        Warehouse Size{" "}
+                        <span className="text-center font-aeonik font-normal text-red-600 text-lg">
+                          *
+                        </span>
+                      </label>
+                      <input
+                        type="text"
+                        className="w-full p-3 border rounded-lg bg-[#F3F3F3] mt-1"
+                        placeholder="Enter Size"
+                      />
                     </div>
-                  
+
+                    <div>
+                      <label className="block text-[#627777] font-normal font-aeonik text-base mb-1">
+                        Price{" "}
+                        <span className=" font-aeonik font-normal text-red-600 text-lg">
+                          *
+                        </span>
+                      </label>
+                      <input
+                        type="number"
+                        className="w-full p-3 border rounded-lg bg-[#F3F3F3]"
+                        placeholder="#"
+                      />
+                    </div>
                   </div>
-
-
 
                   {/* intended usage */}
                   <div>
                     <label className="block text-[#627777] font-normal font-aeonik text-base mt-5">
-                      Description{" "}
+                      Property Type/Description{" "}
                       <span className=" font-aeonik font-normal text-red-600 text-lg text-center">
                         *
                       </span>
@@ -196,7 +224,14 @@ const AddPropertyDesktop = () => {
               {/* Image Upload Section */}
               <div className="mt-6">
                 <label className="block text-base text-[#627777] font-normal font-aeonik mb-0">
-                Upload Image <span className="font-aeonik text-sm font-normal text-[#9FA0A0]"> (max of 4 images)</span> <span className=" font-aeonik font-normal text-red-600 text-lg text-center">*</span>
+                  Upload Image{" "}
+                  <span className="font-aeonik text-sm font-normal text-[#9FA0A0]">
+                    {" "}
+                    (max of 4 images)
+                  </span>{" "}
+                  <span className=" font-aeonik font-normal text-red-600 text-lg text-center">
+                    *
+                  </span>
                 </label>
                 <div
                   className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
@@ -265,23 +300,29 @@ const AddPropertyDesktop = () => {
               </div>
 
               <div className="flex items-center gap-2 mt-4 ">
-                <input 
-                 type="checkbox" 
-                 id="privacy-policy" 
-                 className="w-3 h-3 appearance-none border border-gray-400 checked:bg-[#00E5FF]  focus:ring-2  cursor-pointer relative 
+                <input
+                  type="checkbox"
+                  id="privacy-policy"
+                  className="w-3 h-3 appearance-none border border-gray-400 checked:bg-[#00E5FF]  focus:ring-2  cursor-pointer relative 
                  after:content-['✔'] after:text-black after:text-[10px] after:font-bold after:absolute after:top-[1px] after:left-1/2 after:-translate-x-1/2 after:opacity-0 checked:after:opacity-100"
                 />
-              <label htmlFor="privacy-policy" className="text-[#627777] text-sm font-medium text-center">
-              Phone number visible on website
-              </label>
+                <label
+                  htmlFor="privacy-policy"
+                  className="text-[#627777] text-sm font-medium text-center"
+                >
+                  Phone number visible on website
+                </label>
               </div>
-
 
               {/* Buttons */}
               <div className="flex justify-center space-x-4 mt-8">
-          <button className="px-16 py-2 bg-black text-white rounded-3xl hover:bg-gray-800 transition-colors focus:outline-none  focus:ring-black text-lg font-aeonik font-medium">Submit</button>
-          <button className="px-16 py-2 bg-white text-gray-600 rounded-3xl border border-gray-100 hover:bg-gray-50 transition-colors focus:outline-none font-aeonik font-medium text-lg shadow-lg focus:ring-gray-300 ">Cancel</button>
-        </div>
+                <button className="px-16 py-2 bg-black text-white rounded-3xl hover:bg-gray-800 transition-colors focus:outline-none  focus:ring-black text-lg font-aeonik font-medium">
+                  Submit
+                </button>
+                <button className="px-16 py-2 bg-white text-gray-600 rounded-3xl border border-gray-100 hover:bg-gray-50 transition-colors focus:outline-none font-aeonik font-medium text-lg shadow-lg focus:ring-gray-300 ">
+                  Cancel
+                </button>
+              </div>
             </div>
           </div>
         </div>
