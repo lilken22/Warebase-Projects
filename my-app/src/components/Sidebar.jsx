@@ -26,7 +26,7 @@ const SideBar = () => {
 
   const handleConfirmLogout = () => {
     console.log("User logged out");
-    navigate("/");
+    navigate("/Login");
     setShowLogoutModal(false);
   };
 
@@ -116,7 +116,7 @@ const SideBar = () => {
 
       {/* Logout Modal */}
       {showLogoutModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-700 bg-opacity-25 z-50">
           <div className="bg-white p-6 rounded-3xl shadow-lg w-80 h-72 text-center">
             <img
               src="/avatar2.png"

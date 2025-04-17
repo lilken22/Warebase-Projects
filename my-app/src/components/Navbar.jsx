@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom"; 
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FiMenu, FiX } from "react-icons/fi";
 
 export default function Navbar({ scrollToServices }) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const location = useLocation(); 
+  const location = useLocation();
   const navigate = useNavigate();
   // ✅ Function to check if the link is active
   const isActive = (path) => location.pathname === path;
@@ -50,7 +50,9 @@ export default function Navbar({ scrollToServices }) {
               <Link
                 to="/listing"
                 className={`${
-                  isActive("/listing") ? "text-[#00E5FF]" : "hover:text-[#00E5FF]"
+                  isActive("/listing")
+                    ? "text-[#00E5FF]"
+                    : "hover:text-[#00E5FF]"
                 }`}
               >
                 Listings
@@ -70,7 +72,9 @@ export default function Navbar({ scrollToServices }) {
               <Link
                 to="/contact"
                 className={`${
-                  isActive("/contact") ? "text-[#00E5FF]" : "hover:text-[#00E5FF]"
+                  isActive("/contact")
+                    ? "text-[#00E5FF]"
+                    : "hover:text-[#00E5FF]"
                 }`}
               >
                 Contact
@@ -84,15 +88,23 @@ export default function Navbar({ scrollToServices }) {
           <button
             className="bg-[#1C1C1C] text-[#FFF7F2] px-6 py-3 rounded-[50px] text-lg font-normal hover:bg-[#1D3F3F] transition"
             onClick={scrollToServices} // Calls the function from Home
-            >
-             Explore our services
+          >
+            Explore our services
           </button>
 
-          <button className="bg-[#FFFFFF] text-[#1D3F3F] shadow-xl px-6 py-3 rounded-[50px] text-lg font-normal hover:bg-[#1C1C1C] hover:text-[#FFFFFF] transition" 
-          onClick={handleMoreClick}
+          <button
+            className="bg-[#FFFFFF] text-[#1D3F3F] shadow-xl px-6 py-3 rounded-[50px] text-lg font-normal hover:bg-[#1C1C1C] hover:text-[#FFFFFF] transition"
+            onClick={handleMoreClick}
           >
             Browse Listings
           </button>
+
+          <Link
+            to="/Login"
+            className="bg-transparent shadow-2xl border border-[] text-[#1D3F3F] px-5 py-2 rounded-[50px] text-lg font-normal hover:bg-[#1D3F3F] hover:text-white transition"
+          >
+            Login
+          </Link>
         </div>
 
         {/* Mobile Menu Button */}
@@ -170,16 +182,26 @@ export default function Navbar({ scrollToServices }) {
 
         {/* ✅ Mobile Buttons - Reduced Width */}
         <div className="flex flex-col items-center mt-5 space-y-3">
-          <button className="max-w-[200px] bg-[#1C1C1C] text-white py-2 px-4 rounded-lg text-sm font-semibold hover:bg-[#1D3F3F] transition"
-          onClick={scrollToServices} // Calls the function from Home
+          <button
+            className="max-w-[200px] bg-[#1C1C1C] text-white py-2 px-4 rounded-lg text-sm font-semibold hover:bg-[#1D3F3F] transition"
+            onClick={scrollToServices} // Calls the function from Home
           >
             Explore Services
           </button>
-          <button className="max-w-[200px] bg-gray-500 text-white py-2 px-4 rounded-full text-sm font-semibold hover:bg-gray-900 hover:text-white transition"
-          onClick={handleMoreClick}
+          <button
+            className="max-w-[200px] bg-gray-500 text-white py-2 px-4 rounded-full text-sm font-semibold hover:bg-gray-900 hover:text-white transition"
+            onClick={handleMoreClick}
           >
             Browse Listings
           </button>
+
+          <Link
+            to="/login"
+            onClick={() => setMenuOpen(false)} // close the menu after click
+            className="max-w-[200px] shadow-2xl border border-[] text-[#1D3F3F] py-2 px-4 rounded-full text-sm font-semibold hover:bg-[#1D3F3F] hover:text-white transition"
+          >
+            Login
+          </Link>
         </div>
       </div>
     </header>
