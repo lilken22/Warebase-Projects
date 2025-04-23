@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+import { authenticateUser } from '../redux/slices/auth.slice';
 
 function Login() {
+  const dispatch = useDispatch()
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -13,15 +16,23 @@ function Login() {
     setShowPassword(!showPassword);
   };
 
-  const handleLogin = (e) => {
+  const handleLogin = async(e) => {
     e.preventDefault();
 
-    if (email && password) {
-      setError(''); // Clear error if inputs are valid
-      navigate('/overview');
-    } else {
-      setError('Please enter both email and password.');
+    try {
+      if (email && password) {
+        setError(''); // Clear error if inputs are valid
+        const result = await dispatch(authenticateUser({email, password})).unwrap()
+        if(result.token){
+          navigate('/overview');
+        }
+      }else {
+        setError('Please enter both email and password.');
+      }
+    } catch (error) {
+      setError(error?.message || "Failed to login, please try again")
     }
+     
   };
 
   return (

@@ -1,0 +1,1 @@
+export const selectAuthSlice = (state) => state?.auth;

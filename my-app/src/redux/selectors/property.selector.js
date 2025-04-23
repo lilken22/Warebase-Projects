@@ -1,0 +1,1 @@
+export const selectPropertiesSlice = (state) => state?.property;

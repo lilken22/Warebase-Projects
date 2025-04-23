@@ -40,12 +40,29 @@ import SettingsProfile from "./components/SettingsProfile";
 import SettingsPortfolio from "./components/SettingsPortfolio";
 import SettingsSecurity from "./components/SettingsSecurity";
 import AddPropertyMobile from "./components/AddPropertyMobile";
+import { ToastContainer, Flip } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 
 const App = () => {
   return (
     <div className="flex flex-col min-h-screen">
+      <ToastContainer
+        style={{ zIndex: "20000" }}
+        autoClose={3000}
+        hideProgressBar={true}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        limit={3}
+        transition={Flip}
+        toastClassName="custom-toast"
+        bodyClassName="custom-toast"
+      />
       <ScrollToTop />
       {/* <Navbar /> */}
       <main className="flex-grow">

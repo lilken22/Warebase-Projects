@@ -5,12 +5,31 @@ import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 import { FaTimes, FaCloudUploadAlt } from "react-icons/fa";
 
+import { useDispatch, useSelector } from "react-redux";
+import { createProperty } from "../redux/slices/property.slice";
+import { toast } from "react-toastify";
+import { getItemFromLocalStorage } from "../utitlity/storage";
+
 const AddPropertyDesktop = () => {
+  const dispatch = useDispatch();
+  const token = getItemFromLocalStorage('access_token')
   const navigate = useNavigate();
   const [previewImages, setPreviewImages] = useState([]);
   const [isDragging, setIsDragging] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   const fileInputRef = useRef(null);
+
+  const [formData, setFormData] = useState({
+    isShared: false,
+    sharePropertyNumber: 0,
+    propertyName:'',
+    propertyId: '',
+    propertyPrice: 0,
+    description:'',
+    location: '',
+    propertySize: '',
+  })
+
 
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
@@ -32,6 +51,16 @@ const AddPropertyDesktop = () => {
   const handleFileInputChange = (e) => {
     if (e.target.files.length) {
       handleImageUpload(e.target.files);
+    }
+  };
+
+  const handleInputChange = (e) => {
+    if (e.target) {
+      const {name, value} = e.target
+      setFormData({
+        ...formData,
+        [name]: value
+      })
     }
   };
 
@@ -75,6 +104,38 @@ const AddPropertyDesktop = () => {
 
   const handleBackClick = () => {
     navigate("/portfolio");
+  };
+
+ 
+  const createNewProperty = async () => {
+    if(!formData.propertyName || !formData.propertyPrice) return
+    const body = {
+      isShared: isChecked,
+      sharePropertyNumber: formData?.sharePropertyNumber,
+      propertyName: formData?.propertyName,
+      propertySize: formData?.propertySize,
+      propertyPrice: formData?.propertyPrice,
+      description: formData?.description,
+      location: formData?.location,
+    };
+   
+    try {
+      await dispatch(createProperty({token, body})).unwrap();
+      setFormData({
+        isShared: false,
+        sharePropertyNumber: '',
+        propertyName:'',
+        propertyId: '',
+        propertyPrice: '',
+        description:'',
+        location: '',
+        propertySize: '',
+      })
+    } catch (error) {
+      console.error(error);
+      toast.error(error.message || "An error occured while creating property");
+      return;
+    }
   };
 
   return (
@@ -130,6 +191,9 @@ const AddPropertyDesktop = () => {
                   {/* Conditionally show input when checkbox is checked */}
                   {isChecked && (
                     <input
+                      onChange={(e) => handleInputChange(e)}
+                      name="sharePropertyNumber"
+                      value={formData.sharePropertyNumber}
                       type="number"
                       placeholder="Enter digit"
                       className="ml-4 px-3 w-28 py-2 border border-gray-300 rounded-md text-[#1D3F3FDE] placeholder:text-gray-400 focus:outline-none"
@@ -153,7 +217,10 @@ const AddPropertyDesktop = () => {
                       </span>
                     </label>
                     <input
-                      type="number"
+                      onChange={(e) => handleInputChange(e)}
+                      name="propertyName"
+                      value={formData.propertyName}
+                      type="text"
                       className="w-full p-3 border rounded-lg bg-[#F3F3F3]"
                       placeholder="Enter property name"
                     />
@@ -167,6 +234,9 @@ const AddPropertyDesktop = () => {
                       </span>
                     </label>
                     <input
+                      onChange={(e) => handleInputChange(e)}
+                      name="location"
+                      value={formData.location}
                       type="text"
                       className="w-full p-3 border rounded-lg bg-[#F3F3F3]"
                       placeholder="Enter Location"
@@ -184,6 +254,9 @@ const AddPropertyDesktop = () => {
                         </span>
                       </label>
                       <input
+                        onChange={(e) => handleInputChange(e)}
+                        name="propertySize"
+                        value={formData.propertySize}
                         type="text"
                         className="w-full p-3 border rounded-lg bg-[#F3F3F3] mt-1"
                         placeholder="Enter Size"
@@ -198,6 +271,9 @@ const AddPropertyDesktop = () => {
                         </span>
                       </label>
                       <input
+                        onChange={(e) => handleInputChange(e)}
+                        name="propertyPrice"
+                        value={formData.propertyPrice}
                         type="number"
                         className="w-full p-3 border rounded-lg bg-[#F3F3F3]"
                         placeholder="#"
@@ -214,6 +290,9 @@ const AddPropertyDesktop = () => {
                       </span>
                     </label>
                     <textarea
+                      onChange={(e) => handleInputChange(e)}
+                      name="description"
+                      value={formData.description}
                       className="w-full p-3 border rounded-lg min-h-[120px] bg-[#F3F3F3]"
                       placeholder="Enter your description details"
                     />
@@ -316,7 +395,7 @@ const AddPropertyDesktop = () => {
 
               {/* Buttons */}
               <div className="flex justify-center space-x-4 mt-8">
-                <button className="px-16 py-2 bg-black text-white rounded-3xl hover:bg-gray-800 transition-colors focus:outline-none  focus:ring-black text-lg font-aeonik font-medium">
+                <button onClick={createNewProperty} className="px-16 py-2 bg-black text-white rounded-3xl hover:bg-gray-800 transition-colors focus:outline-none  focus:ring-black text-lg font-aeonik font-medium">
                   Submit
                 </button>
                 <button className="px-16 py-2 bg-white text-gray-600 rounded-3xl border border-gray-100 hover:bg-gray-50 transition-colors focus:outline-none font-aeonik font-medium text-lg shadow-lg focus:ring-gray-300 ">
