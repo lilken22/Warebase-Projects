@@ -18,7 +18,7 @@ import PasswordReset from "./AdminLogin/PasswordReset";
 import PasswordSuccessful from "./AdminLogin/PasswordSucessful";
 import EmailTemplate from "./AdminLogin/EmailTemplate";
 import BlogDetails from "./components/BlogDetails";
-import DashBoard from "./AdminDashboard/DashBoard";
+// import DashBoard from "./AdminDashboard/DashBoard";
 import Overview from "./AdminDashboard/Overview";
 import Blogs from "./AdminDashboard/Blogs";
 import Portfolio from "./AdminDashboard/Portfolio";
@@ -67,29 +67,29 @@ const App = () => {
           <Route path="/blogdetails" element={<BlogDetails />} />
 
           {/* Dashboard Routes */}
-          <Route path="/dashboard" element={<DashBoard />} />
+          {/* <Route path="/dashboard" element={<DashBoard />} /> */}
             {/* <Route index element={<Overview />} /> */}
-            <Route path="/overview" element={<Overview/>} />
-            <Route path="/blogs" element={<Blogs/>} />
-            <Route path="/portfolio" element={<Portfolio/>} />
-            <Route path="/add-property" element={<AddProperty />} />
-            <Route path="/desciption-property" element={<DesciptionProperty />} />
-            <Route path="/settings" element={<Settings/>} />
-            {/* <Route path="/logout" element={<Logout/>} /> */}
-            <Route path="/create-blog" element={<CreateBlog/>} />
-            <Route path="/see-details" element={<SeeDetails/>} />
-            <Route path="/portfolio-mobile" element={<PortfolioMobile/>} />
-            <Route path="/bottom-nav" element={<BottomNav/>} />
-            <Route path="/overview-mobile" element={<OverviewMobile/>} />
-            <Route path="/propertydetails-mobile" element={<PropertyDetailsMobile/>} />
-            <Route path="/blog-mobile" element={<BlogsMobile/>} />
-            <Route path="/blogdetails-mobile" element={<BlogDetailsMobile/>} />
-            <Route path="/createblog-mobile" element={<CreateBlogMobile/>} />
-            <Route path="/settings-mobile" element={<SettingsMobile/>} />
-            <Route path="/settings/profile" element={<SettingsProfile/>} />
-            <Route path="/settings/portfolio" element={<SettingsPortfolio/>} />
-            <Route path="/settings/security" element={<SettingsSecurity/>} />
-            <Route path="/addproperty-mobile" element={<AddPropertyMobile/>} />
+          <Route path="/overview" element={<Overview/>} />
+          <Route path="/blogs" element={<Blogs/>} />
+          <Route path="/portfolio" element={<Portfolio/>} />
+          <Route path="/add-property" element={<AddProperty />} />
+          <Route path="/desciption-property" element={<DesciptionProperty />} />
+          <Route path="/settings" element={<Settings/>} />
+          {/* <Route path="/logout" element={<Logout/>} /> */}
+          <Route path="/create-blog" element={<CreateBlog/>} />
+          <Route path="/see-details" element={<SeeDetails/>} />
+          <Route path="/portfolio-mobile" element={<PortfolioMobile/>} />
+          <Route path="/bottom-nav" element={<BottomNav/>} />
+          <Route path="/overview-mobile" element={<OverviewMobile/>} />
+          <Route path="/propertydetails-mobile" element={<PropertyDetailsMobile/>} />
+          <Route path="/blog-mobile" element={<BlogsMobile/>} />
+          <Route path="/blogdetails-mobile" element={<BlogDetailsMobile/>} />
+          <Route path="/createblog-mobile" element={<CreateBlogMobile/>} />
+          <Route path="/settings-mobile" element={<SettingsMobile/>} />
+          <Route path="/settings/profile" element={<SettingsProfile/>} />
+          <Route path="/settings/portfolio" element={<SettingsPortfolio/>} />
+          <Route path="/settings/security" element={<SettingsSecurity/>} />
+          <Route path="/addproperty-mobile" element={<AddPropertyMobile/>} />
           {/* </Route> */}
         </Routes>
 
