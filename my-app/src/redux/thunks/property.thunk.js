@@ -6,14 +6,15 @@ export const createPropertyThunk = async (data) => {
   const token = data?.token;
   const body = data?.body;
   try {
-    const response = await axios.post(`${URL}/properties/create`, body, {
+    const response = await axios.post(`${URL}/properties/create/`, body, {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
     });
-    if (response?.data?.status === 201) {
+    console.log(response)
+    if (response?.status === 201) {
       toast.success("Property Created Successfully!");
       return response?.data;
     }

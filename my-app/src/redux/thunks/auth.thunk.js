@@ -18,14 +18,12 @@ export const testApiThunk = async () => {
   }
 };
 
-export const authenticateUserThunk = async (user) => {
+export const authenticateUserThunk = async (data) => {
   try {
-    const response = await axios.post(`${URL}/auth/login/`, user);
-    if (response?.data?.status === 200) {
-      // console.log(response?.data)
-      setItemToLocalStorage("access_token", response?.data?.access_token);
+    const response = await axios.post(`${URL}/auth/login/`, {...data});
+    if (response?.status === 200) {
+      setItemToLocalStorage("access_token", response?.data?.token);
       setItemToLocalStorage("user_data", response?.data?.data);
-      
       toast.success(response?.data?.message || "Sign In complete");
       return response.data;
     }

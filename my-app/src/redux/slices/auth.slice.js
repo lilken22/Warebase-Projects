@@ -75,6 +75,7 @@ export const updateUserPassword = createAsyncThunk(
     }
   }
 );
+
 export const updateInstructorPassword = createAsyncThunk(
  "api/updateInstructorPassword",
   async (data, { rejectWithValue }) => {
@@ -108,27 +109,6 @@ export const signUpUser= createAsyncThunk(
   }
 );
 
-export const enrollUser= createAsyncThunk(
- "api/enrollUser",
-  async (data, { rejectWithValue }) => {
-    try {
-      return await enrollUserThunk(data);
-    } catch (error) {
-      return rejectWithValue(error.response.data);
-    }
-  }
-);
-
-export const enrollUserLater= createAsyncThunk(
-  "api/enrollUserLater",
-   async (data, { rejectWithValue }) => {
-     try {
-       return await enrollUserLaterThunk(data);
-     } catch (error) {
-       return rejectWithValue(error.response.data);
-     }
-   }
- );
 
 
 
@@ -146,10 +126,8 @@ const auth_slice = createSlice({
       .addCase(authenticateUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.error = false;
-        state.user = action?.payload?.user || {}
-        state.user_role = action?.payload?.user_role || null
-        state.access_token = action?.payload?.access_token || null
-        state.refresh_token = action?.payload?.refresh_token || null
+        state.user = action?.payload?.data|| {}
+        state.access_token = action?.payload?.token || null
       })
       .addCase(authenticateUser.rejected, (state) => {
         state.isLoading = false;
@@ -169,68 +147,68 @@ const auth_slice = createSlice({
         state.error = true;
       })
      
-      .addCase(enrollUser.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(enrollUser.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.error = false;
-        state.user = action?.payload?.data
-      })
-      .addCase(enrollUser.rejected, (state) => {
-        state.isLoading = false;
-        state.error = true;
-      })
-      .addCase(enrollUserLater.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(enrollUserLater.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.error = false;
-        state.user = action?.payload?.data
-      })
-      .addCase(enrollUserLater.rejected, (state) => {
-        state.isLoading = false;
-        state.error = true;
-      })
+      // .addCase(enrollUser.pending, (state) => {
+      //   state.isLoading = true;
+      // })
+      // .addCase(enrollUser.fulfilled, (state, action) => {
+      //   state.isLoading = false;
+      //   state.error = false;
+      //   state.user = action?.payload?.data
+      // })
+      // .addCase(enrollUser.rejected, (state) => {
+      //   state.isLoading = false;
+      //   state.error = true;
+      // })
+      // .addCase(enrollUserLater.pending, (state) => {
+      //   state.isLoading = true;
+      // })
+      // .addCase(enrollUserLater.fulfilled, (state, action) => {
+      //   state.isLoading = false;
+      //   state.error = false;
+      //   state.user = action?.payload?.data
+      // })
+      // .addCase(enrollUserLater.rejected, (state) => {
+      //   state.isLoading = false;
+      //   state.error = true;
+      // })
      
-      .addCase(logoutUser.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(logoutUser.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.error = false;
-        state.user = {}
-        state.id = null
-        state.user_role = null
-        state.access_token = null
-        state.refresh_token = null
-      })
-      .addCase(logoutUser.rejected, (state) => {
-        state.isLoading = false;
-      })
+      // .addCase(logoutUser.pending, (state) => {
+      //   state.isLoading = true;
+      // })
+      // .addCase(logoutUser.fulfilled, (state, action) => {
+      //   state.isLoading = false;
+      //   state.error = false;
+      //   state.user = {}
+      //   state.id = null
+      //   state.user_role = null
+      //   state.access_token = null
+      //   state.refresh_token = null
+      // })
+      // .addCase(logoutUser.rejected, (state) => {
+      //   state.isLoading = false;
+      // })
 
-      .addCase(updateUserPassword.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(updateUserPassword.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.error = false;
-      })
-      .addCase(updateUserPassword.rejected, (state) => {
-        state.isLoading = false;
-      })
+      // .addCase(updateUserPassword.pending, (state) => {
+      //   state.isLoading = true;
+      // })
+      // .addCase(updateUserPassword.fulfilled, (state, action) => {
+      //   state.isLoading = false;
+      //   state.error = false;
+      // })
+      // .addCase(updateUserPassword.rejected, (state) => {
+      //   state.isLoading = false;
+      // })
       
-      .addCase(updateInstructorPassword.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(updateInstructorPassword.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.error = false;
-      })
-      .addCase(updateInstructorPassword.rejected, (state) => {
-        state.isLoading = false;
-      })
+      // .addCase(updateInstructorPassword.pending, (state) => {
+      //   state.isLoading = true;
+      // })
+      // .addCase(updateInstructorPassword.fulfilled, (state, action) => {
+      //   state.isLoading = false;
+      //   state.error = false;
+      // })
+      // .addCase(updateInstructorPassword.rejected, (state) => {
+      //   state.isLoading = false;
+      // })
   },
 });
 
