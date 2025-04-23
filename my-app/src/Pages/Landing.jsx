@@ -35,11 +35,6 @@ const LandingPage = () => {
     }
   };
 
-
-  useEffect(()=>{
-    dispatch(testApiCalls()).unwrap()
-  },[])
-
   return (
     <div className="min-h-screen bg-white text-[rgb(26, 24, 24)] font-serif flex flex-col justify-between">
       {/* Navbar */}

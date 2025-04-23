@@ -116,6 +116,7 @@ import { fetchProperties } from "../redux/slices/property.slice";
 
 export default function Listing() {
   const {properties} = useSelector(selectPropertiesSlice)
+  console.log(properties)
   const dispatch = useDispatch()
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
@@ -375,23 +376,23 @@ export default function Listing() {
           <div className="bg-[#F4F4F4] px-3 mx-auto rounded-md max-w-[1320px] items-center">
             <div className="max-w-[1300px]">
               <div className="grid grid-cols-1 gap-4 mt-16 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 justify-start">
-                {propertyImages.map((item, index) => (
+                {properties?.length > 0 && properties?.map((item, index) => (
                   <div
                     key={index}
                     className="md:w-[320px] border rounded-lg bg-[#FFFFFF] shadow-md overflow-hidden"
                   >
                     <div className="relative">
                       <img
-                        src={item.imageUrl}
+                        src={item.propertyImage}
                         alt={`Property ${index + 1}`}
                         className="w-full h-40 object-cover"
                       />
                       <span className="absolute top-0 left-0 bg-[#F11414] text-white text-xs px-2 py-1 rounded">
-                        {item.isForSale ? "For Sale" : "For Lease"}
+                        {!item.isShared ? "For Sale" : "For Lease"}
                       </span>
-                      {item.propertyType === "shared" && (
+                      {item.isShared && (
                         <span className="absolute top-2 -right-3 bg-white text-[#1C1C1C] text-sm px-4 py-1 rounded shadow-md text-center font-aeonik custom-rotate">
-                          Shared(4)
+                          Shared({item.sharePropertyNumber})
                         </span>
                       )}
                     </div>
@@ -399,30 +400,30 @@ export default function Listing() {
                       <p className="text-sm text-[#627777DE]">
                         Property Name:{" "}
                         <span className="font-yeseva font-light text-sm">
-                          Property Name
+                          {item.propertyName}
                         </span>
                       </p>
                       <p className="text-sm text-[#627777DE]">
                         Property ID:{" "}
                         <span className="font-yeseva font-light text-sm">
-                          WB01
+                          {item?.propertyId}
                         </span>
                       </p>
                       <p className="text-sm text-[#627777DE]">
                         Location:{" "}
                         <span className="font-yeseva font-light text-sm">
-                          Lagos
+                          {item.location}
                         </span>
                       </p>
                       <p className="text-sm text-[#627777DE]">
                         Price:{" "}
                         <span className="font-yeseva font-light text-sm">
-                          ₦5,250,000/Month
+                         {item?.propertyPrice}/Month
                         </span>
                       </p>
                       <div className="mt-4 flex justify-between">
                         <Link
-                          to={`/PropertyDetails/${index}`}
+                          to={`/PropertyDetails/${item._id}`}
                           className="text-sm py-2 text-start text-[#627777DE] hover:underline rounded"
                         >
                           See Description

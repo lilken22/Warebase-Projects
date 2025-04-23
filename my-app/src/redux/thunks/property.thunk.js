@@ -50,8 +50,8 @@ export const editPropertyThunk = async (data) => {
 
 export const fetchPropertiesThunk = async () => {
   try {
-    const response = await axios.get(`${URL}/properties/findAll`);
-    if (response?.data?.status === 200) {
+    const response = await axios.get(`${URL}/properties/findAll/`);
+    if (response?.status === 200) {
       response?.data?.data;
       return response?.data;
     }
