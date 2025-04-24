@@ -1,7 +1,9 @@
 import axios from "axios";
-import { URL } from "../actionTypes";
+// import { URL } from "../actionTypes";
 import { toast } from "react-toastify";
 import { setItemToLocalStorage } from "../../utitlity/storage";
+const URL =  import.meta.env.VITE_API_URL;
+// console.log(URL)
 
 export const testApiThunk = async () => {
   try {
