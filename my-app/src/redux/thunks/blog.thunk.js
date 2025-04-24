@@ -1,6 +1,7 @@
 import axios from "axios";
-import { URL } from "../actionTypes";
+// import { URL } from "../actionTypes";
 import { toast } from "react-toastify";
+const URL =  import.meta.env.VITE_API_URL;
 
 export const createBlogThunk = async (data) => {
   const token = data?.token;

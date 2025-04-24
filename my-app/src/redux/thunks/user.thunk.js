@@ -1,7 +1,8 @@
 import axios from "axios";
-import { URL } from "../actionTypes";
+// import { URL } from "../actionTypes";
 import { toast } from "react-toastify";
 import { setItemToLocalStorage } from "../../utitlity/storage";
+const URL =  import.meta.env.VITE_API_URL;
 
 export const getVisitingUserInfoThunk = async (data={}) => {
   const YOUR_ACCESS_KEY = data?.YOUR_ACCESS_KEY || 'f3eb85dea1a5ced92a65d7918c9bb058';
