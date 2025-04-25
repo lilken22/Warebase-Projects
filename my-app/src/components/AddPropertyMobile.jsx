@@ -123,7 +123,7 @@ export default function AddPropertyMobile() {
 
           <div>
             <label className="text-[#627777] text-xs block mb-1">
-              Warehouse Size <span className="text-red-600">*</span>
+              Warehouse Size 1000sqft <span className="text-red-600">*</span>
             </label>
             <input
               type="text"

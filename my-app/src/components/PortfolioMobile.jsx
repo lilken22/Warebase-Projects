@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Menu } from "lucide-react";
 import { PiSlidersHorizontalFill } from "react-icons/pi";
 import BottomNav from "../components/BottomNav";
@@ -11,6 +11,8 @@ import {
   FaChevronRight,
   FaSearch,
 } from "react-icons/fa";
+import TenureModal from "../components/TenureModal";
+import OrderModal from "../components/OrderModal";
 
 const properties = [
   {
@@ -46,11 +48,64 @@ const properties = [
 const PortfolioMobile = () => {
   const [selectedTab, setSelectedTab] = useState("listed");
   const [currentPage, setCurrentPage] = useState(1);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
+  const [isOrderOpen, setIsOrderOpen] = useState(false);
+  const [orderPosition, setOrderPosition] = useState({ top: 0, left: 0 });
+
   const navigate = useNavigate();
+  const dropdownRef = useRef(null);
+  const orderButtonRef = useRef(null);
+  const tenureButtonRef = useRef(null);
+  const orderModalRef = useRef(null);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
+
+  const handleDropdownToggle = () => {
+    if (tenureButtonRef.current) {
+      const buttonRect = tenureButtonRef.current.getBoundingClientRect();
+      setDropdownPosition({
+        top: buttonRect.bottom + window.scrollY,
+        left: buttonRect.left + window.scrollX,
+      });
+    }
+    setIsDropdownOpen((prev) => !prev);
+  };
+
+  const handleOrderToggle = () => {
+    if (orderButtonRef.current) {
+      const Rect = orderButtonRef.current.getBoundingClientRect();
+      setOrderPosition({
+        top: Rect.bottom + window.scrollY,
+        left: Rect.left + window.scrollX,
+      });
+    }
+    setIsOrderOpen((prev) => !prev);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+      if (
+        orderModalRef.current &&
+        !orderModalRef.current.contains(event.target)
+      ) {
+        setIsOrderOpen(false);
+      }
+      // if (listModalRef.current && !listModalRef.current.contains(event.target)) {
+      //   setListModalOpen(false);
+      // }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="min-h-screen bg-white flex justify-center">
@@ -66,7 +121,7 @@ const PortfolioMobile = () => {
           <div className="flex justify-between items-center mt-7">
             <h2 className="text-xl font-semibold text-gray-800">Properties</h2>
             <button
-              onClick={() => navigate("/add-property")}
+              onClick={() => navigate("/addproperty-mobile")}
               className="bg-[#00E5FF] text-white font-medium font-Poppins px-3 py-3 rounded-lg flex items-center"
             >
               <FaPlus className="mr-2" /> Add Property
@@ -141,6 +196,42 @@ const PortfolioMobile = () => {
           onPageChange={handlePageChange}
         />
 
+        <div className="flex justify-center items-center mt-4 rounded-lg">
+          <div className="flex gap-3 bg-[#F9F9F9] rounded-full p-3 w-full max-w-[90%]">
+            <FilterButton
+              ref={tenureButtonRef}
+              onClick={handleDropdownToggle}
+              className="flex-1"
+            >
+              Tenure <FaChevronDown className="ml-2" />
+            </FilterButton>
+
+            <FilterButton
+              ref={orderButtonRef}
+              onClick={handleOrderToggle}
+              className="flex-1"
+            >
+              Order <FaChevronDown className="ml-2" />
+            </FilterButton>
+
+            <button className="flex items-center justify-center bg-black text-white rounded-full px-4 py-2">
+              <FaSyncAlt />
+            </button>
+          </div>
+
+          <TenureModal
+            isOpen={isDropdownOpen}
+            onClose={() => setIsDropdownOpen(false)}
+            position={dropdownPosition}
+          />
+
+          <OrderModal
+            isOpen={isOrderOpen}
+            onClose={() => setIsOrderOpen(false)}
+            position={orderPosition}
+          />
+        </div>
+
         {/* Bottom Navigation */}
         <BottomNav />
       </div>
@@ -159,6 +250,17 @@ const TabButton = ({ active, onClick, count, children }) => (
     {children} {count}
   </button>
 );
+
+const FilterButton = React.forwardRef(({ onClick, children, className = "", ...rest }, ref) => (
+  <button
+    ref={ref}
+    onClick={onClick}
+    className={`px-7 py-3 flex items-center bg-[#FFFFFF] text-[#7B7B7B] rounded-full ${className}`}
+    {...rest}
+  >
+    {children}
+  </button>
+));
 
 const SearchBar = () => (
   <div className=" p-2 rounded-full w-[400px] flex items-center">

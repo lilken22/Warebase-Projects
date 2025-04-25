@@ -248,7 +248,7 @@ const AddPropertyDesktop = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <label className="block text-[#627777] font-normal font-aeonik text-base">
-                        Warehouse Size{" "}
+                        Warehouse Size 1000sqft {" "}
                         <span className="text-center font-aeonik font-normal text-red-600 text-lg">
                           *
                         </span>
