@@ -42,6 +42,7 @@ import SettingsSecurity from "./components/SettingsSecurity";
 import AddPropertyMobile from "./components/AddPropertyMobile";
 import { ToastContainer, Flip } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { ProtectedRoute } from "./redux/actionTypes";
 
 
 
@@ -84,12 +85,16 @@ const App = () => {
           <Route path="/blogdetails" element={<BlogDetails />} />
 
           {/* Dashboard Routes */}
-          <Route path="/dashboard" element={<DashBoard />} />
+          <Route path="/dashboard" element={
+            <ProtectedRoute>
+               <DashBoard />
+            </ProtectedRoute>
+            } />
             {/* <Route index element={<Overview />} /> */}
-            <Route path="/overview" element={<Overview/>} />
+            <Route path="/overview" element={<ProtectedRoute><Overview/></ProtectedRoute>} />
             <Route path="/blogs" element={<Blogs/>} />
             <Route path="/portfolio" element={<Portfolio/>} />
-            <Route path="/add-property" element={<AddProperty />} />
+            <Route path="/add-property" element={<ProtectedRoute><AddProperty/></ProtectedRoute>} />
             <Route path="/desciption-property" element={<DesciptionProperty />} />
             <Route path="/settings" element={<Settings/>} />
             {/* <Route path="/logout" element={<Logout/>} /> */}
