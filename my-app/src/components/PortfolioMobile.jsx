@@ -58,6 +58,7 @@ const PortfolioMobile = () => {
   const orderButtonRef = useRef(null);
   const tenureButtonRef = useRef(null);
   const orderModalRef = useRef(null);
+  
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -197,13 +198,15 @@ const PortfolioMobile = () => {
         />
 
         <div className="flex justify-center items-center mt-4 rounded-lg">
-          <div className="flex gap-3 bg-[#F9F9F9] rounded-full p-3 w-full max-w-[90%]">
+          <div className="flex gap-2 bg-[#F9F9F9] rounded-full p-1 w-full max-w-[80%] border border-1 ">
             <FilterButton
               ref={tenureButtonRef}
               onClick={handleDropdownToggle}
               className="flex-1"
             >
-              Tenure <FaChevronDown className="ml-2" />
+              <div className="flex justify-between items-center gap-4">
+              Tenure <FaChevronDown className="ml-8" />
+              </div>
             </FilterButton>
 
             <FilterButton
@@ -211,7 +214,9 @@ const PortfolioMobile = () => {
               onClick={handleOrderToggle}
               className="flex-1"
             >
-              Order <FaChevronDown className="ml-2" />
+              <div className="flex justify-between items-center gap-4">
+              Order <FaChevronDown className="ml-8" />
+              </div>
             </FilterButton>
 
             <button className="flex items-center justify-center bg-black text-white rounded-full px-4 py-2">

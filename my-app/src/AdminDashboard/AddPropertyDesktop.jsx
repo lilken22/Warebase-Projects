@@ -12,7 +12,7 @@ import { getItemFromLocalStorage } from "../utitlity/storage";
 
 const AddPropertyDesktop = () => {
   const dispatch = useDispatch();
-  const token = getItemFromLocalStorage('access_token')
+  const token = getItemFromLocalStorage("access_token");
   const navigate = useNavigate();
   const [previewImages, setPreviewImages] = useState([]);
   const [isDragging, setIsDragging] = useState(false);
@@ -22,14 +22,13 @@ const AddPropertyDesktop = () => {
   const [formData, setFormData] = useState({
     isShared: false,
     sharePropertyNumber: 0,
-    propertyName:'',
-    propertyId: '',
+    propertyName: "",
+    propertyId: "",
     propertyPrice: 0,
-    description:'',
-    location: '',
-    propertySize: '',
-  })
-
+    description: "",
+    location: "",
+    propertySize: "",
+  });
 
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
@@ -56,11 +55,11 @@ const AddPropertyDesktop = () => {
 
   const handleInputChange = (e) => {
     if (e.target) {
-      const {name, value} = e.target
+      const { name, value } = e.target;
       setFormData({
         ...formData,
-        [name]: value
-      })
+        [name]: value,
+      });
     }
   };
 
@@ -106,9 +105,8 @@ const AddPropertyDesktop = () => {
     navigate("/portfolio");
   };
 
- 
   const createNewProperty = async () => {
-    if(!formData.propertyName || !formData.propertyPrice) return
+    if (!formData.propertyName || !formData.propertyPrice) return;
     const body = {
       isShared: isChecked,
       sharePropertyNumber: formData?.sharePropertyNumber,
@@ -118,19 +116,19 @@ const AddPropertyDesktop = () => {
       description: formData?.description,
       location: formData?.location,
     };
-   
+
     try {
-      await dispatch(createProperty({token, body})).unwrap();
+      await dispatch(createProperty({ token, body })).unwrap();
       setFormData({
         isShared: false,
-        sharePropertyNumber: '',
-        propertyName:'',
-        propertyId: '',
-        propertyPrice: '',
-        description:'',
-        location: '',
-        propertySize: '',
-      })
+        sharePropertyNumber: "",
+        propertyName: "",
+        propertyId: "",
+        propertyPrice: "",
+        description: "",
+        location: "",
+        propertySize: "",
+      });
     } catch (error) {
       console.error(error);
       toast.error(error.message || "An error occured while creating property");
@@ -248,19 +246,22 @@ const AddPropertyDesktop = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <label className="block text-[#627777] font-normal font-aeonik text-base">
-                        Warehouse Size 1000sqft {" "}
+                        Warehouse Size{" "}
                         <span className="text-center font-aeonik font-normal text-red-600 text-lg">
                           *
                         </span>
                       </label>
-                      <input
-                        onChange={(e) => handleInputChange(e)}
-                        name="propertySize"
-                        value={formData.propertySize}
-                        type="text"
-                        className="w-full p-3 border rounded-lg bg-[#F3F3F3] mt-1"
-                        placeholder="Enter Size"
-                      />
+                      <div className="flex items-center border rounded-lg bg-[#F3F3F3] mt-1 overflow-hidden">
+                        <input
+                          onChange={(e) => handleInputChange(e)}
+                          name="propertySize"
+                          value={formData.propertySize}
+                          type="text"
+                          className="flex-1 p-3 bg-transparent border-none outline-none"
+                          placeholder="Enter Size"
+                        />
+                        <span className="px-3 text-[#627777]">sq.ft</span>
+                      </div>
                     </div>
 
                     <div>
@@ -395,7 +396,10 @@ const AddPropertyDesktop = () => {
 
               {/* Buttons */}
               <div className="flex justify-center space-x-4 mt-8">
-                <button onClick={createNewProperty} className="px-16 py-2 bg-black text-white rounded-3xl hover:bg-gray-800 transition-colors focus:outline-none  focus:ring-black text-lg font-aeonik font-medium">
+                <button
+                  onClick={createNewProperty}
+                  className="px-16 py-2 bg-black text-white rounded-3xl hover:bg-gray-800 transition-colors focus:outline-none  focus:ring-black text-lg font-aeonik font-medium"
+                >
                   Submit
                 </button>
                 <button className="px-16 py-2 bg-white text-gray-600 rounded-3xl border border-gray-100 hover:bg-gray-50 transition-colors focus:outline-none font-aeonik font-medium text-lg shadow-lg focus:ring-gray-300 ">
