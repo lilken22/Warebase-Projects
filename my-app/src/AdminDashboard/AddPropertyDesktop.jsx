@@ -12,7 +12,8 @@ import { getItemFromLocalStorage } from "../utitlity/storage";
 
 const AddPropertyDesktop = () => {
   const dispatch = useDispatch();
-  const token = getItemFromLocalStorage("access_token");
+  // const token = getItemFromLocalStorage("access_token");
+  const token = getItemFromLocalStorage('wb_token')
   const navigate = useNavigate();
   const [previewImages, setPreviewImages] = useState([]);
   const [isDragging, setIsDragging] = useState(false);

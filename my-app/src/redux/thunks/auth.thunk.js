@@ -1,14 +1,11 @@
 import axios from "axios";
-// import { URL } from "../actionTypes";
+import { URL } from "../actionTypes";
 import { toast } from "react-toastify";
 import { setItemToLocalStorage } from "../../utitlity/storage";
-const URL =  import.meta.env.VITE_API_URL;
-// console.log(URL)
 
 export const testApiThunk = async () => {
   try {
     const response = await axios.get(`${URL}/test`);
-    console.log(response)
     if (response?.status === 200) {
       toast.success(response?.data?.message);
       return response.data;
@@ -24,7 +21,7 @@ export const authenticateUserThunk = async (data) => {
   try {
     const response = await axios.post(`${URL}/auth/login/`, {...data});
     if (response?.status === 200) {
-      setItemToLocalStorage("access_token", response?.data?.token);
+      setItemToLocalStorage("wb_token", response?.data?.token);
       setItemToLocalStorage("user_data", response?.data?.data);
       toast.success(response?.data?.message || "Sign In complete");
       return response.data;
@@ -57,6 +54,7 @@ export const signupUserThunk = async (user) => {
 };
 
 export const enrollUserThunk = async (user) => {
+
   try {
     const response = await axios.post(`${URL}/register/enroll_now/`, user);
     if (response?.data?.status === 201) {
@@ -75,6 +73,7 @@ export const enrollUserThunk = async (user) => {
 };
 
 export const enrollUserLaterThunk = async (data) => {
+ 
   const token = data.token;
   const body = {
     referral_link: data.referral_link ? data.referral_link : "",
