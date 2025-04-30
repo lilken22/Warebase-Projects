@@ -1,11 +1,11 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import Navbar from "../components/Navbar"; 
 import Footer from "../components/Footer"; 
 import { Link, useNavigate } from "react-router-dom";
 import WarehouseFormModal from "../components/WarehouseFormModal"; 
 import { FaArrowRight } from "react-icons/fa6";
 // note that i removes useSelctor cause it causing an error on git hub
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
 // import { testApiCalls } from "../redux/slices/auth.slice";
 
 const LandingPage = () => {
@@ -13,7 +13,7 @@ const LandingPage = () => {
   const [selectedOption, setSelectedOption] = useState(null); // State to track selected radio button
   const navigate = useNavigate();
   const servicesRef = useRef(null);
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch()
 
   const handleRadioChange = (event) => {
     setSelectedOption((prev) => (prev === event.target.id ? null : event.target.id));

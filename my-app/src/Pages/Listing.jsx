@@ -15,115 +15,104 @@ import { fetchProperties } from "../redux/slices/property.slice";
 
 
   // data array moved here 
-  const data = [
-    {
-      imageUrl: "/property one.jpg",
-      propertyType: "unshared",
-      location: "delta",
-      size:"1000 sq.ft",
-      priceRange: [30000, 40000],
-      sizeRange: "",
-      isForSale: true,
-    },
-    {
-      imageUrl: "/property two.jpg",
-      propertyType: "shared",
-      location: "delta",
-      size:"1000 sq.ft",
-      priceRange: [30000, 40000],
-      sizeRange: "",
-      isForSale: false,
-    },
-    {
-      imageUrl: "/property three.jpg",
-      propertyType: "shared",
-      location: "delta",
-      size:"1000 sq.ft",
-      priceRange: [30000, 40000],
-      sizeRange: "",
-      isForSale: false,
-    },
-    {
-      imageUrl: "/property one.jpg",
-      propertyType: "unshared",
-      location: "delta",
-      size:"1000 sq.ft",
-      priceRange: [30000, 40000],
-      sizeRange: "",
-      isForSale: true,
-    },
-    {
-      imageUrl: "/property two.jpg",
-      propertyType: "shared",
-      location: "delta",
-      priceRange: [30000, 40000],
-      sizeRange: "",
-      isForSale: false,
-    },
-    {
-      imageUrl: "/property one.jpg",
-      propertyType: "unshared",
-      location: "delta",
-      size:"1000 sq.ft",
-      priceRange: [30000, 40000],
-      sizeRange: "",
-      isForSale: true,
-    },
-    {
-      imageUrl: "/property three.jpg",
-      propertyType: "unshared",
-      location: "delta",
-      size:"1000 sq.ft",
-      priceRange: [30000, 40000],
-      sizeRange: "",
-      isForSale: true,
-    },
-    {
-      imageUrl: "/property two.jpg",
-      propertyType: "shared",
-      location: "delta",
-      size:"1000 sq.ft",
-      priceRange: [30000, 40000],
-      sizeRange: "",
-      isForSale: false,
-    },
-    {
-      imageUrl: "/property three.jpg",
-      propertyType: "shared",
-      location: "delta",
-      size:"1000 sq.ft",
-      priceRange: [30000, 40000],
-      sizeRange: "",
-      isForSale: false,
-    },
-    {
-      imageUrl: "/property two.jpg",
-      propertyType: "unshared",
-      location: "delta",
-      size:"1000 sq.ft",
-      priceRange: [30000, 40000],
-      sizeRange: "",
-      isForSale: true,
-    },
-    {
-      imageUrl: "/property two.jpg",
-      propertyType: "unshared",
-      location: "delta",
-      size:"1000 sq.ft",
-      priceRange: [30000, 40000],
-      sizeRange: "",
-      isForSale: true,
-    },
-    {
-      imageUrl: "/property three.jpg",
-      propertyType: "shared",
-      location: "delta",
-      size:"1000 sq.ft",
-      priceRange: [30000, 40000],
-      sizeRange: "",
-      isForSale: false,
-    },
-  ];
+  // const data = [
+  //   {
+  //     imageUrl: "/property one.jpg",
+  //     propertyType: "unshared",
+  //     location: "delta",
+  //     priceRange: [30000, 40000],
+  //     sizeRange: "",
+  //     isForSale: true,
+  //   },
+  //   {
+  //     imageUrl: "/property two.jpg",
+  //     propertyType: "shared",
+  //     location: "delta",
+  //     priceRange: [30000, 40000],
+  //     sizeRange: "",
+  //     isForSale: false,
+  //   },
+  //   {
+  //     imageUrl: "/property three.jpg",
+  //     propertyType: "shared",
+  //     location: "delta",
+  //     priceRange: [30000, 40000],
+  //     sizeRange: "",
+  //     isForSale: false,
+  //   },
+  //   {
+  //     imageUrl: "/property one.jpg",
+  //     propertyType: "unshared",
+  //     location: "delta",
+  //     priceRange: [30000, 40000],
+  //     sizeRange: "",
+  //     isForSale: true,
+  //   },
+  //   {
+  //     imageUrl: "/property two.jpg",
+  //     propertyType: "shared",
+  //     location: "delta",
+  //     priceRange: [30000, 40000],
+  //     sizeRange: "",
+  //     isForSale: false,
+  //   },
+  //   {
+  //     imageUrl: "/property one.jpg",
+  //     propertyType: "unshared",
+  //     location: "delta",
+  //     priceRange: [30000, 40000],
+  //     sizeRange: "",
+  //     isForSale: true,
+  //   },
+  //   {
+  //     imageUrl: "/property three.jpg",
+  //     propertyType: "unshared",
+  //     location: "delta",
+  //     priceRange: [30000, 40000],
+  //     sizeRange: "",
+  //     isForSale: true,
+  //   },
+  //   {
+  //     imageUrl: "/property two.jpg",
+  //     propertyType: "shared",
+  //     location: "delta",
+  //     priceRange: [30000, 40000],
+  //     sizeRange: "",
+  //     isForSale: false,
+  //   },
+  //   {
+  //     imageUrl: "/property three.jpg",
+  //     propertyType: "shared",
+  //     location: "delta",
+  //     priceRange: [30000, 40000],
+  //     sizeRange: "",
+  //     isForSale: false,
+  //   },
+  //   {
+  //     imageUrl: "/property two.jpg",
+  //     propertyType: "unshared",
+  //     location: "delta",
+  //     priceRange: [30000, 40000],
+  //     sizeRange: "",
+  //     isForSale: true,
+  //   },
+  //   {
+  //     imageUrl: "/property two.jpg",
+  //     propertyType: "unshared",
+  //     location: "delta",
+  //     priceRange: [30000, 40000],
+  //     sizeRange: "",
+  //     isForSale: true,
+  //   },
+  //   {
+  //     imageUrl: "/property three.jpg",
+  //     propertyType: "shared",
+  //     location: "delta",
+  //     priceRange: [30000, 40000],
+  //     sizeRange: "",
+  //     isForSale: false,
+  //   },
+  // ];
 
 export default function Listing() {
   const {properties} = useSelector(selectPropertiesSlice)
@@ -153,7 +142,8 @@ export default function Listing() {
   // const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [toggleData, setToggleData] = useState(true);
-  const [propertyImages, setPropertyImages] = useState(properties ?? []);
+  const [ setPropertyImages] = useState(properties ?? []);
+  // (propertyImages) i removed the propertyImages texts cause it's causing and error and preventing me to create a PR   
 
   const handleDropdownToggle = () => {
     if (buttonRef.current) {
@@ -424,10 +414,6 @@ export default function Listing() {
                         Location:{" "}
                         <span className="font-yeseva font-light text-sm">
                           {item.location}
-                        </span> 
-                        <span className="border-l border-[#627777] mx-2 h-4"></span> {/* Separator */}
-                        <span className="font-yeseva font-light text-sm">
-                        {item.size}
                         </span>
                       </p>
                       <p className="text-sm text-[#627777DE]">

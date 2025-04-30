@@ -43,7 +43,8 @@ export const editBlogThunk = async (data) => {
       return response?.data;
     }
   } catch (err) {
-    message.error(err?.response?.data?.message);
+    // note i changed the text (message to toast because it was giving an error in github)
+    toast.error(err?.response?.data?.message);
     err.response;
     return err.response?.data?.message || "an error occured check console ";
   }
@@ -65,7 +66,8 @@ export const createFeaturedBlogThunk = async (data) => {
       return response?.data;
     }
   } catch (err) {
-    message.error(err?.response?.data?.message);
+    // note i changed the text (message to toast because it was giving an error in github)
+    toast.error(err?.response?.data?.message);
     err.response;
     return err.response?.data?.message || "an error occured check console ";
   }
@@ -110,7 +112,8 @@ export const deleteBlogThunk = async (data) => {
       return response?.data;
     }
   } catch (err) {
-    message.error(err?.response?.data?.message);
+    // note i changed the text (message to toast because it was giving an error in github)
+    toast.error(err?.response?.data?.message);
     err.response;
     return err.response?.data?.message || "an error occured check console ";
   }
