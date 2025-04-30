@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 import { FaTimes, FaCloudUploadAlt } from "react-icons/fa";
-
-import { useDispatch, useSelector } from "react-redux";
+// note that i removes useSelctor cause it causing an error on git hub
+import { useDispatch  } from "react-redux";
 import { createProperty } from "../redux/slices/property.slice";
 import { toast } from "react-toastify";
 import { getItemFromLocalStorage } from "../utitlity/storage";

@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 export const createBlogThunk = async (data) => {
   const token = data?.token;
   const body = data?.body;
+
   try {
     const response = await axios.post(`${URL}/blogs/create`, body, {
       headers: {
@@ -18,7 +19,8 @@ export const createBlogThunk = async (data) => {
       return response?.data;
     }
   } catch (err) {
-    message.error(err?.response?.data?.message);
+    // note i changed the text (message to toast because it was giving an error in github)
+    toast.error(err?.response?.data?.message);
     err?.response;
     return err.response?.data?.message || "an error occured check console ";
   }

@@ -4,8 +4,9 @@ import Footer from "../components/Footer";
 import { Link, useNavigate } from "react-router-dom";
 import WarehouseFormModal from "../components/WarehouseFormModal"; 
 import { FaArrowRight } from "react-icons/fa6";
-import { useDispatch, useSelector } from "react-redux";
-import { testApiCalls } from "../redux/slices/auth.slice";
+// note that i removes useSelctor cause it causing an error on git hub
+import { useDispatch } from "react-redux";
+// import { testApiCalls } from "../redux/slices/auth.slice";
 
 const LandingPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

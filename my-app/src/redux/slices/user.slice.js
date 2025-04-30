@@ -269,7 +269,8 @@ const user_slice = createSlice({
     .addCase(createUser.pending, (state) => {
       state.isLoading = true;
     })
-    .addCase(createUser.fulfilled, (state, action) => {
+    // i removed this action text that will be after the state because it not allowing the code to push on git hub it's bringing an error (action) the error is that action is defined but not used
+    .addCase(createUser.fulfilled, (state) => {
       state.isLoading = false;
       state.error = false
     })
@@ -280,7 +281,8 @@ const user_slice = createSlice({
     .addCase(deleteUser.pending, (state) => {
       state.isLoading = true;
     })
-    .addCase(deleteUser.fulfilled, (state, action) => {
+    // i removed this action text that will be after the state because it not allowing the code to push on git hub it's bringing an error (action) the error is that action is defined but not used
+    .addCase(deleteUser.fulfilled, (state) => {
       state.isLoading = false;
       state.error = false
     })
@@ -291,7 +293,8 @@ const user_slice = createSlice({
     .addCase(archiveUser.pending, (state) => {
       state.isLoading = true;
     })
-    .addCase(archiveUser.fulfilled, (state, action) => {
+    // i removed this action text that will be after the state because it not allowing the code to push on git hub it's bringing an error (action) the error is that action is defined but not used
+    .addCase(archiveUser.fulfilled, (state) => {
       state.isLoading = false;
       state.error = false
     })
@@ -302,7 +305,8 @@ const user_slice = createSlice({
     .addCase(activateUser.pending, (state) => {
       state.isLoading = true;
     })
-    .addCase(activateUser.fulfilled, (state, action) => {
+    // i removed this action text that will be after the state because it not allowing the code to push on git hub it's bringing an error (action) the error is that action is defined but not used
+    .addCase(activateUser.fulfilled, (state) => {
       state.isLoading = false;
       state.error = false
     })
@@ -313,7 +317,8 @@ const user_slice = createSlice({
     .addCase(deactivateUser.pending, (state) => {
       state.isLoading = true;
     })
-    .addCase(deactivateUser.fulfilled, (state, action) => {
+    // i removed this action text that will be after the state because it not allowing the code to push on git hub it's bringing an error (action) the error is that is defined but not used
+    .addCase(deactivateUser.fulfilled, (state) => {
       state.isLoading = false;
       state.error = false
     })

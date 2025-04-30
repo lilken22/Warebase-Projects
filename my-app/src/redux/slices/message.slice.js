@@ -8,7 +8,7 @@ import {
   fetchStudentsMessagesThunk,
   getInstructorMessagesThunk
 } from "../thunks/message.thunk";
-import { act } from "react";
+// import { act } from "react";
 
 
 const initialState = {
@@ -27,9 +27,10 @@ export const sendInstructorMessage = createAsyncThunk(
    async (data, { rejectWithValue }) => {
      try {
        return await sendInstructorMessageThunk(data);
-     } catch (error) {
-       return rejectWithValue(err?.response?.data?.message);
+     } catch (err) {
+       return rejectWithValue(err?.response?.data?.message);       
      }
+    //  console.log(error)
    }
  );
 
@@ -101,7 +102,8 @@ const message_slice = createSlice({
     .addCase(sendInstructorMessage.pending, (state) => {
       state.isLoading = true;
     })
-    .addCase(sendInstructorMessage.fulfilled, (state, action) => {
+    // i removed this action text that will be after the state because it not allowing the code to push on git hub it's bringing an error (action) the error is that it's defined but not used
+    .addCase(sendInstructorMessage.fulfilled, (state) => {
       state.isLoading = false;
       state.error = false;
     })
@@ -112,7 +114,8 @@ const message_slice = createSlice({
     .addCase(sendSupportMessage.pending, (state) => {
       state.isLoading = true;
     })
-    .addCase(sendSupportMessage.fulfilled, (state, action) => {
+    // i removed this action text that will be after the state because it not allowing the code to push on git hub it's bringing an error (action) the error is that it's defined but not used
+    .addCase(sendSupportMessage.fulfilled, (state) => {
       state.isLoading = false;
       state.error = false;
     })
@@ -123,7 +126,8 @@ const message_slice = createSlice({
     .addCase(sendSupportMessageInstructor.pending, (state) => {
       state.isLoading = true;
     })
-    .addCase(sendSupportMessageInstructor.fulfilled, (state, action) => {
+    // i removed this action text that will be after the state because it not allowing the code to push on git hub it's bringing an error (action) the error is that it's defined but not used
+    .addCase(sendSupportMessageInstructor.fulfilled, (state) => {
       state.isLoading = false;
       state.error = false;
     })
@@ -171,5 +175,5 @@ const message_slice = createSlice({
   },
 });
 
-export const { } = message_slice.actions;
+// export const {  } = message_slice.actions;
 export default message_slice.reducer;
