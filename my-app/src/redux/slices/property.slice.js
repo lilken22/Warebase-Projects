@@ -134,7 +134,8 @@ const property_slice = createSlice({
       .addCase(createProperty.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(createProperty.fulfilled, (state, action) => {
+      // i removed this action text that will be after the state because it not allowing the code to push on git hub it's bringing an error (action) the error is that action is defined but not used
+      .addCase(createProperty.fulfilled, (state) => {
         state.isLoading = false;
         state.error = false;
       })
@@ -154,5 +155,5 @@ const property_slice = createSlice({
   },
 });
 
-export const {} = property_slice.actions;
+// export const {} = property_slice.actions;
 export default property_slice.reducer;

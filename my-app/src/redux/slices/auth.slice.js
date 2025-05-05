@@ -2,8 +2,8 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { 
   authenticateUserThunk, 
   signupUserThunk,
-  enrollUserThunk,
-  enrollUserLaterThunk,
+  // enrollUserThunk,
+  // enrollUserLaterThunk,
   deauthenticateThunk,
   editUserPasswordThunk,
   updateInstructorPasswordThunk,
@@ -212,5 +212,5 @@ const auth_slice = createSlice({
   },
 });
 
-export const { } = auth_slice.actions;
+// export const { } = auth_slice.actions;
 export default auth_slice.reducer;

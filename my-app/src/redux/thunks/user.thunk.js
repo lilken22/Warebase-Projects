@@ -15,7 +15,8 @@ export const getVisitingUserInfoThunk = async (data={}) => {
       return response?.data;
     }
   } catch (err) {
-    message.error(
+     // note i changed the text (message to toast because it was giving an error in github)
+    toast.error(
       err?.response?.data?.message ||
         "An error occured while sending data to the server."
     );
@@ -42,7 +43,8 @@ export const createUserThunk = async (data) => {
       return response?.data?.data;
     }
   } catch (err) {
-    message.error(
+     // note i changed the text (message to toast because it was giving an error in github)
+    toast.error(
       err?.response?.data?.message ||
         "An error occured while sending data to the server."
     );
@@ -71,7 +73,8 @@ export const editUserThunk = async (data) => {
       return response?.data?.data;
     }
   } catch (err) {
-    message.error(err?.response?.data?.message);
+     // note i changed the text (message to toast because it was giving an error in github)
+    toast.error(err?.response?.data?.message);
     err.response;
     return err.message || "error occured";
   }

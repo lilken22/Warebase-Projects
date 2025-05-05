@@ -92,7 +92,8 @@ const payment_slice = createSlice({
     .addCase(initializePayment.pending, (state) => {
       state.isLoading = true;
     })
-    .addCase(initializePayment.fulfilled, (state, action) => {
+      // i removed this action text that will be after the state because it not allowing the code to push on git hub it's bringing an error (action) the error is that action is defined but not used
+    .addCase(initializePayment.fulfilled, (state) => {
       state.isLoading = false;
       state.error = false;
     })
@@ -103,7 +104,8 @@ const payment_slice = createSlice({
     .addCase(verifyPayment.pending, (state) => {
       state.isLoading = true;
     })
-    .addCase(verifyPayment.fulfilled, (state, action) => {
+     // i removed this action text that will be after the state because it not allowing the code to push on git hub it's bringing an error (action) the error is that action is defined but not used
+    .addCase(verifyPayment.fulfilled, (state) => {
       state.isLoading = false;
       state.error = false
     })

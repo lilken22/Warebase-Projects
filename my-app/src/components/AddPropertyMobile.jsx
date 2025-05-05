@@ -123,16 +123,19 @@ export default function AddPropertyMobile() {
 
           <div>
             <label className="text-[#627777] text-xs block mb-1">
-              Warehouse Size <span className="text-red-600">*</span>
+              Warehouse Size 1000sqft <span className="text-red-600">*</span>
             </label>
+            <div className="flex items-center border rounded-lg bg-[#F3F3F3] mt-1 overflow-hidden">
             <input
               type="text"
               className="w-full p-3 border rounded-lg bg-[#F3F3F3]"
               placeholder="Enter size"
             />
+            <span className="px-3 text-[#627777]">sq.ft</span>
+            </div>
           </div>
-
-          <div className="col-span-2">
+          
+          <div className="">
             <label className="text-[#627777] text-xs block mb-1 h-[16px]">
               Warehouse Location <span className="text-red-600">*</span>
             </label>

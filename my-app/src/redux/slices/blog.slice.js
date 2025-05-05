@@ -100,7 +100,8 @@ const blog_slice = createSlice({
     setEditBlogObj: (state, action)=>{
       state.editBlogDetails = action?.payload;
     },
-    setEditOption: (state, action)=>{
+    // i removed this action text that will be after the state because it not allowing the code to push on git hub it's bringing an error (action) the error is that it's defined but not used 
+    setEditOption: (state )=>{
       state.isEditOperation = !state.isEditOperation;
     }
   },
@@ -114,7 +115,8 @@ const blog_slice = createSlice({
         state.error = false;
         state.blogs = action?.payload?.data || []
         state.mesaage = action?.payload?.message
-        state.featuredPost = action?.payload?.data?.find((item, index)=>{
+        // i removed the index cause it's bringing an error of being defined but not used in github (index)
+        state.featuredPost = action?.payload?.data?.find((item)=>{
             return item.isFeatured === true
 
         })
@@ -138,7 +140,8 @@ const blog_slice = createSlice({
       .addCase(makeFeaturedBlog.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(makeFeaturedBlog.fulfilled, (state, action) => {
+      // i removed this action text that will be after the state because it not allowing the code to push on git hub it's bringing an error (action) the error is that it's defined but not used
+      .addCase(makeFeaturedBlog.fulfilled, (state) => {
         state.isLoading = false;
         state.error = false;
       })
@@ -148,7 +151,8 @@ const blog_slice = createSlice({
       .addCase(deleteBlog.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(deleteBlog.fulfilled, (state, action) => {
+      // i removed this action text that will be after the state because it not allowing the code to push on git hub it's bringing an error (action) the error is that it's defined but not used
+      .addCase(deleteBlog.fulfilled, (state) => {
         state.isLoading = false;
         state.error = false;
       })
@@ -158,7 +162,8 @@ const blog_slice = createSlice({
       .addCase(createBlog.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(createBlog.fulfilled, (state, action) => {
+      // i removed this action text that will be after the state because it not allowing the code to push on git hub it's bringing an error (action) the error is that it's defined but not used
+      .addCase(createBlog.fulfilled, (state) => {
         state.isLoading = false;
         state.error = false;
       })
@@ -168,7 +173,8 @@ const blog_slice = createSlice({
       .addCase(editBlog.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(editBlog.fulfilled, (state, action) => {
+      // i removed this action text that will be after the state because it not allowing the code to push on git hub it's bringing an error (action) the error is that it's defined but not used
+      .addCase(editBlog.fulfilled, (state) => {
         state.isLoading = false;
         state.error = false;
       })

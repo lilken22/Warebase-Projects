@@ -1,6 +1,7 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState} from 'react';
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from 'react-redux';
+// note that i remove useSelctor cause it causing an error on git hub
+import { useDispatch } from 'react-redux';
 import { authenticateUser } from '../redux/slices/auth.slice';
 
 function Login() {
