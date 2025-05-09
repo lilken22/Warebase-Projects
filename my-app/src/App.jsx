@@ -91,12 +91,12 @@ const App = () => {
             </ProtectedRoute>
             } />
             {/* <Route index element={<Overview />} /> */}
-            {/* <Route path="/overview" element={<ProtectedRoute><Overview/></ProtectedRoute>} /> */}
-            <Route path="/overview" element={<Overview/>} />
+            <Route path="/overview" element={<ProtectedRoute><Overview/></ProtectedRoute>} />
+            {/* <Route path="/overview" element={<Overview/>} /> */}
             <Route path="/blogs" element={<Blogs/>} />
             <Route path="/portfolio" element={<Portfolio/>} />
-            {/* <Route path="/add-property" element={<ProtectedRoute><AddProperty/></ProtectedRoute>} /> */}
-            <Route path="/add-property" element={<AddProperty/>} />
+            <Route path="/add-property" element={<ProtectedRoute><AddProperty/></ProtectedRoute>} />
+            {/* <Route path="/add-property" element={<AddProperty/>} /> */}
             <Route path="/desciption-property" element={<DesciptionProperty />} />
             <Route path="/settings" element={<Settings/>} />
             {/* <Route path="/logout" element={<Logout/>} /> */}
