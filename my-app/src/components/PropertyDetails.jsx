@@ -1,11 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
 import { FaLongArrowAltLeft } from "react-icons/fa";
 import WarehouseFormModal from "../components/WarehouseFormModal";
+import { useDispatch, useSelector  } from "react-redux";
+import { getSingleProperty} from "../redux/slices/property.slice";
+import { selectPropertiesSlice } from "../redux/selectors/property.selector";
+import { toast } from "react-toastify";
+import { getItemFromLocalStorage } from "../utitlity/storage";
+import { useParams } from 'react-router-dom';
 
 const PropertyDetails = () => {
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const { property } = useSelector(selectPropertiesSlice);
   const [isWarehouseFormModalOpen, setIsWarehouseFormModalOpen] =
     useState(false); // Corrected
 
@@ -13,6 +22,11 @@ const PropertyDetails = () => {
     setIsWarehouseFormModalOpen((prev) => !prev); // Corrected function name
   };
 
+  useEffect(() => {
+    if(id){
+      dispatch(getSingleProperty(id)).unwrap();
+    }
+  }, [dispatch, id]);
   return (
     <div className="min-h-screen bg-white text-gray-900 font-serif flex flex-col">
       {/* Navbar */}
@@ -76,12 +90,12 @@ const PropertyDetails = () => {
         <div className="mt-4">
           <div className="flex flex-wrap items-center justify-between gap-x-2 min-w-0">
             <h6 className="text-sm sm:text-xl font-yeseva font-normal text-[#1D3F3FDE] truncate">
-              Fidel Warehouse (₦5,250,000) WB01
+              {property?.propertyName} {property.propertyPrice ?? '(₦5,250,000)'} {property?.propertyId ?? 'WB01'}
             </h6>
             <p className="text-sm text-gray-300 font-normal font-aeonik truncate">
               Date listed:{" "}
               <span className="font-normal font-aeonik text-gray-600">
-                Jan 12, 2025
+                {new Date(property.createdAt).toLocaleDateString() ?? 'Jan 12, 2025'}
               </span>
             </p>
           </div>
@@ -89,7 +103,7 @@ const PropertyDetails = () => {
           {/* Address & Contact */}
           <div className="flex items-center justify-between gap-x-3 w-full overflow-hidden mt-3">
             <p className="text-xs sm:text-sm text-[#627777DE] font-Aeonik font-normal whitespace-nowrap truncate shrink-0">
-              1000 sq.ft
+              {property?.propertySize ??'1000 sq.ft'}
             </p>
             <p className="text-xs sm:text-sm text-[#627777DE] whitespace-nowrap truncate shrink-0">
               <span className="text-[#6277774D] text-bg-primary">📞</span> +234
@@ -99,7 +113,7 @@ const PropertyDetails = () => {
            
           <div className="mt-3">
            <p className="text-xs sm:text-sm text-[#627777DE] font-Aeonik font-normal whitespace-nowrap truncate shrink-0">
-              45 Adeola Odeku Street, Victoria Island, Lagos, Nigeria.
+              {property?.location ?? '45 Adeola Odeku Street, Victoria Island, Lagos, Nigeria.'}
             </p>
           </div>
 
@@ -108,9 +122,9 @@ const PropertyDetails = () => {
           <div>
             {/* Property Description */}
             <p className="text-[#627777DE]">
-              Spacious 10,000 Sqft Warehouse for Rent in Ikeja, Lagos
+              {property?.description ?? 'Spacious 10,000 Sqft Warehouse for Rent in Ikeja, Lagos'}
             </p>
-            <p className="text-[#627777DE]">
+            {/* <p className="text-[#627777DE]">
               Located in the heart of Ikeja’s industrial hub, this secure and
               well-maintained 10,000 sqft warehouse is perfect for storage,
               distribution, and logistics operations. The facility features:
@@ -129,7 +143,7 @@ const PropertyDetails = () => {
             <p className="text-[#627777DE]">
               Ideal for manufacturers, wholesalers, and logistics companies.
               Flexible lease terms available.
-            </p>
+            </p> */}
           </div>
           {/* Action Button */}
           <div className="mt-12 flex justify-center md:justify-start">

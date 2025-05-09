@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   fetchPropertiesThunk,
   createPropertyThunk,
+  getSinglePropertyThunk
 } from "../thunks/property.thunk";
 
 const initialState = {
@@ -9,6 +10,7 @@ const initialState = {
   error: null,
   mesaage: null,
   properties: [],
+  property: {},
 };
 
 // ===================================charles==============
@@ -23,16 +25,16 @@ export const fetchProperties = createAsyncThunk(
   }
 );
 
-// export const getBlog = createAsyncThunk(
-//   "api/getBlog",
-//   async (blog_id, { rejectWithValue }) => {
-//     try {
-//       return await getBlogThunk(blog_id);
-//     } catch (error) {
-//       return rejectWithValue(error.response.data);
-//     }
-//   }
-// );
+export const getSingleProperty = createAsyncThunk(
+  "api/getSingleProperty",
+  async (id, { rejectWithValue }) => {
+    try {
+      return await getSinglePropertyThunk(id);
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 
 export const createProperty = createAsyncThunk(
   "api/createProperty",
@@ -45,37 +47,6 @@ export const createProperty = createAsyncThunk(
   }
 );
 
-// export const deleteBlog = createAsyncThunk(
-//   "api/deleteBlog",
-//   async (data, { rejectWithValue }) => {
-//     try {
-//       return await deleteBlogThunk(data);
-//     } catch (error) {
-//       return rejectWithValue(error.response.data);
-//     }
-//   }
-// );
-
-// export const editBlog = createAsyncThunk(
-//   "api/editBlog",
-//   async (data, { rejectWithValue }) => {
-//     try {
-//       return await editBlogThunk(data);
-//     } catch (error) {
-//       return rejectWithValue(error.response.data);
-//     }
-//   }
-// );
-// export const makeFeaturedBlog = createAsyncThunk(
-//   "api/makeFeaturedBlog",
-//   async (data, { rejectWithValue }) => {
-//     try {
-//       return await createFeaturedBlogThunk(data);
-//     } catch (error) {
-//       return rejectWithValue(error.response.data);
-//     }
-//   }
-// );
 
 const property_slice = createSlice({
   name: "property_slice",
@@ -96,41 +67,17 @@ const property_slice = createSlice({
       .addCase(fetchProperties.rejected, (state) => {
         state.isLoading = false;
       })
-
-    //   .addCase(getBlog.pending, (state) => {
-    //     state.isLoading = true;
-    //   })
-    //   .addCase(getBlog.fulfilled, (state, action) => {
-    //     state.isLoading = false;
-    //     state.error = false;
-    //     state.blog = action?.payload?.data || {};
-    //     state.mesaage =
-    //       action?.payload?.message ||
-    //       "Single blog details fetched successfully";
-    //   })
-    //   .addCase(getBlog.rejected, (state) => {
-    //     state.isLoading = false;
-    //   })
-    //   .addCase(makeFeaturedBlog.pending, (state) => {
-    //     state.isLoading = true;
-    //   })
-    //   .addCase(makeFeaturedBlog.fulfilled, (state, action) => {
-    //     state.isLoading = false;
-    //     state.error = false;
-    //   })
-    //   .addCase(makeFeaturedBlog.rejected, (state) => {
-    //     state.isLoading = false;
-    //   })
-    //   .addCase(deleteBlog.pending, (state) => {
-    //     state.isLoading = true;
-    //   })
-    //   .addCase(deleteBlog.fulfilled, (state, action) => {
-    //     state.isLoading = false;
-    //     state.error = false;
-    //   })
-    //   .addCase(deleteBlog.rejected, (state) => {
-    //     state.isLoading = false;
-    //   })
+      .addCase(getSingleProperty.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getSingleProperty.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = false;
+        state.property = action?.payload?.data || {}
+      })
+      .addCase(getSingleProperty.rejected, (state) => {
+        state.isLoading = false;
+      })
       .addCase(createProperty.pending, (state) => {
         state.isLoading = true;
       })

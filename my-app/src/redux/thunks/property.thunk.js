@@ -13,7 +13,7 @@ export const createPropertyThunk = async (data) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(response)
+
     if (response?.status === 201) {
       toast.success("Property Created Successfully!");
       return response?.data;
@@ -38,7 +38,7 @@ export const editPropertyThunk = async (data) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    if (response?.data?.status === 200) {
+    if (response?.status === 200) {
       toast.success("Property Updated Successfully!");
       return response?.data;
     }
@@ -63,10 +63,12 @@ export const fetchPropertiesThunk = async () => {
   }
 };
 
-export const getPropertyThunk = async (id) => {
+export const getSinglePropertyThunk = async (id) => {
   try {
-    const response = await axios.get(`${URL}/properties/${id}/show`);
-    return response?.data;
+    const response = await axios.get(`${URL}/properties/findOne/${id}`);
+    if(response.status === 200){
+      return response?.data;
+    }
   } catch (err) {
     err.response;
     return err;
@@ -84,7 +86,7 @@ export const deletePropertyThunk = async (data) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    if (response?.data?.status === 200) {
+    if (response?.status === 200) {
       toast.success("Property deleted Successfully!");
       return response?.data;
     }

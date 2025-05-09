@@ -16,6 +16,7 @@ const AddPropertyDesktop = () => {
   const token = getItemFromLocalStorage("wb_token");
   const navigate = useNavigate();
   const [previewImages, setPreviewImages] = useState([]);
+  const [selectedFiles, setSelectedFiles] = useState([]);
   const [isDragging, setIsDragging] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   const fileInputRef = useRef(null);
@@ -31,27 +32,29 @@ const AddPropertyDesktop = () => {
     propertySize: "",
   });
 
-  const handleCheckboxChange = () => {
-    setIsChecked(!isChecked);
-  };
-
+  
   const handleImageUpload = (files) => {
     const validFiles = Array.from(files).filter(
       (file) => file.type.startsWith("image/") && file.size <= 5 * 1024 * 1024 // 5MB
     );
-
+  
     if (validFiles.length !== files.length) {
       alert("Some files were invalid. Only images under 5MB are allowed.");
     }
-
+  
     const imagePreviews = validFiles.map((file) => URL.createObjectURL(file));
-    setPreviewImages([...previewImages, ...imagePreviews]);
+    setPreviewImages((prev) => [...prev, ...imagePreviews]);
+    setSelectedFiles((prev) => [...prev, ...validFiles]);
   };
 
   const handleFileInputChange = (e) => {
     if (e.target.files.length) {
       handleImageUpload(e.target.files);
     }
+  };
+
+  const handleCheckboxChange = () => {
+    setIsChecked(!isChecked);
   };
 
   const handleInputChange = (e) => {
@@ -68,6 +71,16 @@ const AddPropertyDesktop = () => {
     fileInputRef.current.click();
   };
 
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+  };
+
+
+  const handleBackClick = () => {
+    navigate("/portfolio");
+  };
   const removeImage = (index) => {
     const updatedImages = [...previewImages];
     URL.revokeObjectURL(updatedImages[index]); // Clean up memory
@@ -81,11 +94,7 @@ const AddPropertyDesktop = () => {
     setIsDragging(true);
   };
 
-  const handleDragLeave = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsDragging(false);
-  };
+
 
   const handleDragOver = (e) => {
     e.preventDefault();
@@ -102,24 +111,25 @@ const AddPropertyDesktop = () => {
     }
   };
 
-  const handleBackClick = () => {
-    navigate("/portfolio");
-  };
 
   const createNewProperty = async () => {
     if (!formData.propertyName || !formData.propertyPrice) return;
-    const body = {
-      isShared: isChecked,
-      sharePropertyNumber: formData?.sharePropertyNumber,
-      propertyName: formData?.propertyName,
-      propertySize: formData?.propertySize,
-      propertyPrice: formData?.propertyPrice,
-      description: formData?.description,
-      location: formData?.location,
-    };
+
+    const formDataToSend = new FormData();
+    formDataToSend.append("isShared", formData.isShared);
+    formDataToSend.append("sharePropertyNumber", formData.sharePropertyNumber);
+    formDataToSend.append("propertyName", formData.propertyName);
+    formDataToSend.append("propertySize", formData.propertySize);
+    formDataToSend.append("propertyPrice", formData.propertyPrice);
+    formDataToSend.append("description", formData.description);
+    formDataToSend.append("location", formData.location);
+  
+    selectedFiles.forEach((file, index) => {
+      formDataToSend.append("images", file); 
+    });
 
     try {
-      await dispatch(createProperty({ token, body })).unwrap();
+      await dispatch(createProperty({ token, body: formDataToSend })).unwrap();
       setFormData({
         isShared: false,
         sharePropertyNumber: "",
@@ -130,6 +140,8 @@ const AddPropertyDesktop = () => {
         location: "",
         propertySize: "",
       });
+    setSelectedFiles([]);
+    setPreviewImages([]);
     } catch (error) {
       console.error(error);
       toast.error(error.message || "An error occured while creating property");
@@ -332,12 +344,12 @@ const AddPropertyDesktop = () => {
                       }`}
                     />
                     <p className="text-gray-500 mb-0 font-Poppins font-normal text-xs">
-                      <span
+                      <label
+                        htmlFor="image-upload"
                         className="text-[#00E5FF] font-Poppins font-normal text-xs"
-                        onClick={handleClickUpload}
                       >
                         Click here to upload
-                      </span>{" "}
+                      </label>{" "}
                       or Drag & drop
                     </p>
                     <input

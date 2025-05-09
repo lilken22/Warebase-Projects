@@ -4,16 +4,18 @@ import Footer from "../components/Footer";
 import { Link, useNavigate } from "react-router-dom";
 import WarehouseFormModal from "../components/WarehouseFormModal"; 
 import { FaArrowRight } from "react-icons/fa6";
-// note that i removes useSelctor cause it causing an error on git hub
-// import { useDispatch } from "react-redux";
-// import { testApiCalls } from "../redux/slices/auth.slice";
+import { useDispatch } from "react-redux";
+import { subscribeNewsletter } from "../redux/slices/message.slice";
+import { toast } from "react-toastify";
+
 
 const LandingPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null); // State to track selected radio button
   const navigate = useNavigate();
   const servicesRef = useRef(null);
-  // const dispatch = useDispatch()
+  const dispatch = useDispatch()
+  const [subscribeForm, setSubscribeForm] = useState('')
 
   const handleRadioChange = (event) => {
     setSelectedOption((prev) => (prev === event.target.id ? null : event.target.id));
@@ -35,6 +37,20 @@ const LandingPage = () => {
       servicesRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
+
+  // To subscribe for news letter=========
+  const handleSubscribeNewsletter =async()=>{
+    if(!subscribeForm) return toast.error('Please enter your email to subscribe')
+    try {
+      const response = await dispatch(subscribeNewsletter({email: subscribeForm}))
+      if(response === 200){
+        setSubscribeForm('')
+      }
+      
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   return (
     <div className="min-h-screen bg-white text-[rgb(26, 24, 24)] font-serif flex flex-col justify-between">
@@ -667,12 +683,15 @@ const LandingPage = () => {
   <div className="relative w-full max-w-[300px] md:max-w-[700px]  px-4"> {/* Adjusted width for mobile */}
     {/* Input Field */}
     <input
+      value={subscribeForm}
+      onChange={(e)=>setSubscribeForm(e.target.value)}
       type="email"
       placeholder="Enter your email"
       className="w-full px-4 py-2 pr-20 border border-gray-300 rounded-2xl focus:outline-none text-sm md:text-base  h-10 md:h-16" /* Adjusted padding and font size for mobile */
     />
     {/* Subscribe Button Inside Input */}
     <button 
+      onClick={handleSubscribeNewsletter}
       className="absolute top-1/2 right-0 transform -translate-y-1/2 px-4 py-2 bg-black text-white rounded-xl hover:bg-gray-800 transition w-[90px] md:w-[190px] text-sm md:text-lg  h-10 md:h-16" /* Adjusted button size and font for mobile */
     >
       Subscribe

@@ -11,6 +11,7 @@ const store = configureStore({
     message: combineSlices?.messageSlice,
     payment: combineSlices?.paymentSlice,
     property: combineSlices?.propertySlice,
+    dashboard: combineSlices?.dashboardSlice
   },
 });
 setupListeners(store.dispatch);

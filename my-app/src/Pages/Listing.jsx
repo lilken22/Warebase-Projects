@@ -116,7 +116,7 @@ import { fetchProperties } from "../redux/slices/property.slice";
 
 export default function Listing() {
   const {properties} = useSelector(selectPropertiesSlice)
-  console.log(properties)
+  // console.log(properties)
   const dispatch = useDispatch()
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
@@ -142,8 +142,8 @@ export default function Listing() {
   // const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [toggleData, setToggleData] = useState(true);
-  const [ setPropertyImages] = useState(properties ?? []);
-  // (propertyImages) i removed the propertyImages texts cause it's causing and error and preventing me to create a PR   
+  const [filteredData, setFilteredData] = useState([])
+
 
   const handleDropdownToggle = () => {
     if (buttonRef.current) {
@@ -215,24 +215,21 @@ export default function Listing() {
 
   
 
-  const filterData = useCallback(() => {
-    const result = properties?.filter((item) => item.isShared === toggleData);
+  const filterData = () => {
+    const result =  properties?.length > 0 && properties?.filter((item) => item.isShared === toggleData);
     if (!result) return;
-    setPropertyImages(result);
-  }, [toggleData]); // include dependencies here
+    setFilteredData(result);
+  };
 
   useEffect(() => {
     filterData();
-  }, [filterData]);
-
-  useEffect(() => {
-    setPropertyImages(properties);
-  }, []);
+  }, [toggleData]);
 
   useEffect(() => {
     dispatch(fetchProperties()).unwrap();
   }, []);
 
+  const displayData = filteredData.length > 0 ? filteredData : properties;
   return (
     <>
       <div className="min-h-screen bg-white text-gray-900 font-serif flex flex-col">
@@ -244,13 +241,17 @@ export default function Listing() {
               <div className="h-[48px] w-[200px] flex items-center justify-between">
                 <button
                   onClick={() => setToggleData(true)}
-                  className={`${toggleData ? 'bg-[#FFFFFF]' : 'bg-[#ECECEC]'} w-[95px] h-[48px] rounded-tl-xl rounded-tr-xl py-[10px] px-[20px] gap-[10px] font-medium font-aeonik text-sm text-[#1D3F3F] shadow-sm`}
+                  className={`${
+                    toggleData ? "bg-[#FFFFFF]" : "bg-[#ECECEC]"
+                  } w-[95px] h-[48px] rounded-tl-xl rounded-tr-xl py-[10px] px-[20px] gap-[10px] font-medium font-aeonik text-sm text-[#1D3F3F] shadow-sm`}
                 >
                   {"For Sale"}
                 </button>
                 <button
                   onClick={() => setToggleData(false)}
-                  className={`w-[105px] h-[48px] rounded-tr-xl rounded-r-[1px] py-[10px] px-[20px] gap-[10px] ${!toggleData ? 'bg-[#FFFFFF]' : 'bg-[#ECECEC]'} text-[#A6A6A6] text-sm font-aeonik font-normal`}
+                  className={`w-[105px] h-[48px] rounded-tr-xl rounded-r-[1px] py-[10px] px-[20px] gap-[10px] ${
+                    !toggleData ? "bg-[#FFFFFF]" : "bg-[#ECECEC]"
+                  } text-[#A6A6A6] text-sm font-aeonik font-normal`}
                 >
                   {"For Lease"}
                 </button>
@@ -377,68 +378,74 @@ export default function Listing() {
           <div className="bg-[#F4F4F4] px-3 mx-auto rounded-md max-w-[1320px] items-center">
             <div className="max-w-[1300px]">
               <div className="grid grid-cols-1 gap-4 mt-16 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 justify-start">
-                {properties?.length > 0 && properties?.map((item, index) => (
-                  <div
-                    key={index}
-                    className="md:w-[320px] border rounded-lg bg-[#FFFFFF] shadow-md overflow-hidden"
-                  >
-                    <div className="relative">
-                      <img
-                        src={item.propertyImage}
-                        alt={`Property ${index + 1}`}
-                        className="w-full h-40 object-cover"
-                      />
-                      <span className="absolute top-0 left-0 bg-[#F11414] text-white text-xs px-2 py-1 rounded">
-                        {!item.isShared ? "For Sale" : "For Lease"}
-                      </span>
-                      {item.isShared && (
-                        <span className="absolute top-2 -right-3 bg-white text-[#1C1C1C] text-sm px-4 py-1 rounded shadow-md text-center font-aeonik custom-rotate">
-                          Shared({item.sharePropertyNumber})
+                {(displayData?.length > 0) ? (
+                  displayData?.map((item, index) => (
+                    <div
+                      key={index}
+                      className="md:w-[320px] border rounded-lg bg-[#FFFFFF] shadow-md overflow-hidden"
+                    >
+                      <div className="relative">
+                        <img
+                          src={item.propertyImage}
+                          alt={`Property ${index + 1}`}
+                          className="w-full h-40 object-cover"
+                        />
+                        <span className="absolute top-0 left-0 bg-[#F11414] text-white text-xs px-2 py-1 rounded">
+                          {!item.isShared ? "For Sale" : "For Lease"}
                         </span>
-                      )}
-                    </div>
-                    <div className="p-4 leading-relaxed">
-                      <p className="text-sm text-[#627777DE]">
-                        Property Name:{" "}
-                        <span className="font-yeseva font-light text-sm">
-                          {item.propertyName}
-                        </span>
-                      </p>
-                      <p className="text-sm text-[#627777DE]">
-                        Property ID:{" "}
-                        <span className="font-yeseva font-light text-sm">
-                          {item?.propertyId}
-                        </span>
-                      </p>
-                      <p className="text-sm text-[#627777DE]">
-                        Location:{" "}
-                        <span className="font-yeseva font-light text-sm">
-                          {item.location}
-                        </span>
-                      </p>
-                      <p className="text-sm text-[#627777DE]">
-                        Price:{" "}
-                        <span className="font-yeseva font-light text-sm">
-                         {item?.propertyPrice}/Month
-                        </span>
-                      </p>
-                      <div className="mt-4 flex justify-between">
-                        <Link
-                          to={`/PropertyDetails/${item._id}`}
-                          className="text-sm py-2 text-start text-[#627777DE] hover:underline rounded"
-                        >
-                          See Description
-                        </Link>
-                        <button
-                          className="text-sm px-3 py-2 bg-[#1C1C1C] text-[#FFFFFF] rounded-full"
-                          onClick={handleWarehouseFormModalToggle}
-                        >
-                          Get in touch
-                        </button>
+                        {item.isShared && (
+                          <span className="absolute top-2 -right-3 bg-white text-[#1C1C1C] text-sm px-4 py-1 rounded shadow-md text-center font-aeonik custom-rotate">
+                            Shared({item.sharePropertyNumber})
+                          </span>
+                        )}
+                      </div>
+                      <div className="p-4 leading-relaxed">
+                        <p className="text-sm text-[#627777DE]">
+                          Property Name:{" "}
+                          <span className="font-yeseva font-light text-sm">
+                            {item.propertyName}
+                          </span>
+                        </p>
+                        <p className="text-sm text-[#627777DE]">
+                          Property ID:{" "}
+                          <span className="font-yeseva font-light text-sm">
+                            {item?.propertyId}
+                          </span>
+                        </p>
+                        <p className="text-sm text-[#627777DE]">
+                          Location:{" "}
+                          <span className="font-yeseva font-light text-sm">
+                            {item.location}
+                          </span>
+                        </p>
+                        <p className="text-sm text-[#627777DE]">
+                          Price:{" "}
+                          <span className="font-yeseva font-light text-sm">
+                            {item?.propertyPrice}/Month
+                          </span>
+                        </p>
+                        <div className="mt-4 flex justify-between">
+                          <Link
+                            to={`/PropertyDetails/${item._id}`}
+                            className="text-sm py-2 text-start text-[#627777DE] hover:underline rounded"
+                          >
+                            See Description
+                          </Link>
+                          <button
+                            className="text-sm px-3 py-2 bg-[#1C1C1C] text-[#FFFFFF] rounded-full"
+                            onClick={handleWarehouseFormModalToggle}
+                          >
+                            Get in touch
+                          </button>
+                        </div>
                       </div>
                     </div>
+                  ))
+                ) : (
+                  <div>
+                    <p>No properties currently</p>
                   </div>
-                ))}
+                )}
               </div>
             </div>
           </div>

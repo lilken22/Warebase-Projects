@@ -1,0 +1,1 @@
+export const selectDashboardSlice = (state) => state?.dashboard;
