@@ -10,7 +10,6 @@ export const createBlogThunk = async (data) => {
     const response = await axios.post(`${URL}/blogs/create`, body, {
       headers: {
         Accept: "application/json",
-        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
     });
@@ -76,8 +75,7 @@ export const createFeaturedBlogThunk = async (data) => {
 export const fetchBlogsThunk = async () => {
   try {
     const response = await axios.get(`${URL}/blogs/`);
-    if (response?.data?.status === 200) {
-      response?.data?.data;
+    if (response?.status === 200) {
       return response?.data;
     }
   } catch (err) {

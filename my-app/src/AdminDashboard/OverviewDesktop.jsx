@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 import { Link } from "react-router-dom";
 import { CgNotes } from "react-icons/cg";
 import ListModal from "../components/ListModal";
+import { useDispatch, useSelector } from "react-redux";
+import { selectDashboardSlice } from "../redux/selectors/dashboard.selector";
+import { fetchLatestProperties, fetchAllTotalProperties, fetchLeaseProperties, fetchSaleProperties } from "../redux/slices/dashboard.slice";
+import { toast } from "react-toastify";
+import { getItemFromLocalStorage } from "../utitlity/storage";
 
 {
   /* // StatCard component for cleaner code */
@@ -19,6 +24,8 @@ const StatCard = ({ title, value, icon }) => (
 );
 
 const OverviewDesktop = () => {
+  const { totalProperties, totalLeaseProperties, totalSharedProperties, totalSaleProperties, latestProperties} = useSelector(selectDashboardSlice);
+  const dispatch = useDispatch();
   const [listModalOpen, setListModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("total");
 
@@ -27,6 +34,12 @@ const OverviewDesktop = () => {
   //  const navigate = useNavigate();
   //  const listModalRef = useRef(null);
 
+  useEffect(()=>{
+    dispatch(fetchLatestProperties())
+    dispatch(fetchAllTotalProperties())
+    dispatch(fetchSaleProperties())
+    dispatch(fetchLeaseProperties())
+  },[dispatch])
   return (
     <div className="flex min-h-screen bg-[#F8F9FA]">
       {/* Sidebar */}
@@ -81,7 +94,7 @@ const OverviewDesktop = () => {
                       total: (
                         <StatCard
                           title="Total Properties"
-                          value="120"
+                          value={totalProperties ?? 0}
                           icon={
                             <CgNotes className="text-[#00E5FF] text-5xl bg-[#FFEDE5] shadow-lg p-4 rounded-full" />
                           }
@@ -90,7 +103,7 @@ const OverviewDesktop = () => {
                       sale: (
                         <StatCard
                           title="Properties For Sale"
-                          value="21"
+                          value={totalSaleProperties ?? 0}
                           icon={
                             <CgNotes className="text-[#17F9B9] text-5xl bg-[#DEFFF6] shadow-lg p-4 rounded-full" />
                           }
@@ -99,7 +112,7 @@ const OverviewDesktop = () => {
                       lease: (
                         <StatCard
                           title="Properties For Lease"
-                          value="68"
+                          value={totalLeaseProperties ?? 0}
                           icon={
                             <CgNotes className="text-[#1766F9] text-5xl bg-[#E4EDFF] p-4 rounded-full shadow-lg" />
                           }
@@ -108,7 +121,7 @@ const OverviewDesktop = () => {
                       shared: (
                         <StatCard
                           title="Shared Properties"
-                          value="31"
+                          value={totalSharedProperties ?? 0}
                           icon={
                             <CgNotes className="text-[#F9D717] text-5xl bg-[#FFFADD] p-4 rounded-full shadow-lg" />
                           }
@@ -122,7 +135,7 @@ const OverviewDesktop = () => {
                 <div className="hidden lg:block col-span-1">
                   <StatCard
                     title="Total Properties"
-                    value="120"
+                    value={totalProperties ?? 0}
                     icon={
                       <CgNotes className="text-[#00E5FF] text-5xl bg-[#FFEDE5] shadow-lg p-4 rounded-full" />
                     }
@@ -131,7 +144,7 @@ const OverviewDesktop = () => {
                 <div className="hidden lg:block col-span-1">
                   <StatCard
                     title="Properties For Sale"
-                    value="21"
+                    value={totalSaleProperties ?? 0}
                     icon={
                       <CgNotes className="text-[#17F9B9] text-5xl bg-[#DEFFF6] shadow-lg p-4 rounded-full" />
                     }
@@ -141,7 +154,7 @@ const OverviewDesktop = () => {
                 <div className="hidden lg:block col-span-1">
                   <StatCard
                     title="Properties For Lease"
-                    value="68"
+                    value={totalLeaseProperties ?? 0}
                     icon={
                       <CgNotes className="text-[#1766F9] text-5xl bg-[#E4EDFF] p-4 rounded-full shadow-lg" />
                     }
@@ -151,7 +164,7 @@ const OverviewDesktop = () => {
                 <div className="hidden lg:block col-span-1">
                   <StatCard
                     title="Shared Properties"
-                    value="31"
+                    value={totalSharedProperties ?? 0}
                     icon={
                       <CgNotes className="text-[#F9D717] text-5xl bg-[#FFFADD] p-4 rounded-full shadow-lg" />
                     }
@@ -177,28 +190,7 @@ const OverviewDesktop = () => {
 
               {/* Grid for Property Listings */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
-                {[
-                  {
-                    image: "/property four.jpg",
-                    type: "For Sale",
-                    shared: false,
-                  },
-                  {
-                    image: "/property five.jpg",
-                    type: "For Rent",
-                    shared: false,
-                  },
-                  {
-                    image: "/property three.jpg",
-                    type: "For Lease",
-                    shared: true,
-                  },
-                  {
-                    image: "/property six.jpg",
-                    type: "For Sale",
-                    shared: false,
-                  },
-                ].map((property, index) => (
+                {latestProperties?.length > 0 && latestProperties?.map((property, index) => (
                   <div
                     key={index}
                     className="bg-[#F9F9F9] p-4 rounded-lg shadow-md"
@@ -206,14 +198,14 @@ const OverviewDesktop = () => {
                     {/* Image Section */}
                     <div className="relative rounded-xl overflow-hidden">
                       <img
-                        src={property.image}
+                        src={property?.propertyImage}
                         alt={`Property ${index + 1}`}
                         className="w-full h-52 object-cover rounded-2xl"
                       />
                       <span className="absolute top-0 left-0 bg-[#F11414] text-white text-xs px-2 py-1 rounded">
-                        {property.type}
+                        {property?.isShared ? 'For lease' : 'For sale'}
                       </span>
-                      {property.shared && (
+                      {property?.isShared && (
                         <span className="absolute top-2 -right-3 bg-white text-[#1C1C1C] text-sm px-4 py-1 rounded shadow-md text-center font-aeonik custom-rotate">
                           Shared
                         </span>
@@ -223,17 +215,17 @@ const OverviewDesktop = () => {
                     {/* Property Details */}
                     <div className="bg-white p-4 rounded-2xl shadow-md mt-3">
                       <p className="text-lg font-bold font-aeonik text-[#1D3F3F]">
-                        Fidel Warehouse
+                        {property?.propertyName}
                       </p>
 
                       <p className="text-base font-aeonik font-normal text-[#1D3F3F]">
-                        ₦5,250,000/Month
+                        {property?.propertyPrice}
                       </p>
 
                       {/* "See Description" Link */}
                       <div className="mt-2">
                         <Link
-                          to="/desciption-property"
+                          to={ `desciption-property/${property?._id}`}
                           className="text-sm text-[#1D3F3FDE] font-medium font-aeonik underline"
                         >
                           See Description

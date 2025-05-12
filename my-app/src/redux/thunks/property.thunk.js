@@ -9,7 +9,6 @@ export const createPropertyThunk = async (data) => {
     const response = await axios.post(`${URL}/properties/create/`, body, {
       headers: {
         Accept: "application/json",
-        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
     });

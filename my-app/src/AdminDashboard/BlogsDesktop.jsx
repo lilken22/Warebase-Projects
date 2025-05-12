@@ -11,46 +11,56 @@ import {
   FaChevronRight,
   FaSearch,
 } from "react-icons/fa";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchBlogs } from "../redux/slices/blog.slice";
+import { selectBlogSlice } from "../redux/selectors/blog.selector";
 
 export default function BlogsDesktop() {
-  const [isSortOpen, setIsSortOpen] = useState(false);
-  const [sortPosition, setSortPosition] = useState({ top: 0, left: 0 });
-  const [currentPage, setCurrentPage] = useState(1);
+   const { blogs } = useSelector(selectBlogSlice);
+   console.log(blogs)
+   const dispatch = useDispatch();
+   const [isSortOpen, setIsSortOpen] = useState(false);
+   const [sortPosition, setSortPosition] = useState({ top: 0, left: 0 });
+   const [currentPage, setCurrentPage] = useState(1);
 
-  const navigate = useNavigate();
-  const sortModalRef = useRef(null);
-  const buttonRef = useRef(null);
+   const navigate = useNavigate();
+   const sortModalRef = useRef(null);
+   const buttonRef = useRef(null);
 
-  const handleSortToggle = () => {
-    if (buttonRef.current) {
-      const buttonRect = buttonRef.current.getBoundingClientRect();
-      setSortPosition({
-        top: buttonRect.bottom + window.scrollY,
-        left: buttonRect.left + window.scrollX,
-      });
-    }
-    setIsSortOpen((prev) => !prev);
-  };
+   const handleSortToggle = () => {
+     if (buttonRef.current) {
+       const buttonRect = buttonRef.current.getBoundingClientRect();
+       setSortPosition({
+         top: buttonRect.bottom + window.scrollY,
+         left: buttonRect.left + window.scrollX,
+       });
+     }
+     setIsSortOpen((prev) => !prev);
+   };
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        sortModalRef.current &&
-        !sortModalRef.current.contains(event.target)
-      ) {
-        setIsSortOpen(false);
-      }
-    };
+   useEffect(() => {
+     const handleClickOutside = (event) => {
+       if (
+         sortModalRef.current &&
+         !sortModalRef.current.contains(event.target)
+       ) {
+         setIsSortOpen(false);
+       }
+     };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+     document.addEventListener("mousedown", handleClickOutside);
+     return () => {
+       document.removeEventListener("mousedown", handleClickOutside);
+     };
+   }, []);
 
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-  };
+   const handlePageChange = (page) => {
+     setCurrentPage(page);
+   };
+
+   useEffect(() => {
+     dispatch(fetchBlogs()).unwrap();
+   }, []);
 
   return (
     <div className="flex min-h-screen bg-[#F8F9FA]">
@@ -97,7 +107,7 @@ export default function BlogsDesktop() {
             </div>
 
             {/* next code in here  which will appear before pagination*/}
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 md:gap-6 w-full mt-8">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 md:gap-6 w-full mt-8">5
               {/* Article Card 1 */}
               <div className="flex flex-col shadow-lg rounded-lg overflow-hidden h-full w-full">
                 {/* Image Section */}

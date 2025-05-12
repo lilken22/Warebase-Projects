@@ -4,12 +4,26 @@ import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 import { FaTimes, FaCloudUploadAlt } from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import { createBlog } from "../redux/slices/blog.slice";
+import { toast } from "react-toastify";
+import { getItemFromLocalStorage } from "../utitlity/storage";
 
 const CreateBlogDesktop = () => {
   const [previewImages, setPreviewImages] = useState([]);
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const token = getItemFromLocalStorage("wb_token");
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [isChecked, setIsChecked] = useState(false);
+
+  const [formData, setFormData] = useState({
+    title: "",
+    article: "",
+    image: "",
+  });
 
   const handleImageUpload = (files) => {
     const validFiles = Array.from(files).filter(
@@ -26,7 +40,13 @@ const CreateBlogDesktop = () => {
 
   const handleFileInputChange = (e) => {
     if (e.target.files.length) {
-      handleImageUpload(e.target.files);
+      const newFiles = Array.from(e.target.files);
+
+      // Append the new files to the already existing ones in selectedFiles
+      setSelectedFiles((prevFiles) => [...prevFiles, ...newFiles]);
+
+      // Optionally, you can handle the file upload here as well
+      handleImageUpload(newFiles);
     }
   };
 
@@ -70,6 +90,38 @@ const CreateBlogDesktop = () => {
 
   const handleBackClick = () => {
     navigate("/blogs");
+  };
+
+  const handleInputChange = (e) => {
+    if (e.target) {
+      const { name, value } = e.target;
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
+  };
+
+  const createNewBlog = async () => {
+    const formDataToSend = new FormData();
+    formDataToSend.append("title", formData.title);
+    formDataToSend.append("article", formData.article);
+    selectedFiles?.forEach((file, index) => {
+      formDataToSend.append("images", file);
+    });
+
+    try {
+      await dispatch(createBlog({ token, body: formDataToSend })).unwrap();
+      setFormData({
+        title: "",
+        article: "",
+        image: "",
+      });
+    } catch (error) {
+      console.error(error);
+      toast.error(error.message || "An error occured while creating property");
+      return;
+    }
   };
 
   return (
@@ -171,6 +223,9 @@ const CreateBlogDesktop = () => {
                     Title
                   </label>
                   <input
+                    onChange={(e) => handleInputChange(e)}
+                    value={formData.title}
+                    name="title"
                     type="text"
                     className="w-full p-3 border rounded-lg bg-[#F3F3F3] mt-1"
                     placeholder="Enter Blog Title"
@@ -181,6 +236,9 @@ const CreateBlogDesktop = () => {
                     Article
                   </label>
                   <textarea
+                    onChange={(e) => handleInputChange(e)}
+                    value={formData.article}
+                    name="article"
                     className="w-full p-3 border rounded-lg min-h-[120px] bg-[#F3F3F3]"
                     placeholder="Enter your blog content here..."
                   />
@@ -189,11 +247,7 @@ const CreateBlogDesktop = () => {
                 {/* Add this right after your form fields */}
                 <div className="flex justify-center items-center space-x-4 mt-8">
                   <button
-                    onClick={() => {
-                      // Handle publish logic here
-                      console.log("Publishing blog...");
-                      // Add your actual publish logic (API call, etc.)
-                    }}
+                    onClick={createNewBlog}
                     className="px-16 py-2 bg-black text-white rounded-3xl hover:bg-gray-800 transition-colors focus:outline-none  focus:ring-black text-lg font-aeonik font-medium"
                   >
                     Publish

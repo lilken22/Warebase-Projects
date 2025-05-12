@@ -49,7 +49,13 @@ const AddPropertyDesktop = () => {
 
   const handleFileInputChange = (e) => {
     if (e.target.files.length) {
-      handleImageUpload(e.target.files);
+      const newFiles = Array.from(e.target.files);
+
+      // Append the new files to the already existing ones in selectedFiles
+      setSelectedFiles((prevFiles) => [...prevFiles, ...newFiles]);
+
+      // Optionally, you can handle the file upload here as well
+      handleImageUpload(newFiles);
     }
   };
 
@@ -123,10 +129,10 @@ const AddPropertyDesktop = () => {
     formDataToSend.append("propertyPrice", formData.propertyPrice);
     formDataToSend.append("description", formData.description);
     formDataToSend.append("location", formData.location);
-  
-    selectedFiles.forEach((file, index) => {
-      formDataToSend.append("images", file); 
+    selectedFiles?.forEach((file, index) => {
+      formDataToSend.append("images", file);
     });
+
 
     try {
       await dispatch(createProperty({ token, body: formDataToSend })).unwrap();
