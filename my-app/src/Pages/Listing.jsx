@@ -142,7 +142,7 @@ export default function Listing() {
   // const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [toggleData, setToggleData] = useState(true);
-  const [ setPropertyImages] = useState(properties ?? []);
+  const [propertyImages, setPropertyImages] = useState(properties ?? []);
   // (propertyImages) i removed the propertyImages texts cause it's causing and error and preventing me to create a PR   
 
   const handleDropdownToggle = () => {
@@ -376,7 +376,7 @@ export default function Listing() {
 
           <div className="bg-[#F4F4F4] px-3 mx-auto rounded-md max-w-[1320px] items-center">
             <div className="max-w-[1300px]">
-              <div className="grid grid-cols-1 gap-4 mt-16 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 justify-start">
+              <div className="grid grid-cols-1 gap-4 mt-40 md:mt-16 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 justify-start">
                 {properties?.length > 0 && properties?.map((item, index) => (
                   <div
                     key={index}
@@ -415,6 +415,10 @@ export default function Listing() {
                         <span className="font-yeseva font-light text-sm">
                           {item.location}
                         </span>
+                        <span className="font-yeseva font-light text-sm border-l border-gray-300 ml-2 pl-2">
+                          {item.propertySize}
+                        </span>
+
                       </p>
                       <p className="text-sm text-[#627777DE]">
                         Price:{" "}

@@ -208,7 +208,7 @@ export default function PortfolioDesktop() {
               <TenureModal
                 isOpen={isDropdownOpen}
                 onClose={() => setIsDropdownOpen(false)}
-                position={dropdownPosition}
+                position={dropdownPosition || {} }
               />
 
               <OrderModal

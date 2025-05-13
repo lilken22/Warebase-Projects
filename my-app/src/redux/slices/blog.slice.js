@@ -101,7 +101,7 @@ const blog_slice = createSlice({
       state.editBlogDetails = action?.payload;
     },
     // i removed this action text that will be after the state because it not allowing the code to push on git hub it's bringing an error (action) the error is that it's defined but not used 
-    setEditOption: (state )=>{
+    setEditOption: (state, action )=>{
       state.isEditOperation = !state.isEditOperation;
     }
   },
@@ -116,7 +116,7 @@ const blog_slice = createSlice({
         state.blogs = action?.payload?.data || []
         state.mesaage = action?.payload?.message
         // i removed the index cause it's bringing an error of being defined but not used in github (index)
-        state.featuredPost = action?.payload?.data?.find((item)=>{
+        state.featuredPost = action?.payload?.data?.find((item, index)=>{
             return item.isFeatured === true
 
         })
@@ -141,7 +141,7 @@ const blog_slice = createSlice({
         state.isLoading = true;
       })
       // i removed this action text that will be after the state because it not allowing the code to push on git hub it's bringing an error (action) the error is that it's defined but not used
-      .addCase(makeFeaturedBlog.fulfilled, (state) => {
+      .addCase(makeFeaturedBlog.fulfilled, (state, action) => {
         state.isLoading = false;
         state.error = false;
       })
@@ -152,7 +152,7 @@ const blog_slice = createSlice({
         state.isLoading = true;
       })
       // i removed this action text that will be after the state because it not allowing the code to push on git hub it's bringing an error (action) the error is that it's defined but not used
-      .addCase(deleteBlog.fulfilled, (state) => {
+      .addCase(deleteBlog.fulfilled, (state, action) => {
         state.isLoading = false;
         state.error = false;
       })
@@ -163,7 +163,7 @@ const blog_slice = createSlice({
         state.isLoading = true;
       })
       // i removed this action text that will be after the state because it not allowing the code to push on git hub it's bringing an error (action) the error is that it's defined but not used
-      .addCase(createBlog.fulfilled, (state) => {
+      .addCase(createBlog.fulfilled, (state, action) => {
         state.isLoading = false;
         state.error = false;
       })
@@ -174,7 +174,7 @@ const blog_slice = createSlice({
         state.isLoading = true;
       })
       // i removed this action text that will be after the state because it not allowing the code to push on git hub it's bringing an error (action) the error is that it's defined but not used
-      .addCase(editBlog.fulfilled, (state) => {
+      .addCase(editBlog.fulfilled, (state, action) => {
         state.isLoading = false;
         state.error = false;
       })

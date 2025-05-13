@@ -4,12 +4,30 @@ import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 import { FaTimes, FaCloudUploadAlt } from "react-icons/fa";
+import { createBlog } from "../redux/slices/blog.slice";
+import { toast } from "react-toastify";
+import { getItemFromLocalStorage } from "../utitlity/storage";
+import { useDispatch } from "react-redux";
 
 const CreateBlogDesktop = () => {
   const [previewImages, setPreviewImages] = useState([]);
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  // const token = getItemFromLocalStorage("access_token");
+  const token = getItemFromLocalStorage("wb_token");
+
+  const [blogData, setBlogData] = useState({
+    title: "",
+    // subtitle: { type: String, required: true, trim: true},
+    content: "",
+    date: { type: Date, default: Date.now },
+    imageUrl: { type: String, required: true },
+    category: { type: String, required: true },
+    // author: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    // isFeatured: {type: Boolean, default: false}
+  });
 
   const handleImageUpload = (files) => {
     const validFiles = Array.from(files).filter(
@@ -98,6 +116,7 @@ const CreateBlogDesktop = () => {
                 <label className="block text-sm text-[#627777] font-normal font-aeonik mb-0">
                   Hero Images
                 </label>
+
                 <div
                   className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
                     isDragging
@@ -172,6 +191,10 @@ const CreateBlogDesktop = () => {
                   </label>
                   <input
                     type="text"
+                    value={blogData.title}
+                    onChange={(e) =>
+                      setBlogData({ ...blogData, title: e.target.value })
+                    }
                     className="w-full p-3 border rounded-lg bg-[#F3F3F3] mt-1"
                     placeholder="Enter Blog Title"
                   />
@@ -181,6 +204,10 @@ const CreateBlogDesktop = () => {
                     Article
                   </label>
                   <textarea
+                    value={blogData.content}
+                    onChange={(e) =>
+                      setBlogData({ ...blogData, content: e.target.value })
+                    }
                     className="w-full p-3 border rounded-lg min-h-[120px] bg-[#F3F3F3]"
                     placeholder="Enter your blog content here..."
                   />
@@ -189,19 +216,37 @@ const CreateBlogDesktop = () => {
                 {/* Add this right after your form fields */}
                 <div className="flex justify-center items-center space-x-4 mt-8">
                   <button
-                    onClick={() => {
-                      // Handle publish logic here
-                      console.log("Publishing blog...");
-                      // Add your actual publish logic (API call, etc.)
+                    onClick={async () => {
+                      if (!blogData.title || !blogData.content) {
+                        toast.error("Please fill in all fields.");
+                        return;
+                      }
+
+                      try {
+                        const payload = {
+                          ...blogData,
+                          imageUrl: previewImages[0],
+                          token,
+                        };
+
+                        const res = await dispatch(
+                          createBlog(payload)
+                        ).unwrap();
+                        toast.success("Blog created successfully!");
+                        navigate("/blogs");
+                      } catch (err) {
+                        toast.error("Failed to create blog.");
+                        console.error("Create blog error:", err);
+                      }
                     }}
-                    className="px-16 py-2 bg-black text-white rounded-3xl hover:bg-gray-800 transition-colors focus:outline-none  focus:ring-black text-lg font-aeonik font-medium"
+                    className="px-16 py-2 bg-black text-white rounded-3xl hover:bg-gray-800 transition-colors focus:outline-none focus:ring-black text-lg font-aeonik font-medium"
                   >
                     Publish
                   </button>
+
                   <button
                     onClick={() => {
-                      // Handle cancel action
-                      navigate("/blogs"); // Or your desired cancel behavior
+                      navigate("/blogs");
                     }}
                     className="px-16 py-2 bg-white text-gray-600 rounded-3xl border border-gray-100 hover:bg-gray-50 transition-colors focus:outline-none font-aeonik font-medium text-lg shadow-lg focus:ring-gray-300"
                   >
