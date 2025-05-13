@@ -13,6 +13,10 @@ import {
 } from "react-icons/fa";
 import TenureModal from "../components/TenureModal";
 import OrderModal from "../components/OrderModal";
+import { useSelector, useDispatch } from "react-redux";
+import { selectPropertiesSlice } from "../redux/selectors/property.selector";
+import { fetchProperties } from "../redux/slices/property.slice";
+import {IMAGE_URL} from "../redux/actionTypes";
 
 const properties = [
   {

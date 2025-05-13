@@ -16,9 +16,9 @@ const initialState = {
 // ===================================charles==============
 export const fetchProperties = createAsyncThunk(
   "api/fetchProperties",
-  async (_, { rejectWithValue }) => {
+  async (sortData, { rejectWithValue }) => {
     try {
-      return await fetchPropertiesThunk();
+      return await fetchPropertiesThunk(sortData);
     } catch (error) {
       return rejectWithValue(error.response.data);
     }

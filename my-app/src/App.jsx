@@ -82,7 +82,7 @@ const App = () => {
           <Route path="/PasswordReset" element={<PasswordReset />} /> 
           <Route path="/PasswordSuccessful" element={<PasswordSuccessful />} />
           <Route path="/EmailTemplate" element={<EmailTemplate />} />
-          <Route path="/blogdetails" element={<BlogDetails />} />
+          <Route path="/blogdetails/:id" element={<BlogDetails />} />
 
           {/* Dashboard Routes */}
           <Route path="/dashboard" element={
@@ -101,7 +101,7 @@ const App = () => {
             <Route path="/settings" element={<Settings/>} />
             {/* <Route path="/logout" element={<Logout/>} /> */}
             <Route path="/create-blog" element={<CreateBlog/>} />
-            <Route path="/see-details" element={<SeeDetails/>} />
+            <Route path="/see-details/:id" element={<SeeDetails/>} />
             <Route path="/portfolio-mobile" element={<PortfolioMobile/>} />
             <Route path="/bottom-nav" element={<BottomNav/>} />
             <Route path="/overview-mobile" element={<OverviewMobile/>} />

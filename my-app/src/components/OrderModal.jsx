@@ -1,6 +1,6 @@
 import React from "react";
 
-const OrderModal = ({ isOpen,  position }) => {
+const OrderModal = ({ isOpen, position, setSortOrderValue }) => {
   if (!isOpen) return null;
 
   return (
@@ -17,29 +17,30 @@ const OrderModal = ({ isOpen,  position }) => {
           {/* Min Price Input */}
           <div>
             <label className="block text-base font-medium font-aeonik space-x-3 p-1">
-            <input
-              type="radio"
-              name="Order"
-              value="Newest"
-              className="form-radio text-black"
-            />
-            <span className="text-[#1D3F3FDE]">Newest - Oldest</span>
+              <input
+                onChange={(e) => setSortOrderValue(e.target.value)}
+                type="radio"
+                name="Order"
+                value="DESC"
+                className="form-radio text-black"
+              />
+              <span className="text-[#1D3F3FDE]">Newest - Oldest</span>
             </label>
           </div>
 
           {/* Oldest to Newest*/}
           <div>
             <label className="block text-base font-medium font-aeonik space-x-3 p-1">
-            <input
-              type="radio"
-              name="Order"
-              value="Oldest"
-              className="form-radio text-[#1D3F3FDE]"
-            />
-            <span className="text-[#1D3F3FDE]">Oldest - Newest</span>
+              <input
+                onChange={(e) => setSortOrderValue(e.target.value)}
+                type="radio"
+                name="Order"
+                value="ASC"
+                className="form-radio text-[#1D3F3FDE]"
+              />
+              <span className="text-[#1D3F3FDE]">Oldest - Newest</span>
             </label>
           </div>
-
         </div>
       </div>
     </div>

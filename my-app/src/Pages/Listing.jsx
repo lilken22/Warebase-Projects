@@ -12,6 +12,7 @@ import "../index.css";
 import { useSelector, useDispatch } from "react-redux";
 import { selectPropertiesSlice } from "../redux/selectors/property.selector";
 import { fetchProperties } from "../redux/slices/property.slice";
+import {IMAGE_URL} from "../redux/actionTypes";
 
 
   // data array moved here 
@@ -116,7 +117,6 @@ import { fetchProperties } from "../redux/slices/property.slice";
 
 export default function Listing() {
   const {properties} = useSelector(selectPropertiesSlice)
-  // console.log(properties)
   const dispatch = useDispatch()
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
@@ -227,7 +227,7 @@ export default function Listing() {
 
   useEffect(() => {
     dispatch(fetchProperties()).unwrap();
-  }, []);
+  }, [dispatch]);
 
   const displayData = filteredData.length > 0 ? filteredData : properties;
   return (
@@ -379,17 +379,22 @@ export default function Listing() {
             <div className="max-w-[1300px]">
               <div className="grid grid-cols-1 gap-4 mt-16 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 justify-start">
                 {(displayData?.length > 0) ? (
-                  displayData?.map((item, index) => (
-                    <div
+                  displayData?.map((item, index) => {
+                    const firstImage = Array.isArray(item.propertyImage) ? item.propertyImage[2] : null;
+                    console.log(`${IMAGE_URL}${firstImage}`)
+                    return (
+                      <div
                       key={index}
                       className="md:w-[320px] border rounded-lg bg-[#FFFFFF] shadow-md overflow-hidden"
                     >
                       <div className="relative">
-                        <img
-                          src={item.propertyImage}
-                          alt={`Property ${index + 1}`}
-                          className="w-full h-40 object-cover"
-                        />
+                        {
+                          <img
+                            src={firstImage && `${IMAGE_URL}${firstImage}`}
+                            alt={`Property ${index + 1}`}
+                            className="w-full h-40 object-cover"
+                          />
+                        }
                         <span className="absolute top-0 left-0 bg-[#F11414] text-white text-xs px-2 py-1 rounded">
                           {!item.isShared ? "For Sale" : "For Lease"}
                         </span>
@@ -403,7 +408,7 @@ export default function Listing() {
                         <p className="text-sm text-[#627777DE]">
                           Property Name:{" "}
                           <span className="font-yeseva font-light text-sm">
-                            {item.propertyName}
+                            {item?.propertyName}
                           </span>
                         </p>
                         <p className="text-sm text-[#627777DE]">
@@ -440,7 +445,8 @@ export default function Listing() {
                         </div>
                       </div>
                     </div>
-                  ))
+                    )
+                  })
                 ) : (
                   <div>
                     <p>No properties currently</p>

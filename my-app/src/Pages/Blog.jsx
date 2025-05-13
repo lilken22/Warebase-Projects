@@ -1,11 +1,17 @@
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { Link, useNavigate } from "react-router-dom";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { FaArrowRight } from "react-icons/fa6"; // Icons for previous and next
+import { useSelector, useDispatch } from "react-redux";
+import { fetchBlogs } from "../redux/slices/blog.slice";
+import { selectBlogSlice } from "../redux/selectors/blog.selector";
 
 export default function Blog() {
+  const { blogs } = useSelector(selectBlogSlice);
+  console.log(blogs);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1); // State to track the current page
 
@@ -18,6 +24,9 @@ export default function Blog() {
     setCurrentPage(page);
   };
 
+  useEffect(() => {
+    dispatch(fetchBlogs()).unwrap();
+  }, []);
   return (
     <div className="min-h-screen bg-white text-[rgb(26, 24, 24)] font-serif flex flex-col justify-between">
       {/* Navbar */}
@@ -88,295 +97,93 @@ export default function Blog() {
         {/* Grid of Articles */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 px-4 md:px-6 mx-auto ">
           {/* Article Card 1 */}
-          <div className="flex flex-col shadow-lg rounded-lg overflow-hidden h-full w-full">
-            {/* Image Section */}
-            <img
-              src="/max.jpeg"
-              alt="Maximizing Warehouse Efficiency"
-              className="w-[170px] md:w-full h-[85px] md:h-[200px] object-cover"
-            />
+          {blogs?.length > 0 &&
+            blogs?.map((item, index) => {
+              return (
+                <div key={index} className="flex flex-col shadow-lg rounded-lg overflow-hidden h-full w-full">
+                  {/* Image Section */}
+                  <img
+                    src="/max.jpeg"
+                    alt="Maximizing Warehouse Efficiency"
+                    className="w-[170px] md:w-full h-[85px] md:h-[200px] object-cover"
+                  />
 
-            {/* Content Section */}
-            <div className="bg-white p-4 pb-4 flex flex-col flex-grow">
-              {/* Date */}
-              <p className="text-[10px] md:text-base text-[#1D3F3F75] md:mt-0">
-                February 25, 2024
-              </p>
+                  {/* Content Section */}
+                  <div className="bg-white p-4 pb-4 flex flex-col flex-grow">
+                    {/* Date */}
+                    <p className="text-[10px] md:text-base text-[#1D3F3F75] md:mt-0">
+                      {new Date(item?.date).toLocaleDateString()}
+                    </p>
 
-              {/* Title */}
-              <p className="font-medium font-yeseva text-[8px] md:text-base text-[#1D3F3FDE] mt-1">
-                Maximizing Warehouse Efficiency: Tips for Businesses
-              </p>
+                    {/* Title */}
+                    <p className="font-medium font-yeseva text-[8px] md:text-base text-[#1D3F3FDE] mt-1">
+                      {item.title || 'Maximizing Warehouse Efficiency: Tips for Businesses'}
+                    </p>
 
-              {/* Read More Link */}
-              <Link
-                to="/blogdetails"
-                className="text-[#1D3F3F] font-aeonik font-bold text-[10px] md:text-lg mt-auto flex text-center items-center justify-start gap-3"
-              >
-                Read More <FaArrowRight />
-              </Link>
-            </div>
-          </div>
-
-          {/* Article Card 2 */}
-          <div className="flex flex-col shadow-lg rounded-lg overflow-hidden h-full w-full max-w-[330px] mx-auto">
-            <img
-              src="/phone.jpeg"
-              alt="Shared Warehousing"
-              className="w-[170px] md:w-full h-[85px] md:h-[200px] object-cover"
-            />
-            <div className="bg-white p-4 pb-4 flex flex-col flex-grow">
-              {/* Date */}
-              <p className="text-[10px] md:text-sm text-[#1D3F3F75] md:mt-0">
-                February 25, 2024
-              </p>
-
-              {/* Title */}
-              <p className="font-medium font-yeseva text-[8px] md:text-base text-[#1D3F3FDE] mt-1">
-                Shared Warehousing: A Cost-Effective Solution for Small
-                Businesses
-              </p>
-
-              {/* Read More Link */}
-              <Link
-                to="/blogdetails"
-                className="text-[#1D3F3F] font-aeonik font-bold text-[10px] md:text-lg mt-5 flex text-center items-center justify-start gap-3"
-              >
-                Read More <FaArrowRight />
-              </Link>
-            </div>
-          </div>
-
-          {/* Article Card 3 */}
-          <div className="flex flex-col shadow-lg rounded-lg overflow-hidden h-full w-full max-w-[330px] mx-auto">
-            <img
-              src="/key.jpeg"
-              alt="Listing Your Warehouse"
-              className="w-[170px] md:w-full h-[85px] md:h-[200px] object-cover"
-            />
-            <div className="bg-white p-4 pb-4 flex flex-col flex-grow">
-              {/* Date */}
-              <p className="text-[10px] md:text-base text-[#1D3F3F75] md:mt-0">
-                February 25, 2024
-              </p>
-
-              {/* Title */}
-              <p className="font-medium font-yeseva text-[8px] md:text-base text-[#1D3F3FDE] mt-1">
-                How to List Your Warehouse for Rent and Attract Tenants Quickly
-              </p>
-
-              {/* Read More Link */}
-              <Link
-                to="/blogdetails"
-                className="text-[#1D3F3F] font-aeonik font-bold text-[10px] md:text-lg mt-auto flex text-center items-center justify-start gap-3"
-              >
-                Read More <FaArrowRight />
-              </Link>
-            </div>
-          </div>
-
-          {/* Article Card 4 */}
-          <div className="flex flex-col shadow-lg rounded-lg overflow-hidden h-full w-full max-w-[330px] mx-auto">
-            <img
-              src="/board.jpeg"
-              alt="Key Factors for Leasing"
-              className="w-[170px] md:w-full h-[85px] md:h-[200px] object-cover"
-            />
-            <div className="bg-white p-4 pb-4 flex flex-col flex-grow">
-              {/* Date */}
-              <p className="text-[10px] md:text-base text-[#1D3F3F75] md:mt-0">
-                February 25, 2024
-              </p>
-
-              {/* Title */}
-              <p className="font-medium font-yeseva text-[8px] md:text-base text-[#1D3F3FDE] mt-">
-                Key Factors to Consider Before Leasing a Warehouse
-              </p>
-
-              {/* Read More Link */}
-              <Link
-                to="/blogdetails"
-                className="text-[#1D3F3F] font-aeonik font-bold text-[10px] md:text-lg mt-auto flex text-center items-center justify-start gap-3"
-              >
-                Read More <FaArrowRight />
-              </Link>
-            </div>
-          </div>
-
-          
-          {/* Article Card 5 */}
-          <div className="flex flex-col shadow-lg rounded-lg overflow-hidden h-full w-full max-w-[330px] mx-auto">
-            {/* Image Section */}
-            <img
-              src="/max.jpeg"
-              alt="Maximizing Warehouse Efficiency"
-              className="w-[170px] md:w-full h-[85px] md:h-[200px] object-cover"
-            />
-
-            {/* Content Section */}
-            <div className="bg-white p-4 pb-4 flex flex-col flex-grow">
-              {/* Date */}
-              <p className="text-[10px] md:text-base text-[#1D3F3F75] md:mt-3">
-                February 25, 2024
-              </p>
-
-              {/* Title */}
-              <p className="font-medium font-yeseva text-[8px] md:text-base text-[#1D3F3FDE] mt-1">
-                Maximizing Warehouse Efficiency: Tips for Businesses
-              </p>
-
-              {/* Read More Link */}
-              <Link
-                to="/blogdetails"
-                className="text-[#1D3F3F] font-aeonik font-bold text-[10px] md:text-lg mt-auto flex text-center items-center justify-start gap-3"
-              >
-                Read More <FaArrowRight />
-              </Link>
-            </div>
-          </div>
-
-           {/* Article Card 6 */}
-           <div className="flex flex-col shadow-lg rounded-lg overflow-hidden h-full w-full max-w-[330px] mx-auto">
-            <img
-              src="/phone.jpeg"
-              alt="Shared Warehousing"
-              className="w-[170px] md:w-full h-[85px] md:h-[200px] object-cover"
-            />
-            <div className="bg-white p-4 pb-4 flex flex-col flex-grow">
-              {/* Date */}
-              <p className="text-[10px] md:text-base text-[#1D3F3F75] md:mt-3">
-                February 25, 2024
-              </p>
-
-              {/* Title */}
-              <p className="font-medium font-yeseva text-[8px] md:text-base text-[#1D3F3FDE] mt-1">
-                Shared Warehousing: A Cost-Effective Solution for Small
-                Businesses
-              </p>
-
-              {/* Read More Link */}
-              <Link
-                to="/blogdetails"
-                className="text-[#1D3F3F] font-aeonik font-bold text-[10px] md:text-lg mt-5 flex text-center items-center justify-start gap-3"
-              >
-                Read More <FaArrowRight />
-              </Link>
-            </div>
-          </div>
-
-                  {/* Article Card 7 */}
-                  <div className="flex flex-col shadow-lg rounded-lg overflow-hidden h-full w-full max-w-[330px] mx-auto">
-            <img
-              src="/key.jpeg"
-              alt="Listing Your Warehouse"
-              className="w-[170px] md:w-full h-[85px] md:h-[200px] object-cover"
-            />
-            <div className="bg-white p-4 pb-4 flex flex-col flex-grow">
-              {/* Date */}
-              <p className="text-[10px] md:text-base text-[#1D3F3F75] md:mt-3">
-                February 25, 2024
-              </p>
-
-              {/* Title */}
-              <p className="font-medium font-yeseva text-[8px] md:text-base text-[#1D3F3FDE] mt-1">
-                How to List Your Warehouse for Rent and Attract Tenants Quickly
-              </p>
-
-              {/* Read More Link */}
-              <Link
-                to="/blogdetails"
-                className="text-[#1D3F3F] font-aeonik font-bold text-[10px] md:text-lg mt-auto flex text-center items-center justify-start gap-3"
-              >
-                Read More <FaArrowRight />
-              </Link>
-            </div>
-          </div>
-
-          {/* Article Card 8 */}
-          <div className="flex flex-col shadow-lg rounded-lg overflow-hidden h-full w-full max-w-[330px] mx-auto">
-            <img
-              src="/board.jpeg"
-              alt="Key Factors for Leasing"
-              className="w-[170px] md:w-full h-[85px] md:h-[200px] object-cover"
-            />
-            <div className="bg-white p-4 pb-4 flex flex-col flex-grow">
-              {/* Date */}
-              <p className="text-[10px] md:text-base text-[#1D3F3F75] md:mt-3">
-                February 25, 2024
-              </p>
-
-              {/* Title */}
-              <p className="font-medium font-yeseva text-[8px] md:text-base text-[#1D3F3FDE] mt-">
-                Key Factors to Consider Before Leasing a Warehouse
-              </p>
-
-              {/* Read More Link */}
-              <Link
-                to="/blogdetails"
-                className="text-[#1D3F3F] font-aeonik font-bold text-[10px] md:text-lg mt-auto flex text-center items-center justify-start gap-3"
-              >
-                Read More <FaArrowRight />
-              </Link>
-            </div>
-          </div>
-
+                    {/* Read More Link */}
+                    <Link
+                      to={`/blogdetails/${item._id}`}
+                      className="text-[#1D3F3F] font-aeonik font-bold text-[10px] md:text-lg mt-auto flex text-center items-center justify-start gap-3"
+                    >
+                      Read More <FaArrowRight />
+                    </Link>
+                  </div>
+                </div>
+              );
+            })}
         </div>
-
       </section>
 
+      {/* Pagination Section */}
+      <div className="flex justify-center items-center space-x-2">
+        {/* Previous Button */}
+        <button
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+          className="p-2 px-4 rounded-md border border-gray-200 bg-[#FFFFFF] hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <FaChevronLeft className="text-[#1D3F3F]" />
+        </button>
 
-         {/* Pagination Section */}
-       <div className="flex justify-center items-center space-x-2">
-          {/* Previous Button */}
+        {/* Page Numbers */}
+        {[1, 2, 3].map((page) => (
           <button
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-            className="p-2 px-4 rounded-md border border-gray-200 bg-[#FFFFFF] hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            <FaChevronLeft className="text-[#1D3F3F]" />
-          </button>
-
-          {/* Page Numbers */}
-          {[1, 2, 3 ].map((page) => (
-            <button
-              key={page}
-              onClick={() => handlePageChange(page)}
-              className={`px-4 py-1 rounded-md  border border-gray-200 shadow-sm ${
-                currentPage === page
-                  ? "bg-[#E2E8F0] text-[#021816]"
-                  : "bg-[#FFFFFF] text-[#021816] hover:bg-gray-100"
-              }`}
-            >
-              {page}
-            </button>
-          ))}
-
-          {/* Ellipsis */}
-          <span className="text-[#1D3F3F]">....</span>
-
-          {/* Last Page */}
-          <button
-            onClick={() => handlePageChange(50)}
-            className={`px-4 py-1 rounded-md border border-gray-200 shadow-sm ${
-              currentPage === 50
+            key={page}
+            onClick={() => handlePageChange(page)}
+            className={`px-4 py-1 rounded-md  border border-gray-200 shadow-sm ${
+              currentPage === page
                 ? "bg-[#E2E8F0] text-[#021816]"
                 : "bg-[#FFFFFF] text-[#021816] hover:bg-gray-100"
             }`}
           >
-            50
+            {page}
           </button>
+        ))}
 
-          {/* Next Button */}
-          <button
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === 50}
-            className="px-4 py-2 rounded-md bg-[#FFFFFF] border border-gray-300 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            <FaChevronRight className="text-[#1D3F3F]" />
-          </button>
-        </div>
+        {/* Ellipsis */}
+        <span className="text-[#1D3F3F]">....</span>
 
-       
+        {/* Last Page */}
+        <button
+          onClick={() => handlePageChange(50)}
+          className={`px-4 py-1 rounded-md border border-gray-200 shadow-sm ${
+            currentPage === 50
+              ? "bg-[#E2E8F0] text-[#021816]"
+              : "bg-[#FFFFFF] text-[#021816] hover:bg-gray-100"
+          }`}
+        >
+          50
+        </button>
+
+        {/* Next Button */}
+        <button
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === 50}
+          className="px-4 py-2 rounded-md bg-[#FFFFFF] border border-gray-300 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <FaChevronRight className="text-[#1D3F3F]" />
+        </button>
+      </div>
 
       {/* Stay Up to Date Section */}
       <section className="py-16 px-4 text-center bg-white ">
@@ -407,9 +214,7 @@ export default function Blog() {
               className="w-full px-4 py-2 pr-20 border border-gray-300 rounded-2xl focus:outline-none text-sm md:text-base h-10 md:h-16"
             />
             {/* Subscribe Button Inside Input */}
-            <button
-              className="absolute top-1/2 right-0 transform -translate-y-1/2 px-4 py-2 bg-black text-white rounded-xl hover:bg-gray-800 transition w-[90px] md:w-[190px] text-sm md:text-lg h-10 md:h-16"
-            >
+            <button className="absolute top-1/2 right-0 transform -translate-y-1/2 px-4 py-2 bg-black text-white rounded-xl hover:bg-gray-800 transition w-[90px] md:w-[190px] text-sm md:text-lg h-10 md:h-16">
               Subscribe
             </button>
           </div>

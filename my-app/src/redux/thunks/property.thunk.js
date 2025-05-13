@@ -49,9 +49,10 @@ export const editPropertyThunk = async (data) => {
   }
 };
 
-export const fetchPropertiesThunk = async () => {
+export const fetchPropertiesThunk = async (sortData) => {
+  const {sortOrderValue, sortTenureValue} = sortData
   try {
-    const response = await axios.get(`${URL}/properties/findAll/`);
+    const response = await axios.get(`${URL}/properties/findAll/?sortOrder=${sortOrderValue}&type=${sortTenureValue}`);
     if (response?.status === 200) {
       response?.data?.data;
       return response?.data;

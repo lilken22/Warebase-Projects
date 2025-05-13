@@ -1,6 +1,6 @@
 import React from "react";
 
-const TenureModal = ({ isOpen, position }) => {
+const TenureModal = ({ isOpen, position, setSortTenureValue}) => {
   if (!isOpen) return null;
 
   return (
@@ -13,17 +13,17 @@ const TenureModal = ({ isOpen, position }) => {
     >
       {/* Modal Content */}
       <label className="flex items-center space-x-1 p-1 rounded-md font-aeonik font-medium text-base">
-        <input type="radio" name="property" value="Shared" className="form-radio text-black" />
+        <input  onChange={(e) => setSortTenureValue(e.target.value)} type="radio" name="property" value="SALE" className="form-radio text-black" />
         <span className="text-[#1D3F3FDE]">For Sale</span>
       </label>
 
       <label className="flex items-center space-x-1 p-1 rounded-md  font-aeonik font-medium text-base">
-        <input type="radio" name="property" value="Unshared" className="form-radio text-black" />
+        <input onChange={(e) => setSortTenureValue(e.target.value)} type="radio" name="property" value="LEASE" className="form-radio text-black" />
         <span className="text-[#1D3F3FDE]">For Lease</span>
       </label>
 
       <label className="flex items-center space-x-1 p-1  rounded-md font-aeonik font-medium text-base">
-        <input type="radio" name="property" value="Unshared" className="form-radio text-black" />
+        <input onChange={(e) => setSortTenureValue(e.target.value)} type="radio" name="property" value="SHARED" className="form-radio text-black" />
         <span className="text-[#1D3F3FDE]">Shared Space</span>
       </label>
 
