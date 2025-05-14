@@ -4,10 +4,10 @@ import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 import { FaTimes, FaCloudUploadAlt } from "react-icons/fa";
+import { useDispatch } from "react-redux";
 import { createBlog } from "../redux/slices/blog.slice";
 import { toast } from "react-toastify";
 import { getItemFromLocalStorage } from "../utitlity/storage";
-import { useDispatch } from "react-redux";
 
 const CreateBlogDesktop = () => {
   const [previewImages, setPreviewImages] = useState([]);
@@ -15,18 +15,14 @@ const CreateBlogDesktop = () => {
   const fileInputRef = useRef(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  // const token = getItemFromLocalStorage("access_token");
   const token = getItemFromLocalStorage("wb_token");
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [isChecked, setIsChecked] = useState(false);
 
-  const [blogData, setBlogData] = useState({
+  const [formData, setFormData] = useState({
     title: "",
-    // subtitle: { type: String, required: true, trim: true},
-    content: "",
-    date: { type: Date, default: Date.now },
-    imageUrl: { type: String, required: true },
-    category: { type: String, required: true },
-    // author: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-    // isFeatured: {type: Boolean, default: false}
+    article: "",
+    image: "",
   });
 
   const handleImageUpload = (files) => {
@@ -44,7 +40,13 @@ const CreateBlogDesktop = () => {
 
   const handleFileInputChange = (e) => {
     if (e.target.files.length) {
-      handleImageUpload(e.target.files);
+      const newFiles = Array.from(e.target.files);
+
+      // Append the new files to the already existing ones in selectedFiles
+      setSelectedFiles((prevFiles) => [...prevFiles, ...newFiles]);
+
+      // Optionally, you can handle the file upload here as well
+      handleImageUpload(newFiles);
     }
   };
 
@@ -90,6 +92,38 @@ const CreateBlogDesktop = () => {
     navigate("/blogs");
   };
 
+  const handleInputChange = (e) => {
+    if (e.target) {
+      const { name, value } = e.target;
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
+  };
+
+  const createNewBlog = async () => {
+    const formDataToSend = new FormData();
+    formDataToSend.append("title", formData.title);
+    formDataToSend.append("article", formData.article);
+    selectedFiles?.forEach((file, index) => {
+      formDataToSend.append("images", file);
+    });
+
+    try {
+      await dispatch(createBlog({ token, body: formDataToSend })).unwrap();
+      setFormData({
+        title: "",
+        article: "",
+        image: "",
+      });
+    } catch (error) {
+      console.error(error);
+      toast.error(error.message || "An error occured while creating property");
+      return;
+    }
+  };
+
   return (
     <div className="flex min-h-screen bg-[#F8F9FA]">
       <Sidebar />
@@ -116,7 +150,6 @@ const CreateBlogDesktop = () => {
                 <label className="block text-sm text-[#627777] font-normal font-aeonik mb-0">
                   Hero Images
                 </label>
-
                 <div
                   className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
                     isDragging
@@ -190,11 +223,10 @@ const CreateBlogDesktop = () => {
                     Title
                   </label>
                   <input
+                    onChange={(e) => handleInputChange(e)}
+                    value={formData.title}
+                    name="title"
                     type="text"
-                    value={blogData.title}
-                    onChange={(e) =>
-                      setBlogData({ ...blogData, title: e.target.value })
-                    }
                     className="w-full p-3 border rounded-lg bg-[#F3F3F3] mt-1"
                     placeholder="Enter Blog Title"
                   />
@@ -204,10 +236,9 @@ const CreateBlogDesktop = () => {
                     Article
                   </label>
                   <textarea
-                    value={blogData.content}
-                    onChange={(e) =>
-                      setBlogData({ ...blogData, content: e.target.value })
-                    }
+                    onChange={(e) => handleInputChange(e)}
+                    value={formData.article}
+                    name="article"
                     className="w-full p-3 border rounded-lg min-h-[120px] bg-[#F3F3F3]"
                     placeholder="Enter your blog content here..."
                   />
@@ -216,37 +247,15 @@ const CreateBlogDesktop = () => {
                 {/* Add this right after your form fields */}
                 <div className="flex justify-center items-center space-x-4 mt-8">
                   <button
-                    onClick={async () => {
-                      if (!blogData.title || !blogData.content) {
-                        toast.error("Please fill in all fields.");
-                        return;
-                      }
-
-                      try {
-                        const payload = {
-                          ...blogData,
-                          imageUrl: previewImages[0],
-                          token,
-                        };
-
-                        const res = await dispatch(
-                          createBlog(payload)
-                        ).unwrap();
-                        toast.success("Blog created successfully!");
-                        navigate("/blogs");
-                      } catch (err) {
-                        toast.error("Failed to create blog.");
-                        console.error("Create blog error:", err);
-                      }
-                    }}
-                    className="px-16 py-2 bg-black text-white rounded-3xl hover:bg-gray-800 transition-colors focus:outline-none focus:ring-black text-lg font-aeonik font-medium"
+                    onClick={createNewBlog}
+                    className="px-16 py-2 bg-black text-white rounded-3xl hover:bg-gray-800 transition-colors focus:outline-none  focus:ring-black text-lg font-aeonik font-medium"
                   >
                     Publish
                   </button>
-
                   <button
                     onClick={() => {
-                      navigate("/blogs");
+                      // Handle cancel action
+                      navigate("/blogs"); // Or your desired cancel behavior
                     }}
                     className="px-16 py-2 bg-white text-gray-600 rounded-3xl border border-gray-100 hover:bg-gray-50 transition-colors focus:outline-none font-aeonik font-medium text-lg shadow-lg focus:ring-gray-300"
                   >

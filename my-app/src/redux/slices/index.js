@@ -4,6 +4,7 @@ import blogSlice from "./blog.slice";
 import paymentSlice from "./payment.slice";
 import messageSlice from "./message.slice";
 import propertySlice from "./property.slice"
+import dashboardSlice from "./dashboard.slice"
 
 const combineSlices = {
     authSlice,
@@ -11,7 +12,8 @@ const combineSlices = {
     blogSlice,
     messageSlice,
     paymentSlice,
-    propertySlice
+    propertySlice,
+    dashboardSlice
 }
 
 export default combineSlices

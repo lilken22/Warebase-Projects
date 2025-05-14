@@ -4,16 +4,18 @@ import Footer from "../components/Footer";
 import { Link, useNavigate } from "react-router-dom";
 import WarehouseFormModal from "../components/WarehouseFormModal"; 
 import { FaArrowRight } from "react-icons/fa6";
-// note that i removes useSelctor cause it causing an error on git hub
-// import { useDispatch } from "react-redux";
-// import { testApiCalls } from "../redux/slices/auth.slice";
+import { useDispatch } from "react-redux";
+import { subscribeNewsletter } from "../redux/slices/message.slice";
+import { toast } from "react-toastify";
+
 
 const LandingPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null); // State to track selected radio button
   const navigate = useNavigate();
   const servicesRef = useRef(null);
-  // const dispatch = useDispatch()
+  const dispatch = useDispatch()
+  const [subscribeForm, setSubscribeForm] = useState('')
 
   const handleRadioChange = (event) => {
     setSelectedOption((prev) => (prev === event.target.id ? null : event.target.id));
@@ -35,6 +37,20 @@ const LandingPage = () => {
       servicesRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
+
+  // To subscribe for news letter=========
+  const handleSubscribeNewsletter =async()=>{
+    if(!subscribeForm) return toast.error('Please enter your email to subscribe')
+    try {
+      const response = await dispatch(subscribeNewsletter({email: subscribeForm}))
+      if(response === 200){
+        setSubscribeForm('')
+      }
+      
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   return (
     <div className="min-h-screen bg-white text-[rgb(26, 24, 24)] font-serif flex flex-col justify-between">
@@ -149,12 +165,12 @@ const LandingPage = () => {
       {/* Images */}
       <div className="flex flex-nowrap gap-2 w-full">
         <img
-          src="/About1.jpeg"
+          src="/whitewarehouse.jpg"
           alt=""
           className="w-[35%] md:w-[35%] max-w-[350px] h-72 rounded-none shadow-lg object-cover"
         />
         <img
-          src="/About2.jpeg"
+          src="/insidewarehouse.jpg"
           alt=""
           className="w-[65%] md:w-[65%] max-w-[550px] h-72 rounded-none shadow-lg object-cover"
         />
@@ -177,9 +193,9 @@ const LandingPage = () => {
     {/* Need Warehouse Space */}
     <div className="bg-white shadow-lg rounded-lg border flex flex-col items-stretch w-[300px] md:w-[392px] min-h-[150px] md:min-h-[334px]">
   <div className="relative">
-    <img src="/service.jpeg" alt="" className="w-full h-16 object-cover rounded-t-lg" />
+    <img src="/needed2.jpg" alt="" className="w-full h-16 object-cover rounded-t-lg" />
     <h3 className="absolute inset-x-0 top-4 left-0 text-lg font-semibold text-center text-black px-2">
-      <span className="text-[#00E5FF]">Need</span> warehouse space
+      <span className="text-[#1D3F3F] bg-[#03E5FE] py-2 px-2">Need</span> warehouse space
     </h3>
   </div>
 
@@ -212,10 +228,10 @@ const LandingPage = () => {
     {/* Have Warehouse Space */}
     <div className="bg-white shadow-lg rounded-lg border flex flex-col items-stretch w-[300px] md:w-[392px] min-h-[150px] md:min-h-[334px]">
   <div className="relative">
-    <img src="/need 2.jpg" alt="" className="w-full h-16 object-cover rounded-t-lg" />
+    <img src="/needed2.jpg" alt="" className="w-full h-16 object-cover rounded-t-lg" />
     <h3 className="absolute inset-x-0 top-4 left-0 text-lg font-semibold text-center text-black px-2">
-      <span className="text-[#00E5FF]">Have</span> warehouse space
-    </h3>
+      <span className="text-[#1D3F3F] bg-[#03E5FE] py-2 px-2">Have</span> warehouse space
+    </h3> 
   </div>
 
   <div className="p-5 w-full flex flex-col justify-between items-center">
@@ -667,12 +683,15 @@ const LandingPage = () => {
   <div className="relative w-full max-w-[300px] md:max-w-[700px]  px-4"> {/* Adjusted width for mobile */}
     {/* Input Field */}
     <input
+      value={subscribeForm}
+      onChange={(e)=>setSubscribeForm(e.target.value)}
       type="email"
       placeholder="Enter your email"
       className="w-full px-4 py-2 pr-20 border border-gray-300 rounded-2xl focus:outline-none text-sm md:text-base  h-10 md:h-16" /* Adjusted padding and font size for mobile */
     />
     {/* Subscribe Button Inside Input */}
     <button 
+      onClick={handleSubscribeNewsletter}
       className="absolute top-1/2 right-0 transform -translate-y-1/2 px-4 py-2 bg-black text-white rounded-xl hover:bg-gray-800 transition w-[90px] md:w-[190px] text-sm md:text-lg  h-10 md:h-16" /* Adjusted button size and font for mobile */
     >
       Subscribe
