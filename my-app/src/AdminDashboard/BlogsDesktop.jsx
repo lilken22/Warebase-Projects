@@ -17,12 +17,13 @@ import { selectBlogSlice } from "../redux/selectors/blog.selector";
 
 export default function BlogsDesktop() {
    const { blogs } = useSelector(selectBlogSlice);
-   console.log(blogs)
    const dispatch = useDispatch();
    const [isSortOpen, setIsSortOpen] = useState(false);
    const [sortPosition, setSortPosition] = useState({ top: 0, left: 0 });
+   const [sortOrderValue, setSortOrderValue] = useState('DESC');
+   const [searchTerm, setSearchTerm] = useState('');
+   const [searchResult, setSearchResult] = useState([]);
    const [currentPage, setCurrentPage] = useState(1);
-
    const navigate = useNavigate();
    const sortModalRef = useRef(null);
    const buttonRef = useRef(null);
@@ -54,13 +55,32 @@ export default function BlogsDesktop() {
      };
    }, []);
 
+   const filteredBlogs = () => {
+     if (!searchTerm) setSearchResult(blogs);
+     const result = blogs?.length > 0 && blogs?.filter((item, index) => {
+      return item?.title?.includes(searchTerm) || item?.subtitle?.includes(searchTerm)
+     });
+     if(result){
+      setSearchResult(result)
+     }
+   };
+
    const handlePageChange = (page) => {
      setCurrentPage(page);
    };
 
+   const handleRefresh = () => {
+    setSortOrderValue('DESC')
+    setIsSortOpen(false)
+   };
+
    useEffect(() => {
-     dispatch(fetchBlogs()).unwrap();
-   }, []);
+      filteredBlogs()
+   }, [searchTerm, blogs]);
+
+   useEffect(() => {
+     dispatch(fetchBlogs(sortOrderValue)).unwrap();
+   }, [sortOrderValue]);
 
   return (
     <div className="flex min-h-screen bg-[#F8F9FA]">
@@ -93,109 +113,56 @@ export default function BlogsDesktop() {
                   Sort <FaChevronDown className="ml-2" />
                 </FilterButton>
                 <button className="px-4 py-2 flex items-center bg-black text-white rounded-full">
-                  Reset Filter <FaSyncAlt className="ml-2" />
+                  Reset Filter <FaSyncAlt onClick={()=>handleRefresh()} className="ml-2" />
                 </button>
               </div>
 
-              <SearchBar />
+              <SearchBar setSearchTerm={setSearchTerm} searchTerm={searchTerm} />
 
               <SortModal
                 isOpen={isSortOpen}
                 onClose={() => setIsSortOpen(false)}
                 position={sortPosition}
+                setSortOrderValue={setSortOrderValue}
               />
             </div>
 
             {/* next code in here  which will appear before pagination*/}
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 md:gap-6 w-full mt-8">
-              {/* Article Card 1 */}
-              <div className="flex flex-col shadow-lg rounded-lg overflow-hidden h-full w-full">
-                {/* Image Section */}
-                <img
-                  src="/max.jpeg"
-                  alt="Maximizing Warehouse Efficiency"
-                  className="w-[170px] md:w-full h-[85px] md:h-[200px] object-cover"
-                />
+              5{/* Article Card 1 */}
+              {searchResult.length > 0 &&
+                searchResult.map((item, index) => {
+                  return (
+                    <div key={index} className="flex flex-col shadow-lg rounded-lg overflow-hidden h-full w-full">
+                      <img
+                        src="/max.jpeg"
+                        alt="Maximizing Warehouse Efficiency"
+                        className="w-[170px] md:w-full h-[85px] md:h-[200px] object-cover"
+                      />
 
-                {/* Content Section */}
-                <div className="bg-white p-4 pb-4 flex flex-col flex-grow">
-                  {/* Date */}
-                  <p className="text-[10px] md:text-base text-[#1D3F3F75] md:mt-0">
-                    February 25, 2024
-                  </p>
+                      {/* Content Section */}
+                      <div className="bg-white p-4 pb-4 flex flex-col flex-grow">
+                        {/* Date */}
+                        <p className="text-[10px] md:text-base text-[#1D3F3F75] md:mt-0">
+                          {new Date(item?.date).toLocaleDateString()}
+                        </p>
 
-                  {/* Title */}
-                  <p className="font-medium font-yeseva text-[8px] md:text-base text-[#1D3F3FDE] mt-1">
-                    Maximizing Warehouse Efficiency: Tips for Businesses
-                  </p>
+                        {/* Title */}
+                        <p className="font-medium font-yeseva text-[8px] md:text-base text-[#1D3F3FDE] mt-1">
+                          {item.title || 'Maximizing Warehouse Efficiency: Tips for Businesses'}
+                        </p>
 
-                  {/* Read More Link */}
-                  <Link
-                    to="/see-details"
-                    className="text-[#1D3F3F] font-aeonik font-normal text-[10px] md:text-sm mt-6 flex text-center items-center justify-start gap-3 underline"
-                  >
-                    See Details
-                  </Link>
-                </div>
-              </div>
-
-              {/* Article Card 2 */}
-              <div className="flex flex-col shadow-lg rounded-lg overflow-hidden h-full w-full">
-                <img
-                  src="/phone.jpeg"
-                  alt="Shared Warehousing"
-                  className="w-[170px] md:w-full h-[85px] md:h-[200px] object-cover"
-                />
-                <div className="bg-white p-4 pb-4 flex flex-col flex-grow">
-                  {/* Date */}
-                  <p className="text-[10px] md:text-sm text-[#1D3F3F75] md:mt-0">
-                    February 25, 2024
-                  </p>
-
-                  {/* Title */}
-                  <p className="font-medium font-yeseva text-[8px] md:text-base text-[#1D3F3FDE] mt-1">
-                    Shared Warehousing: A Cost-Effective Solution for Small
-                    Businesses
-                  </p>
-
-                  {/* Read More Link */}
-                  <Link
-                    to="/see-details"
-                    className="text-[#1D3F3F] font-aeonik font-normal text-[10px] md:text-sm mt-auto flex text-center items-center justify-start gap-3 underline"
-                  >
-                    See Details
-                  </Link>
-                </div>
-              </div>
-
-              {/* Article Card 3 */}
-              <div className="flex flex-col shadow-lg rounded-lg overflow-hidden h-full w-full">
-                <img
-                  src="/key.jpeg"
-                  alt="Listing Your Warehouse"
-                  className="w-[170px] md:w-full h-[85px] md:h-[200px] object-cover"
-                />
-                <div className="bg-white p-4 pb-4 flex flex-col flex-grow">
-                  {/* Date */}
-                  <p className="text-[10px] md:text-base text-[#1D3F3F75] md:mt-0">
-                    February 25, 2024
-                  </p>
-
-                  {/* Title */}
-                  <p className="font-medium font-yeseva text-[8px] md:text-base text-[#1D3F3FDE] mt-1">
-                    How to List Your Warehouse for Rent and Attract Tenants
-                    Quickly
-                  </p>
-
-                  {/* Read More Link */}
-                  <Link
-                    to="/see-details"
-                    className="text-[#1D3F3F] font-aeonik font-normal text-[10px] md:text-sm mt-auto flex text-center items-center justify-start gap-3 underline"
-                  >
-                    See Details
-                  </Link>
-                </div>
-              </div>
+                        {/* Read More Link */}
+                        <Link
+                          to={`/see-details/${item._id}`}
+                          className="text-[#1D3F3F] font-aeonik font-normal text-[10px] md:text-sm mt-6 flex text-center items-center justify-start gap-3 underline"
+                        >
+                          See Details
+                        </Link>
+                      </div>
+                    </div>
+                  );
+                })}
             </div>
             {/* ends here */}
 
@@ -223,16 +190,18 @@ const FilterButton = React.forwardRef(({ onClick, children }, ref) => (
   </button>
 ));
 
-const SearchBar = () => (
+const SearchBar = ({setSearchTerm, searchTerm}) => (
   <div className="bg-gray-200 p-2 rounded-full w-[400px] flex items-center">
     <div className="flex items-center bg-white px-4 py-3 rounded-full w-full">
       <input
+        onChange={(e)=>setSearchTerm(e.target.value)}
+        value={searchTerm}
         type="text"
         placeholder="Search property by name or ID"
         className="bg-transparent outline-none flex-grow text-gray-700 placeholder-gray-500"
       />
       <button className="text-gray-600">
-        <FaSearch />
+        <FaSearch onClick={()=>setSearchTerm(searchTerm)} />
       </button>
     </div>
   </div>

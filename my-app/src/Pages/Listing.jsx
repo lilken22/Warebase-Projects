@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"; 
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import PropertyModal from "../components/PropertyModal";
@@ -12,111 +12,112 @@ import "../index.css";
 import { useSelector, useDispatch } from "react-redux";
 import { selectPropertiesSlice } from "../redux/selectors/property.selector";
 import { fetchProperties } from "../redux/slices/property.slice";
+import {IMAGE_URL} from "../redux/actionTypes";
 
-// data array moved here
-// const data = [
-//   {
-//     imageUrl: "/property one.jpg",
-//     propertyType: "unshared",
-//     location: "delta",
-//     priceRange: [30000, 40000],
-//     sizeRange: "",
-//     isForSale: true,
-//   },
-//   {
-//     imageUrl: "/property two.jpg",
-//     propertyType: "shared",
-//     location: "delta",
-//     priceRange: [30000, 40000],
-//     sizeRange: "",
-//     isForSale: false,
-//   },
-//   {
-//     imageUrl: "/property three.jpg",
-//     propertyType: "shared",
-//     location: "delta",
-//     priceRange: [30000, 40000],
-//     sizeRange: "",
-//     isForSale: false,
-//   },
-//   {
-//     imageUrl: "/property one.jpg",
-//     propertyType: "unshared",
-//     location: "delta",
-//     priceRange: [30000, 40000],
-//     sizeRange: "",
-//     isForSale: true,
-//   },
-//   {
-//     imageUrl: "/property two.jpg",
-//     propertyType: "shared",
-//     location: "delta",
-//     priceRange: [30000, 40000],
-//     sizeRange: "",
-//     isForSale: false,
-//   },
-//   {
-//     imageUrl: "/property one.jpg",
-//     propertyType: "unshared",
-//     location: "delta",
-//     priceRange: [30000, 40000],
-//     sizeRange: "",
-//     isForSale: true,
-//   },
-//   {
-//     imageUrl: "/property three.jpg",
-//     propertyType: "unshared",
-//     location: "delta",
-//     priceRange: [30000, 40000],
-//     sizeRange: "",
-//     isForSale: true,
-//   },
-//   {
-//     imageUrl: "/property two.jpg",
-//     propertyType: "shared",
-//     location: "delta",
-//     priceRange: [30000, 40000],
-//     sizeRange: "",
-//     isForSale: false,
-//   },
-//   {
-//     imageUrl: "/property three.jpg",
-//     propertyType: "shared",
-//     location: "delta",
-//     priceRange: [30000, 40000],
-//     sizeRange: "",
-//     isForSale: false,
-//   },
-//   {
-//     imageUrl: "/property two.jpg",
-//     propertyType: "unshared",
-//     location: "delta",
-//     priceRange: [30000, 40000],
-//     sizeRange: "",
-//     isForSale: true,
-//   },
-//   {
-//     imageUrl: "/property two.jpg",
-//     propertyType: "unshared",
-//     location: "delta",
-//     priceRange: [30000, 40000],
-//     sizeRange: "",
-//     isForSale: true,
-//   },
-//   {
-//     imageUrl: "/property three.jpg",
-//     propertyType: "shared",
-//     location: "delta",
-//     priceRange: [30000, 40000],
-//     sizeRange: "",
-//     isForSale: false,
-//   },
-// ];
+
+  // data array moved here 
+  // const data = [
+  //   {
+  //     imageUrl: "/property one.jpg",
+  //     propertyType: "unshared",
+  //     location: "delta",
+  //     priceRange: [30000, 40000],
+  //     sizeRange: "",
+  //     isForSale: true,
+  //   },
+  //   {
+  //     imageUrl: "/property two.jpg",
+  //     propertyType: "shared",
+  //     location: "delta",
+  //     priceRange: [30000, 40000],
+  //     sizeRange: "",
+  //     isForSale: false,
+  //   },
+  //   {
+  //     imageUrl: "/property three.jpg",
+  //     propertyType: "shared",
+  //     location: "delta",
+  //     priceRange: [30000, 40000],
+  //     sizeRange: "",
+  //     isForSale: false,
+  //   },
+  //   {
+  //     imageUrl: "/property one.jpg",
+  //     propertyType: "unshared",
+  //     location: "delta",
+  //     priceRange: [30000, 40000],
+  //     sizeRange: "",
+  //     isForSale: true,
+  //   },
+  //   {
+  //     imageUrl: "/property two.jpg",
+  //     propertyType: "shared",
+  //     location: "delta",
+  //     priceRange: [30000, 40000],
+  //     sizeRange: "",
+  //     isForSale: false,
+  //   },
+  //   {
+  //     imageUrl: "/property one.jpg",
+  //     propertyType: "unshared",
+  //     location: "delta",
+  //     priceRange: [30000, 40000],
+  //     sizeRange: "",
+  //     isForSale: true,
+  //   },
+  //   {
+  //     imageUrl: "/property three.jpg",
+  //     propertyType: "unshared",
+  //     location: "delta",
+  //     priceRange: [30000, 40000],
+  //     sizeRange: "",
+  //     isForSale: true,
+  //   },
+  //   {
+  //     imageUrl: "/property two.jpg",
+  //     propertyType: "shared",
+  //     location: "delta",
+  //     priceRange: [30000, 40000],
+  //     sizeRange: "",
+  //     isForSale: false,
+  //   },
+  //   {
+  //     imageUrl: "/property three.jpg",
+  //     propertyType: "shared",
+  //     location: "delta",
+  //     priceRange: [30000, 40000],
+  //     sizeRange: "",
+  //     isForSale: false,
+  //   },
+  //   {
+  //     imageUrl: "/property two.jpg",
+  //     propertyType: "unshared",
+  //     location: "delta",
+  //     priceRange: [30000, 40000],
+  //     sizeRange: "",
+  //     isForSale: true,
+  //   },
+  //   {
+  //     imageUrl: "/property two.jpg",
+  //     propertyType: "unshared",
+  //     location: "delta",
+  //     priceRange: [30000, 40000],
+  //     sizeRange: "",
+  //     isForSale: true,
+  //   },
+  //   {
+  //     imageUrl: "/property three.jpg",
+  //     propertyType: "shared",
+  //     location: "delta",
+  //     priceRange: [30000, 40000],
+  //     sizeRange: "",
+  //     isForSale: false,
+  //   },
+  // ];
 
 export default function Listing() {
-  const { properties } = useSelector(selectPropertiesSlice);
-  // console.log(properties)
-  const dispatch = useDispatch();
+  const {properties} = useSelector(selectPropertiesSlice)
+  const dispatch = useDispatch()
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
   const [isStateModalOpen, setIsStateModalOpen] = useState(false);
@@ -134,15 +135,15 @@ export default function Listing() {
     top: 0,
     left: 0,
   });
-  const [isWarehouseFormModalOpen, setIsWarehouseFormModalOpen] =
-    useState(false);
+  const [isWarehouseFormModalOpen, setIsWarehouseFormModalOpen] = useState(false);
   const dropdownRef = useRef(null);
   const buttonRef = useRef(null);
   const stateModalRef = useRef(null);
   // const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [toggleData, setToggleData] = useState(true);
-  const [filteredData, setFilteredData] = useState([]);
+  const [filteredData, setFilteredData] = useState([])
+
 
   const handleDropdownToggle = () => {
     if (buttonRef.current) {
@@ -160,10 +161,7 @@ export default function Listing() {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsDropdownOpen(false);
       }
-      if (
-        stateModalRef.current &&
-        !stateModalRef.current.contains(event.target)
-      ) {
+      if (stateModalRef.current && !stateModalRef.current.contains(event.target)) {
         setIsStateModalOpen(false);
       }
     };
@@ -215,10 +213,10 @@ export default function Listing() {
     setCurrentPage(page);
   };
 
+  
+
   const filterData = () => {
-    const result =
-      properties?.length > 0 &&
-      properties?.filter((item) => item.isShared === toggleData);
+    const result =  properties?.length > 0 && properties?.filter((item) => item.isShared === toggleData);
     if (!result) return;
     setFilteredData(result);
   };
@@ -229,7 +227,7 @@ export default function Listing() {
 
   useEffect(() => {
     dispatch(fetchProperties()).unwrap();
-  }, []);
+  }, [dispatch]);
 
   const displayData = filteredData.length > 0 ? filteredData : properties;
   return (
@@ -240,6 +238,7 @@ export default function Listing() {
         <div className="w-full mx-auto p-4 rounded-md mt-20">
           <div className="h-[131px] flex flex-col items-center">
             <div className="w-full max-w-[1200px]">
+
               <div className="w-[240px] h-[48px] bg-[#ECECEC] rounded-xl flex p-[4px]">
                 <button
                   onClick={() => setToggleData(true)}
@@ -384,18 +383,23 @@ export default function Listing() {
           <div className="bg-[#F4F4F4] px-3 mx-auto rounded-md max-w-[1320px] items-center">
             <div className="max-w-[1300px]">
               <div className="grid grid-cols-1 gap-4 mt-16 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 justify-start">
-                {displayData?.length > 0 ? (
-                  displayData?.map((item, index) => (
-                    <div
+                {(displayData?.length > 0) ? (
+                  displayData?.map((item, index) => {
+                    const firstImage = Array.isArray(item.propertyImage) ? item.propertyImage[2] : null;
+                    console.log(`${IMAGE_URL}${firstImage}`)
+                    return (
+                      <div
                       key={index}
                       className="md:w-[320px] border rounded-lg bg-[#FFFFFF] shadow-md overflow-hidden"
                     >
                       <div className="relative">
-                        <img
-                          src={item.propertyImage}
-                          alt={`Property ${index + 1}`}
-                          className="w-full h-40 object-cover"
-                        />
+                        {
+                          <img
+                            src={firstImage && `${IMAGE_URL}${firstImage}`}
+                            alt={`Property ${index + 1}`}
+                            className="w-full h-40 object-cover"
+                          />
+                        }
                         <span className="absolute top-0 left-0 bg-[#F11414] text-white text-xs px-2 py-1 rounded">
                           {!item.isShared ? "For Sale" : "For Lease"}
                         </span>
@@ -409,7 +413,7 @@ export default function Listing() {
                         <p className="text-sm text-[#627777DE]">
                           Property Name:{" "}
                           <span className="font-yeseva font-light text-sm">
-                            {item.propertyName}
+                            {item?.propertyName}
                           </span>
                         </p>
                         <p className="text-sm text-[#627777DE]">
@@ -446,7 +450,8 @@ export default function Listing() {
                         </div>
                       </div>
                     </div>
-                  ))
+                    )
+                  })
                 ) : (
                   <div>
                     <p>No properties currently</p>

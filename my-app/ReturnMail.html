@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Warehouse Inquiry</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Yeseva+One&display=swap">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Playfair+Display:ital,wght@1,700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+    }
+
+    .template {
+      max-width: 600px;
+      margin: 30px auto;
+      padding: 20px;
+      background: white;
+      border: 1px solid #ddd;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      width: 50px;
+    }
+
+    .title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 20px;
+      color: #222;
+    }
+
+    .info-box {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      margin: 20px 0;
+    }
+
+    .info-item {
+      flex: 1 1 30%;
+      margin-bottom: 15px;
+    }
+
+    .info-label {
+      display: block;
+      font-weight: bold;
+      font-size: 13px;
+      color: #555;
+      margin-bottom: 4px;
+    }
+
+    .info-value {
+      font-size: 14px;
+      color: #333;
+    }
+
+    .price {
+      font-weight: bold;
+      color: #000;
+      font-size: 15px;
+    }
+
+    .paragraph {
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 15px;
+      color: #1D3F3F;
+      text-align: justify;
+      font-family: "Aeonik TRIAL";
+    }
+
+    .signature {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #1D3F3F;
+    }
+
+    @media (max-width: 600px) {
+      .info-box {
+        flex-direction: column;
+      }
+      .info-item {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="template">
+    <div class="header">
+      <img src="/public/logo.png" alt="Logo" class="logo">
+    </div>
+
+    <div class="title">Inquiry About Warehouse Usage <br/> in Ikeja</div>
+    <hr/>
+    <div class="info-box">
+      <div class="info-item">
+        <span class="info-label">Warehouse Location</span>
+        <span class="info-value">Ikeja, Lagos</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Size</span>
+        <span class="info-value">2000 sq. ft</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">Price</span>
+        <span class="info-value price">₦5,000,000/Month</span>
+      </div>
+    </div>
+
+    <hr/>
+
+    <div class="paragraph">
+      Dear [Customer’s Name],
+    </div>
+
+    <div class="paragraph">
+      Thank you for reaching out to us. We appreciate your interest in our upcoming warehouse space in Ikeja and are glad to provide more clarity on the intended usage.
+    </div>
+
+    <div class="paragraph">
+      The warehouse is being developed as a central hub for our logistics and product distribution operations within Lagos. It will serve logistics’ primary purpose to ensure secure storage, assisted inventory management, and faster order fulfillment for a wide range of products — including fashion, electronics, food items, and other consumer goods.
+    </div>
+
+    <div class="paragraph">
+      In addition to storage, the warehouse will handle packaging, quality control, and inventory labeling. The facility will meet HSE requirements, especially for delicate or high-value items.
+    </div>
+
+    <div class="paragraph">
+      Strategically located in Ikeja, the warehouse is positioned for easy access to key transport routes and the airport. It aims to facilitate delivery turnaround and reduce shipping costs.
+    </div>
+
+    <div class="paragraph">
+      Should you require further information or foresee establishing a partnership or use of our warehousing facilities, we’ll be happy to schedule a call or in-person interaction to discuss this in detail.
+    </div>
+
+    <div class="paragraph">
+      Thank you once again for your interest.
+    </div>
+
+    <div class="signature">
+      Best regards, <br/> 
+      Xcel Admin Support Team
+    </div>
+  </div>
+</body>
+</html>

@@ -82,7 +82,7 @@ const App = () => {
           <Route path="/PasswordReset" element={<PasswordReset />} /> 
           <Route path="/PasswordSuccessful" element={<PasswordSuccessful />} />
           <Route path="/EmailTemplate" element={<EmailTemplate />} />
-          <Route path="/blogdetails" element={<BlogDetails />} />
+          <Route path="/blogdetails/:id" element={<BlogDetails />} />
 
           {/* Dashboard Routes */}
           <Route path="/dashboard" element={
@@ -91,17 +91,17 @@ const App = () => {
             </ProtectedRoute>
             } />
             {/* <Route index element={<Overview />} /> */}
-            {/* <Route path="/overview" element={<ProtectedRoute><Overview/></ProtectedRoute>} /> */}
-            <Route path="/overview" element={<Overview/>} />
+            <Route path="/overview" element={<ProtectedRoute><Overview/></ProtectedRoute>} />
+            {/* <Route path="/overview" element={<Overview/>} /> */}
             <Route path="/blogs" element={<Blogs/>} />
-            <Route path="/portfolio" element={<Portfolio/>} />
-            {/* <Route path="/add-property" element={<ProtectedRoute><AddProperty/></ProtectedRoute>} /> */}
-            <Route path="/add-property" element={<AddProperty/>} />
+            <Route path="/portfolio" element={<ProtectedRoute><Portfolio/></ProtectedRoute>} />
+            <Route path="/add-property" element={<ProtectedRoute><AddProperty/></ProtectedRoute>} />
+            {/* <Route path="/add-property" element={<AddProperty/>} /> */}
             <Route path="/desciption-property/:id" element={<DesciptionProperty />} />
             <Route path="/settings" element={<Settings/>} />
             {/* <Route path="/logout" element={<Logout/>} /> */}
             <Route path="/create-blog" element={<CreateBlog/>} />
-            <Route path="/see-details" element={<SeeDetails/>} />
+            <Route path="/see-details/:id" element={<SeeDetails/>} />
             <Route path="/portfolio-mobile" element={<PortfolioMobile/>} />
             <Route path="/bottom-nav" element={<BottomNav/>} />
             <Route path="/overview-mobile" element={<OverviewMobile/>} />

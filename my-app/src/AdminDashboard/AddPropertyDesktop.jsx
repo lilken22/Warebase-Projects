@@ -22,7 +22,7 @@ const AddPropertyDesktop = () => {
   const fileInputRef = useRef(null);
 
   const [formData, setFormData] = useState({
-    isShared: false,
+    isShared: isChecked,
     sharePropertyNumber: 0,
     propertyName: "",
     propertyId: "",

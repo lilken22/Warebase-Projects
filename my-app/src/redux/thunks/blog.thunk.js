@@ -72,9 +72,21 @@ export const createFeaturedBlogThunk = async (data) => {
   }
 };
 
-export const fetchBlogsThunk = async () => {
+export const fetchBlogsThunk = async (sort='DESC') => {
   try {
-    const response = await axios.get(`${URL}/blogs/`);
+    const response = await axios.get(`${URL}/blogs/?sortOrder=${sort}`);
+    if (response?.status === 200) {
+      return response?.data;
+    }
+  } catch (err) {
+    err.response;
+    return err.response?.data?.message || "an error occured check console ";
+  }
+};
+
+export const fetchLatestBlogsThunk = async () => {
+  try {
+    const response = await axios.get(`${URL}/blogs/latest`);
     if (response?.status === 200) {
       return response?.data;
     }

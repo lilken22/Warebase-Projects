@@ -1,19 +1,90 @@
-import React,  { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { PiSlidersHorizontalFill } from "react-icons/pi";
 import { Menu } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import BottomNav from "./BottomNav";
-import { FaPlus, FaChevronLeft, FaChevronRight, FaSearch} from "react-icons/fa";
-
+import {
+  FaPlus,
+  FaChevronLeft,
+  FaChevronRight,
+  FaSearch,
+} from "react-icons/fa";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchBlogs } from "../redux/slices/blog.slice";
+import { selectBlogSlice } from "../redux/selectors/blog.selector";
+import SortModal from "../components/SortModal";
 
 export default function BlogMobile() {
-    const [currentPage, setCurrentPage] = useState(1);
-    const navigate = useNavigate();
+  const { blogs } = useSelector(selectBlogSlice);
+  const dispatch = useDispatch();
+  const [isSortOpen, setIsSortOpen] = useState(false);
+  const [sortPosition, setSortPosition] = useState({ top: 0, left: 0 });
+  const [sortOrderValue, setSortOrderValue] = useState("DESC");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResult, setSearchResult] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const navigate = useNavigate();
+  const sortModalRef = useRef(null);
+  const buttonRef = useRef(null);
 
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
 
-    const handlePageChange = (page) => {
-        setCurrentPage(page);
+  const handleSortToggle = () => {
+    if (buttonRef.current) {
+      const buttonRect = buttonRef.current.getBoundingClientRect();
+      setSortPosition({
+        top: buttonRect.bottom + window.scrollY,
+        left: buttonRect.left + window.scrollX,
+      });
+    }
+    setIsSortOpen((prev) => !prev);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        sortModalRef.current &&
+        !sortModalRef.current.contains(event.target)
+      ) {
+        setIsSortOpen(false);
+      }
     };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const filteredBlogs = () => {
+    if (!searchTerm) setSearchResult(blogs);
+    const result =
+      blogs?.length > 0 &&
+      blogs?.filter((item, index) => {
+        return (
+          item?.title?.includes(searchTerm) ||
+          item?.subtitle?.includes(searchTerm)
+        );
+      });
+    if (result) {
+      setSearchResult(result);
+    }
+  };
+
+  const handleRefresh = () => {
+    setSortOrderValue("DESC");
+    setIsSortOpen(false);
+  };
+
+  useEffect(() => {
+    filteredBlogs();
+  }, [searchTerm, blogs]);
+
+  useEffect(() => {
+    dispatch(fetchBlogs(sortOrderValue)).unwrap();
+  }, [sortOrderValue]);
 
   return (
     <div className="min-h-screen bg-white flex justify-center">
@@ -134,7 +205,7 @@ export default function BlogMobile() {
                 See Details
               </Link>
             </div>
-            </div>
+          </div>
 
           {/* Article Card 4 */}
           <div className="flex flex-col shadow-lg rounded-lg overflow-hidden h-full w-full">
@@ -151,7 +222,7 @@ export default function BlogMobile() {
 
               {/* Title */}
               <p className="font-medium font-yeseva text-[8px] md:text-base text-[#1D3F3FDE] mt-1">
-              Key Factors to Consider Before Leasing a Warehouse
+                Key Factors to Consider Before Leasing a Warehouse
               </p>
 
               {/* Read More Link */}
@@ -173,9 +244,8 @@ export default function BlogMobile() {
           onPageChange={handlePageChange}
         />
 
-          {/* Bottom Navigation */}
+        {/* Bottom Navigation */}
         <BottomNav />
-
       </div>
     </div>
   );
@@ -195,7 +265,6 @@ const SearchBar = () => (
     </div>
   </div>
 );
-
 
 const Pagination = ({ currentPage, totalPages, onPageChange }) => (
   <div className="flex justify-center items-center mt-6 gap-1 text-[12px]">
@@ -243,4 +312,3 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => (
     </button>
   </div>
 );
-

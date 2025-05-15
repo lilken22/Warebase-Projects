@@ -13,6 +13,10 @@ import {
 } from "react-icons/fa";
 import TenureModal from "../components/TenureModal";
 import OrderModal from "../components/OrderModal";
+import { useSelector, useDispatch } from "react-redux";
+import { selectPropertiesSlice } from "../redux/selectors/property.selector";
+import { fetchProperties } from "../redux/slices/property.slice";
+import {IMAGE_URL} from "../redux/actionTypes";
 
 const properties = [
   {
@@ -49,9 +53,9 @@ const PortfolioMobile = () => {
   const [selectedTab, setSelectedTab] = useState("listed");
   const [currentPage, setCurrentPage] = useState(1);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
+  const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 2 });
   const [isOrderOpen, setIsOrderOpen] = useState(false);
-  const [orderPosition, setOrderPosition] = useState({ top: 0, left: 0 });
+  const [orderPosition, setOrderPosition] = useState({ top: 0, left: 2 });
 
   const navigate = useNavigate();
   const dropdownRef = useRef(null);
@@ -67,7 +71,7 @@ const PortfolioMobile = () => {
     e.stopPropagation(); // Prevent event bubbling
     if (tenureButtonRef.current) {
       const buttonRect = tenureButtonRef.current.getBoundingClientRect();
-      console.log("Tenure button position:", buttonRect);
+      // console.log("Tenure button position:", buttonRect);
       setDropdownPosition({
         top: buttonRect.bottom + window.scrollY + 5, // Added small offset
         left: buttonRect.left + window.scrollX,
@@ -81,7 +85,7 @@ const PortfolioMobile = () => {
     e.stopPropagation(); // Prevent event bubbling
     if (orderButtonRef.current) {
       const buttonRect = orderButtonRef.current.getBoundingClientRect();
-      console.log("Order button position:", buttonRect);
+      // console.log("Order button position:", buttonRect);
       setOrderPosition({
         top: buttonRect.bottom + window.scrollY + 5, // Added small offset
         left: buttonRect.left + window.scrollX,

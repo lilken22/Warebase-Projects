@@ -13,18 +13,27 @@ import {
 import TenureModal from "../components/TenureModal";
 import OrderModal from "../components/OrderModal";
 import ListModal from "../components/ListModal";
+import { useSelector, useDispatch } from "react-redux";
+import { selectPropertiesSlice } from "../redux/selectors/property.selector";
+import { fetchProperties } from "../redux/slices/property.slice";
+import {IMAGE_URL} from "../redux/actionTypes";
 
 export default function PortfolioDesktop() {
+  const {properties} = useSelector(selectPropertiesSlice)
+  const dispatch = useDispatch()
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedTab, setSelectedTab] = useState("Listed");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
   const [isOrderOpen, setIsOrderOpen] = useState(false);
   const [orderPosition, setOrderPosition] = useState({ top: 0, left: 0 });
+  const [sortOrderValue, setSortOrderValue] = useState("DESC");
+  const [sortTenureValue, setSortTenureValue] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResult, setSearchResult] = useState([]);
   const [listModalOpen, setListModalOpen] = useState(false);
   const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
   const [selectedPropertyId, setSelectedPropertyId] = useState(null);
-
   const navigate = useNavigate();
   const dropdownRef = useRef(null);
   const orderButtonRef = useRef(null);
@@ -110,40 +119,70 @@ export default function PortfolioDesktop() {
   };
 
   // Mock data with proper image paths
-  const properties = [
-    {
-      id: "WB01",
-      image: "/property four.jpg",
-      type: "For Sale",
-      shared: false,
-      name: "Fidel Warehouse",
-      price: "₦5,250,000/Month",
-    },
-    {
-      id: "WB02",
-      image: "/property five.jpg",
-      type: "For Rent",
-      shared: false,
-      name: "Fidel Warehouse",
-      price: "₦5,250,000/Month",
-    },
-    {
-      id: "WB03",
-      image: "/property three.jpg",
-      type: "For Lease",
-      shared: true,
-      name: "Fidel Warehouse",
-      price: "₦5,250,000/Month",
-    },
-    {
-      id: "WB04",
-      image: "/property six.jpg",
-      type: "For Sale",
-      shared: false,
-      name: "Fidel Warehouse",
-      price: "₦5,250,000/Month",
-    },
-  ];
+  // const properties = [
+  //   {
+  //     id: "WB01",
+  //     image: "/property four.jpg",
+  //     type: "For Sale",
+  //     shared: false,
+  //     name: "Fidel Warehouse",
+  //     price: "₦5,250,000/Month",
+  //   },
+  //   {
+  //     id: "WB02",
+  //     image: "/property five.jpg",
+  //     type: "For Rent",
+  //     shared: false,
+  //     name: "Fidel Warehouse",
+  //     price: "₦5,250,000/Month",
+  //   },
+  //   {
+  //     id: "WB03",
+  //     image: "/property three.jpg",
+  //     type: "For Lease",
+  //     shared: true,
+  //     name: "Fidel Warehouse",
+  //     price: "₦5,250,000/Month",
+  //   },
+  //   {
+  //     id: "WB04",
+  //     image: "/property six.jpg",
+  //     type: "For Sale",
+  //     shared: false,
+  //     name: "Fidel Warehouse",
+  //     price: "₦5,250,000/Month",
+  //   },
+  // ];
+
+  const filteredProperties = () => {
+    if (!searchTerm) setSearchResult(properties);
+    const result =
+      properties?.length > 0 &&
+      properties?.filter((item, index) => {
+        return (
+          item?.propertyName?.includes(searchTerm) ||
+          item?.propertyId?.includes(searchTerm)
+        );
+      });
+    if (result) {
+      setSearchResult(result);
+    }
+  };
+
+  const handleRefresh = () => {
+    setSortOrderValue("DESC");
+    setSortTenureValue('')
+    setIsOrderOpen(false)
+    setIsDropdownOpen(false)
+  };
+
+  useEffect(() => {
+    filteredProperties();
+  }, [searchTerm, properties]);
+
+  useEffect(() => {
+    dispatch(fetchProperties({sortOrderValue, sortTenureValue}));
+  }, [dispatch, sortOrderValue, sortTenureValue]);
 
   return (
     <div className="flex min-h-screen bg-[#F8F9FA]">
@@ -198,35 +237,37 @@ export default function PortfolioDesktop() {
                 <FilterButton ref={orderButtonRef} onClick={handleOrderToggle}>
                   Order <FaChevronDown className="ml-2" />
                 </FilterButton>
-                <button className="px-4 py-2 flex items-center bg-black text-white rounded-full">
+                <button onClick={()=>handleRefresh()} className="px-4 py-2 flex items-center bg-black text-white rounded-full">
                   Reset Filter <FaSyncAlt className="ml-2" />
                 </button>
               </div>
 
-              <SearchBar />
+              <SearchBar setSearchTerm={setSearchTerm} searchTerm={searchTerm} />
 
               <TenureModal
                 isOpen={isDropdownOpen}
                 onClose={() => setIsDropdownOpen(false)}
-                position={dropdownPosition || {} }
+                position={dropdownPosition}
+                setSortTenureValue={setSortTenureValue}
               />
 
               <OrderModal
                 isOpen={isOrderOpen}
                 onClose={() => setIsOrderOpen(false)}
                 position={orderPosition}
+                setSortOrderValue={setSortOrderValue}
               />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-10">
-              {properties.map((property) => (
+              {searchResult?.length > 0 && searchResult?.map((property, index) => (
                 <PropertyCard
-                  key={property.id}
-                  image={property.image}
-                  type={property.type}
-                  shared={property.shared}
-                  name={property.name}
-                  price={property.price}
+                  key={property._id}
+                  image={property.propertyImage}
+                  type={property.isShared ? 'For lease' : 'For sale'}
+                  shared={property.sharePropertyNumber}
+                  name={property.propertyName}
+                  price={property.propertyPrice}
                   onThreeDotsClick={(e) => handleThreeDotsClick(e, property.id)}
                 />
               ))}
@@ -274,16 +315,18 @@ const FilterButton = React.forwardRef(({ onClick, children }, ref) => (
   </button>
 ));
 
-const SearchBar = () => (
+const SearchBar = ({setSearchTerm, searchTerm}) => (
   <div className="bg-gray-200 p-2 rounded-full w-[400px] flex items-center">
     <div className="flex items-center bg-white px-4 py-3 rounded-full w-full">
       <input
+        onChange={(e)=>setSearchTerm(e.target.value)}
+        value={searchTerm}
         type="text"
         placeholder="Search property by name or ID"
         className="bg-transparent outline-none flex-grow text-gray-700 placeholder-gray-500"
       />
       <button className="text-gray-600">
-        <FaSearch />
+        <FaSearch onClick={()=>setSearchTerm(searchTerm)} />
       </button>
     </div>
   </div>
@@ -299,7 +342,7 @@ const PropertyCard = ({
 }) => (
   <div className="bg-[#F9F9F9] p-4 rounded-lg shadow-md">
     <div className="relative rounded-xl overflow-hidden bg-gray-100 h-52">
-      <img
+      {/* <img
         src={image}
         alt={name}
         className="w-full h-full object-cover rounded-2xl"
@@ -307,7 +350,7 @@ const PropertyCard = ({
           e.target.onerror = null;
           e.target.src = "https://via.placeholder.com/400x300";
         }}
-      />
+      /> */}
       <span className="absolute top-0 left-0 bg-[#F11414] text-white text-xs px-2 py-1 rounded">
         {type}
       </span>
