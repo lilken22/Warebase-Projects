@@ -43,7 +43,7 @@ export default function Navbar({ scrollToServices }) {
                   isActive("/about") ? "text-[#00E5FF]" : "hover:text-[#00E5FF]"
                 }`}
               >
-                About
+                About Us
               </Link>
             </li>
             <li>
@@ -55,7 +55,7 @@ export default function Navbar({ scrollToServices }) {
                     : "hover:text-[#00E5FF]"
                 }`}
               >
-                Listings
+               Property Listings
               </Link>
             </li>
             <li>
@@ -142,7 +142,7 @@ export default function Navbar({ scrollToServices }) {
               }`}
               onClick={() => setMenuOpen(false)}
             >
-              About
+              About Us
             </Link>
           </li>
           <li>
@@ -153,7 +153,7 @@ export default function Navbar({ scrollToServices }) {
               }`}
               onClick={() => setMenuOpen(false)}
             >
-              Listings
+             Property Listings
             </Link>
           </li>
           <li>

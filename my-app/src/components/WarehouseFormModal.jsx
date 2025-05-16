@@ -36,7 +36,7 @@ const WarehouseFormModal = ({ isOpen, onClose }) => {
     e.preventDefault();
     try {
       const response = await dispatch(sendExploreMessage(formData));
-      if(response === 200){
+      if (response === 200) {
         setFormData({
           fullName: "",
           email: "",
@@ -46,8 +46,8 @@ const WarehouseFormModal = ({ isOpen, onClose }) => {
           warehouseSize: "",
           price: "",
           intendedUsage: "",
-        })
-        
+        });
+
         setShowConfirmation(true);
         onClose();
       }
@@ -174,6 +174,7 @@ const WarehouseFormModal = ({ isOpen, onClose }) => {
 
               {/* Warehouse Location & Size */}
               <div className="grid grid-cols-2 md:max-w-[674px] gap-[39px]">
+                {/* Warehouse Location */}
                 <div className="md:max-w-[324px]">
                   <label className="block text-base font-medium font-aeonik text-[#627777]">
                     Warehouse Location<span className="text-red-500">*</span>
@@ -183,23 +184,31 @@ const WarehouseFormModal = ({ isOpen, onClose }) => {
                     name="warehouseLocation"
                     value={formData.warehouseLocation}
                     onChange={handleChange}
-                    className="mt-1 w-full p-2 border bg-[#F3F3F3] rounded-md text-base"
+                    className="mt-1 w-full p-2 border border-gray-300 bg-[#F3F3F3] rounded-md text-base"
                     required
                   />
                 </div>
 
-                <div className="md:max-w-[324px]">
-                  <label className="block text-base font-medium font-aeonik text-[#627777]">
-                    Warehouse Size<span className="text-red-500">*</span>
+                {/* Warehouse Size */}
+                <div>
+                  <label className="block text-[#627777] font-normal font-aeonik text-base">
+                    Warehouse Size
+                    <span className="text-red-600">*</span>
                   </label>
-                  <input
-                    type="text"
-                    name="warehouseSize"
-                    value={formData.warehouseSize}
-                    onChange={handleChange}
-                    className="mt-1 w-full p-2 border bg-[#F3F3F3] rounded-md text-base"
-                    required
-                  />
+                  <div className="flex items-center mt-1 rounded-md bg-[#F3F3F3] overflow-hidden border border-gray-300">
+                    <input
+                      onChange={handleChange}
+                      name="warehouseSize"
+                      value={formData.warehouseSize}
+                      type="text"
+                      className="w-full px-3 py-2 bg-[#F3F3F3] text-base focus:outline-none"
+                      placeholder="Enter size"
+                      required
+                    />
+                    <span className="text-[#627777] text-base p-2">
+                      sq.ft
+                    </span>
+                  </div>
                 </div>
               </div>
 

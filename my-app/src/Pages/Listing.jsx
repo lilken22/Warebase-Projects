@@ -238,22 +238,27 @@ export default function Listing() {
         <div className="w-full mx-auto p-4 rounded-md mt-20">
           <div className="h-[131px] flex flex-col items-center">
             <div className="w-full max-w-[1200px]">
-              <div className="h-[48px] w-[200px] flex items-center justify-between">
+
+              <div className="w-[240px] h-[48px] bg-[#ECECEC] rounded-xl flex p-[4px]">
                 <button
                   onClick={() => setToggleData(true)}
-                  className={`${
-                    toggleData ? "bg-[#FFFFFF]" : "bg-[#ECECEC]"
-                  } w-[95px] h-[48px] rounded-tl-xl rounded-tr-xl py-[10px] px-[20px] gap-[10px] font-medium font-aeonik text-sm text-[#1D3F3F] shadow-sm`}
+                  className={`w-1/2 h-full rounded-lg text-sm font-aeonik transition-all duration-200 ${
+                    toggleData
+                      ? "bg-white text-[#1D3F3F] font-medium"
+                      : "bg-transparent text-[#A6A6A6] font-normal"
+                  }`}
                 >
-                  {"For Sale"}
+                  For Sale
                 </button>
                 <button
                   onClick={() => setToggleData(false)}
-                  className={`w-[105px] h-[48px] rounded-tr-xl rounded-r-[1px] py-[10px] px-[20px] gap-[10px] ${
-                    !toggleData ? "bg-[#FFFFFF]" : "bg-[#ECECEC]"
-                  } text-[#A6A6A6] text-sm font-aeonik font-normal`}
+                  className={`w-1/2 h-full rounded-lg text-sm font-aeonik transition-all duration-200 ${
+                    !toggleData
+                      ? "bg-white text-[#1D3F3F] font-medium"
+                      : "bg-transparent text-[#A6A6A6] font-normal"
+                  }`}
                 >
-                  {"For Lease"}
+                  For Lease
                 </button>
               </div>
 

@@ -153,37 +153,42 @@ const Contact = () => {
               </div>
 
               {/* Warehouse Location & Size */}
-              <div className="grid grid-cols-2 md:grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-sm md:text-base font-aeonik font-normal text-[#627777]">
-                    Warehouse Location<span className="text-[#F00000]">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="warehouseLocation"
-                    value={formData.warehouseLocation}
-                    onChange={handleChange}
-                    className="mt-1 w-full p-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-gray-500 bg-[#F3F3F3]"
-                    aria-label="Warehouse Location"
-                    required
-                  />
-                </div>
+            <div className="grid grid-cols-2 md:grid-cols-2 gap-3">
+  {/* Warehouse Location */}
+  <div>
+    <label className="block text-sm md:text-base font-aeonik font-normal text-[#627777]">
+      Warehouse Location<span className="text-[#F00000]">*</span>
+    </label>
+    <input
+      type="text"
+      name="warehouseLocation"
+      value={formData.warehouseLocation}
+      onChange={handleChange}
+      className="mt-1 w-full px-4 py-2.5 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-gray-500 bg-[#F3F3F3]"
+      aria-label="Warehouse Location"
+      required
+    />
+  </div>
 
-                <div>
-                  <label className="block text-sm md:text-base font-aeonik font-normal text-[#627777]">
-                    Warehouse Size<span className="text-[#F00000]">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="warehouseSize"
-                    value={formData.warehouseSize}
-                    onChange={handleChange}
-                    className="mt-1 w-full p-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-gray-500 bg-[#F3F3F3]"
-                    aria-label="Warehouse Size"
-                    required
-                  />
-                </div>
-              </div>
+  {/* Warehouse Size */}
+  <div>
+    <label className="block text-sm md:text-base font-aeonik font-normal text-[#627777]">
+      Warehouse Size<span className="text-[#F00000]">*</span>
+    </label>
+    <div className="mt-1 w-full flex items-center border rounded-md bg-[#F3F3F3] focus-within:ring-2 focus-within:ring-gray-500">
+      <input
+        type="text"
+        name="warehouseSize"
+        value={formData.warehouseSize}
+        onChange={handleChange}
+        className="flex-grow px-3 py-2 bg-[#F3F3F3] text-sm md:text-base focus:outline-none"
+        required
+      />
+      <span className="text-[#627777] text-sm md:text-base px-3">sq.ft</span>
+    </div>
+  </div>
+</div>
+
 
               {/* Rent/Price */}
               <div>

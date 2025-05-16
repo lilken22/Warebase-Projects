@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>Property Request</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Yeseva+One&display=swap">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Playfair+Display:ital,wght@1,700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+    }
+
+    .template {
+      max-width: 600px;
+      margin: 20px auto;
+      background-color: #ffffff;
+      padding: 18px;
+      border: 1px solid #e0e0e0;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .logo {
+      width: 50px;
+    }
+
+    .price {
+      font-weight: 400;
+      font-size: 18px;
+      color: #1D3F3F;
+      font-family:"Aeonik TRIAL";
+      line-height: 100%;
+    }
+
+    .details {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .detail-label {
+      font-weight:medium;
+      color: rgb(109, 108, 108);
+      font-size: 14px;
+      line-height: 140%;
+    }
+
+    .detail-value {
+      color: #1D3F3F;
+      font-family: "Aeonik TRIAL";
+      font-weight: 700;
+    }
+
+    .section-title {
+      font-weight: bold;
+      margin: 15px 0 10px;
+      font-size: 15px;
+      color: #a09d9d;
+    }
+
+    .description {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #1D3F3F;
+      text-align: justify;
+    }
+
+    @media (max-width: 600px) {
+      .template {
+        padding: 15px;
+        margin: 10px;
+      }
+
+      .details {
+        grid-template-columns: 1fr;
+      }
+
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .price {
+        margin-top: 10px;
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="template">
+    <div class="header">
+      <img src="./public/logo.png" alt="Logo" class="logo" />
+      <div class="price">https://warebase/propertlistinds/wb01</div>
+    </div>
+
+     <hr />
+
+    <div class="details">
+      <div>
+        <div class="detail-label">Full name:</div>
+        <div class="detail-value">Adepopi Samuel</div>
+      </div>
+      <div>
+        <div class="detail-label">Email:</div>
+        <div class="detail-value">adepopi@gmail.com</div>
+      </div>
+      <div>
+        <div class="detail-label">Phone:</div>
+        <div class="detail-value">08032223456</div>
+      </div>
+      <div>
+        <div class="detail-label">Company Name:</div>
+        <div class="detail-value">Gangareels Globe</div>
+      </div>
+      <div>
+        <div class="detail-label">Warehouse Location:</div>
+        <div class="detail-value">Ikeja, Lagos</div>
+      </div>
+      <div>
+        <div class="detail-label">Size:</div>
+        <div class="detail-value">2000 sq ft.</div>
+      </div>
+    </div>
+
+    <div class="section-title">Intended usage</div>
+    <div class="description">
+      The proposed warehouse in Ikeja is strategically intended to serve as a central distribution and logistics hub for growing product-based operations within Lagos and beyond. Positioned in a commercial area, the facility will play a critical role in streamlining supply chain processes, serving as a fulfillment point and reducing operational overhead associated with product storage, processing, and delivery.
+    </div>
+
+    <div class="description" style="margin-top: 15px;">
+      The primary function of the warehouse will be the safe storage and inventory management of a wide range of goods, whether fashion items, hardware, food accessories, packaged food items, and finished merchandise. The warehouse will accommodate both fast-moving consumer goods (FMCG) and medium-duration products. It will be equipped with appropriate security and efficiency enhancements for order systems. All materials will be systematically shelved and tracked using barcoding systems and inventory management software to optimize storage and align logistics.
+    </div>
+  </div>
+</body>
+</html>
