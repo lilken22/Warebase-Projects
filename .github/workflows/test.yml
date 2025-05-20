@@ -3,8 +3,8 @@ name: Test
 on:
   workflow_dispatch:
   pull_request:
-    branches:
-      - dev
+    branches: ["dev"]
+    types: [opened, reopened, synchronize]
 
 jobs:
   Test:
@@ -30,3 +30,36 @@ jobs:
       - name: Run build
         run: npm run build
         working-directory: my-app
+    
+  Notifications:
+    name: Teams notification
+    runs-on: ubuntu-latest
+    steps:
+    - name: Notify PR Opened or Reopened
+      if: github.event.action == 'opened' || github.event.action == 'reopened'
+      uses: mikesprague/teams-incoming-webhook-action@v1
+      with:
+        github-token: ${{ github.token }}
+        webhook-url: ${{ secrets.MS_TEAMS_WEBHOOK_URL }}
+        title: "🆕Pull Request Opened: Frontend (Dev)"
+        message: |  
+          👉🏿 **PR Link:** [#${{ github.event.pull_request.number }} - ${{ github.event.pull_request.title }}](${{ github.event.pull_request.html_url }})  
+          👩🏿‍🎓 **Author:** ${{ github.event.pull_request.user.name }}@${{ github.event.pull_request.user.login }}  
+          ⏱️ Created at: `${{ github.event.pull_request.created_at }}`
+        color: "info"
+        timezone: "Africa/Lagos"
+
+    - name: Notify PR Updated (Commit Pushed)
+      if: github.event.action == 'synchronize'
+      uses: mikesprague/teams-incoming-webhook-action@v1
+      with:
+        github-token: ${{ github.token }}
+        webhook-url: ${{ secrets.MS_TEAMS_WEBHOOK_URL }}
+        title: "🔄Pull Request Updated: Frontend (Dev)"
+        message: |
+          🔁 **New commits pushed to PR:**  
+          👉🏿 **PR Link:** [#${{ github.event.pull_request.number }} - ${{ github.event.pull_request.title }}](${{ github.event.pull_request.html_url }})  
+          👩🏿‍🎓 **Author:** ${{ github.event.pull_request.user.name }}@${{ github.event.pull_request.user.login }}  
+          ⏱️ Updated at: `${{ github.event.pull_request.updated_at }}`
+        color: "warning"
+        timezone: "Africa/Lagos"

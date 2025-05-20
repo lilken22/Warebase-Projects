@@ -3,12 +3,11 @@ name: Deploy to cPanel
 on:
   workflow_dispatch:
   push:
-    branches:
-      - dev
+    branches: ["dev"]
     paths-ignore:
       - .github/**
 
-jobs: 
+jobs:
   Build:
     name: Build
     runs-on: ubuntu-latest
@@ -17,6 +16,16 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+
+      - name: Deploy Started Notification
+        uses: mikesprague/teams-incoming-webhook-action@v1
+        continue-on-error: true
+        with:
+          github-token: ${{ github.token }}
+          webhook-url: ${{ secrets.MS_TEAMS_WEBHOOK_URL }}
+          deploy-card: true
+          title: '🚀 Deployment Started to Frontend (Dev)'
+          color: 'info'
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -73,3 +82,27 @@ jobs:
           cleanup: false 
           exclude: '["README.md", ".github/**", ".git*", ".git/**"]'
           passive: true
+
+  notifications:
+    needs: Deploy
+    runs-on: ubuntu-latest
+    steps:
+    - name: Success Notification
+      if: ${{ success() }}
+      uses: mikesprague/teams-incoming-webhook-action@v1
+      with:
+        github-token: ${{ github.token }}
+        webhook-url: ${{ secrets.MS_TEAMS_WEBHOOK_URL }}
+        deploy-card: true
+        title: 'Deployment to Frontend(Dev) was Successful🥳🎉'
+        color: 'success'
+
+    - name: Failure Notification
+      if: ${{ failure() }}
+      uses: mikesprague/teams-incoming-webhook-action@v1
+      with:
+        github-token: ${{ github.token }}
+        webhook-url: ${{ secrets.MS_TEAMS_WEBHOOK_URL }}
+        deploy-card: true
+        title: 'Deployment to Frontend(Dev) Failed ☹️💔'
+        color: 'failure'
