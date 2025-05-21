@@ -1,16 +1,31 @@
-import React from "react";
+import React, {useEffect, useState} from 'react'
 import { Menu } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { IoMdArrowDropleft } from "react-icons/io";
 import BottomNav from "../components/BottomNav";
+import { useDispatch, useSelector } from "react-redux";
+import { selectBlogSlice } from "../redux/selectors/blog.selector";
+import { getBlog, fetchLatestBlogs } from "../redux/slices/blog.slice";
+import { toast } from "react-toastify";
+import { getItemFromLocalStorage } from "../utitlity/storage";
+import { useParams } from "react-router-dom";
 
 function BlogDetailsMobile () {
   const navigate = useNavigate();
+  const { id } = useParams();
+    const dispatch = useDispatch();
+    const { blog, latest } = useSelector(selectBlogSlice);
 
   const handleBackClick = () => {
-    navigate(-1); // or navigate("/desired-route");
+    navigate("/blog-mobile"); 
   };
 
+   useEffect(() => {
+       if (id) {
+         dispatch(getBlog(id)).unwrap();
+         dispatch(fetchLatestBlogs()).unwrap();
+       }
+     }, [dispatch, id]);
   return (
     <div className="min-h-screen bg-white flex justify-center">
       <div className='w-full max-w-[500px] pb-0'>
@@ -22,20 +37,19 @@ function BlogDetailsMobile () {
 
         <button
           onClick={handleBackClick}
-          className="mt-2 bg-white rounded-lg px-2 py-1 flex items-center gap-1 border border-gray-200 shadow-md hover:bg-gray-50 transition-colors"
+          className="mt-2 bg-white rounded-lg px-2 py-1 flex items-center gap-1 ml-3 border border-gray-200 shadow-md hover:bg-gray-50 transition-colors"
         >
           <IoMdArrowDropleft className="text-3xl text-gray-500" />
           {/* <span className="text-sm text-gray-700">Back</span> */}
         </button>
 
         <section className="mt-2 px-4 py-6 h-auto">
-          <div className="flex  flex-row justify-between">
+          <div className="flex  flex-row justify-between items-center">
             <h5 className="text-[#1D3F3FDE] font-normal font-yeseva text-xs tracking-normal">
-              The Ultimate Guide to Renting a <br className="block" />{" "}
-              Warehouse Space
+              {blog.title || 'The Ultimate Guide to Renting a Warehouse Space'}
             </h5>
             <p className="text-[#1D3F3F75] font-aeonik font-normal text-sm mt-2">
-              January 15, 2025
+               {new Date(blog.date).toLocaleDateString() || "January 15, 2025"}
             </p>
           </div>
 

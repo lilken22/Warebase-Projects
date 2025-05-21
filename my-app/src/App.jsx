@@ -107,7 +107,7 @@ const App = () => {
             <Route path="/overview-mobile" element={<OverviewMobile/>} />
             <Route path="/propertydetails-mobile" element={<PropertyDetailsMobile/>} />
             <Route path="/blog-mobile" element={<BlogsMobile/>} />
-            <Route path="/blogdetails-mobile" element={<BlogDetailsMobile/>} />
+            <Route path="/blogdetails-mobile/:id" element={<BlogDetailsMobile/>} />
             <Route path="/createblog-mobile" element={<CreateBlogMobile/>} />
             <Route path="/settings-mobile" element={<SettingsMobile/>} />
             <Route path="/settings/profile" element={<SettingsProfile/>} />

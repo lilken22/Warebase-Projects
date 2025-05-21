@@ -15,7 +15,7 @@ const StatesModal = ({ isOpen, position }) => {
 
   return (
     <div
-      className="absolute w-40 bg-white shadow-lg border border-gray-300 rounded-lg z-50"
+      className="absolute w-40 bg-white shadow-lg border border-gray-300 rounded-lg z-50 modal-content"
       style={{
         top: `${position.top + 21}px`, // Adjust top position (add 8px for spacing)
         left: `${position.left -130}px`,
