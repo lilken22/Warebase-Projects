@@ -84,7 +84,8 @@ jobs:
           passive: true
 
   notifications:
-    needs: Deploy
+    if: always()
+    needs: [Build, Deploy]
     runs-on: ubuntu-latest
     steps:
     - name: Success Notification
