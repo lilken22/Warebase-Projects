@@ -11,76 +11,82 @@ import {
   FaChevronRight,
   FaSearch,
 } from "react-icons/fa";
+import { IoIosArrowRoundForward } from "react-icons/io";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchBlogs } from "../redux/slices/blog.slice";
 import { selectBlogSlice } from "../redux/selectors/blog.selector";
 
 export default function BlogsDesktop() {
-   const { blogs } = useSelector(selectBlogSlice);
-   const dispatch = useDispatch();
-   const [isSortOpen, setIsSortOpen] = useState(false);
-   const [sortPosition, setSortPosition] = useState({ top: 0, left: 0 });
-   const [sortOrderValue, setSortOrderValue] = useState('DESC');
-   const [searchTerm, setSearchTerm] = useState('');
-   const [searchResult, setSearchResult] = useState([]);
-   const [currentPage, setCurrentPage] = useState(1);
-   const navigate = useNavigate();
-   const sortModalRef = useRef(null);
-   const buttonRef = useRef(null);
+  const { blogs } = useSelector(selectBlogSlice);
+  const dispatch = useDispatch();
+  const [isSortOpen, setIsSortOpen] = useState(false);
+  const [sortPosition, setSortPosition] = useState({ top: 0, left: 0 });
+  const [sortOrderValue, setSortOrderValue] = useState("DESC");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResult, setSearchResult] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const navigate = useNavigate();
+  const sortModalRef = useRef(null);
+  const buttonRef = useRef(null);
 
-   const handleSortToggle = () => {
-     if (buttonRef.current) {
-       const buttonRect = buttonRef.current.getBoundingClientRect();
-       setSortPosition({
-         top: buttonRect.bottom + window.scrollY,
-         left: buttonRect.left + window.scrollX,
-       });
-     }
-     setIsSortOpen((prev) => !prev);
-   };
+  const handleSortToggle = () => {
+    if (buttonRef.current) {
+      const buttonRect = buttonRef.current.getBoundingClientRect();
+      setSortPosition({
+        top: buttonRect.bottom + window.scrollY,
+        left: buttonRect.left + window.scrollX,
+      });
+    }
+    setIsSortOpen((prev) => !prev);
+  };
 
-   useEffect(() => {
-     const handleClickOutside = (event) => {
-       if (
-         sortModalRef.current &&
-         !sortModalRef.current.contains(event.target)
-       ) {
-         setIsSortOpen(false);
-       }
-     };
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        sortModalRef.current &&
+        !sortModalRef.current.contains(event.target)
+      ) {
+        setIsSortOpen(false);
+      }
+    };
 
-     document.addEventListener("mousedown", handleClickOutside);
-     return () => {
-       document.removeEventListener("mousedown", handleClickOutside);
-     };
-   }, []);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
-   const filteredBlogs = () => {
-     if (!searchTerm) setSearchResult(blogs);
-     const result = blogs?.length > 0 && blogs?.filter((item, index) => {
-      return item?.title?.includes(searchTerm) || item?.subtitle?.includes(searchTerm)
-     });
-     if(result){
-      setSearchResult(result)
-     }
-   };
+  const filteredBlogs = () => {
+    if (!searchTerm) setSearchResult(blogs);
+    const result =
+      blogs?.length > 0 &&
+      blogs?.filter((item, index) => {
+        return (
+          item?.title?.includes(searchTerm) ||
+          item?.subtitle?.includes(searchTerm)
+        );
+      });
+    if (result) {
+      setSearchResult(result);
+    }
+  };
 
-   const handlePageChange = (page) => {
-     setCurrentPage(page);
-   };
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
 
-   const handleRefresh = () => {
-    setSortOrderValue('DESC')
-    setIsSortOpen(false)
-   };
+  const handleRefresh = () => {
+    setSortOrderValue("DESC");
+    setIsSortOpen(false);
+  };
 
-   useEffect(() => {
-      filteredBlogs()
-   }, [searchTerm, blogs]);
+  useEffect(() => {
+    filteredBlogs();
+  }, [searchTerm, blogs]);
 
-   useEffect(() => {
-     dispatch(fetchBlogs(sortOrderValue)).unwrap();
-   }, [sortOrderValue]);
+  useEffect(() => {
+    dispatch(fetchBlogs(sortOrderValue)).unwrap();
+  }, [sortOrderValue]);
 
   return (
     <div className="flex min-h-screen bg-[#F8F9FA]">
@@ -113,11 +119,15 @@ export default function BlogsDesktop() {
                   Sort <FaChevronDown className="ml-2" />
                 </FilterButton>
                 <button className="px-4 py-2 flex items-center bg-black text-white rounded-full">
-                  Reset Filter <FaSyncAlt onClick={()=>handleRefresh()} className="ml-2" />
+                  Reset Filter{" "}
+                  <FaSyncAlt onClick={() => handleRefresh()} className="ml-2" />
                 </button>
               </div>
 
-              <SearchBar setSearchTerm={setSearchTerm} searchTerm={searchTerm} />
+              <SearchBar
+                setSearchTerm={setSearchTerm}
+                searchTerm={searchTerm}
+              />
 
               <SortModal
                 isOpen={isSortOpen}
@@ -129,11 +139,14 @@ export default function BlogsDesktop() {
 
             {/* next code in here  which will appear before pagination*/}
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 md:gap-6 w-full mt-8">
-              5{/* Article Card 1 */}
               {searchResult.length > 0 &&
                 searchResult.map((item, index) => {
                   return (
-                    <div key={index} className="flex flex-col shadow-lg rounded-lg overflow-hidden h-full w-full">
+                    <div
+                      key={index}
+                      className="flex flex-col shadow-lg rounded-lg overflow-hidden h-full w-full"
+                    >
+                      {/* Image */}
                       <img
                         src="/max.jpeg"
                         alt="Maximizing Warehouse Efficiency"
@@ -141,7 +154,7 @@ export default function BlogsDesktop() {
                       />
 
                       {/* Content Section */}
-                      <div className="bg-white p-4 pb-4 flex flex-col flex-grow">
+                      <div className="bg-white p-4 pb-4 flex flex-col flex-grow justify-between">
                         {/* Date */}
                         <p className="text-[10px] md:text-base text-[#1D3F3F75] md:mt-0">
                           {new Date(item?.date).toLocaleDateString()}
@@ -149,21 +162,45 @@ export default function BlogsDesktop() {
 
                         {/* Title */}
                         <p className="font-medium font-yeseva text-[8px] md:text-base text-[#1D3F3FDE] mt-1">
-                          {item.title || 'Maximizing Warehouse Efficiency: Tips for Businesses'}
+                          {item.title ||
+                            "Maximizing Warehouse Efficiency: Tips for Businesses"}
                         </p>
 
-                        {/* Read More Link */}
-                        <Link
-                          to={`/see-details/${item._id}`}
-                          className="text-[#1D3F3F] font-aeonik font-normal text-[10px] md:text-sm mt-6 flex text-center items-center justify-start gap-3 underline"
-                        >
-                          See Details
-                        </Link>
+                        {/* Read More + Featured Toggle */}
+                        <div className="mt-6 flex items-center justify-between">
+                          <Link
+                            to={`/see-details/${item._id}`}
+                            className="text-[#1D3F3F] font-aeonik font-normal text-[10px] md:text-sm flex items-center gap-1 underline"
+                          >
+                            Read more{" "}
+                            <IoIosArrowRoundForward className="text-2xl" />
+                          </Link>
+
+                          <div className="flex items-center gap-2">
+                            <button
+                              onClick={() => handleToggleFeatured(item._id)}
+                              className={`w-10 h-5 flex items-center rounded-full p-1 duration-300 ease-in-out ${
+                                item.featured ? "bg-green-500" : "bg-gray-300"
+                              }`}
+                            >
+                              <div
+                                className={`bg-white w-4 h-4 rounded-full shadow-md transform duration-300 ease-in-out ${
+                                  item.featured ? "translate-x-5" : ""
+                                }`}
+                              ></div>
+                            </button>
+
+                            <span className="text-[10px] md:text-sm text-[#1D3F3F]">
+                              Featured
+                            </span>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   );
-                })}
+              })}
             </div>
+
             {/* ends here */}
 
             <Pagination
@@ -190,18 +227,18 @@ const FilterButton = React.forwardRef(({ onClick, children }, ref) => (
   </button>
 ));
 
-const SearchBar = ({setSearchTerm, searchTerm}) => (
+const SearchBar = ({ setSearchTerm, searchTerm }) => (
   <div className="bg-gray-200 p-2 rounded-full w-[400px] flex items-center">
     <div className="flex items-center bg-white px-4 py-3 rounded-full w-full">
       <input
-        onChange={(e)=>setSearchTerm(e.target.value)}
+        onChange={(e) => setSearchTerm(e.target.value)}
         value={searchTerm}
         type="text"
         placeholder="Search property by name or ID"
         className="bg-transparent outline-none flex-grow text-gray-700 placeholder-gray-500"
       />
       <button className="text-gray-600">
-        <FaSearch onClick={()=>setSearchTerm(searchTerm)} />
+        <FaSearch onClick={() => setSearchTerm(searchTerm)} />
       </button>
     </div>
   </div>
