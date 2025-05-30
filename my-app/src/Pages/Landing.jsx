@@ -165,12 +165,12 @@ const LandingPage = () => {
       {/* Images */}
       <div className="flex flex-nowrap gap-2 w-full">
         <img
-          src="/About1.jpeg"
+          src="/whitewarehouse.jpg"
           alt=""
           className="w-[35%] md:w-[35%] max-w-[350px] h-72 rounded-none shadow-lg object-cover"
         />
         <img
-          src="/About2.jpeg"
+          src="/insidewarehouse.jpg"
           alt=""
           className="w-[65%] md:w-[65%] max-w-[550px] h-72 rounded-none shadow-lg object-cover"
         />
@@ -193,9 +193,9 @@ const LandingPage = () => {
     {/* Need Warehouse Space */}
     <div className="bg-white shadow-lg rounded-lg border flex flex-col items-stretch w-[300px] md:w-[392px] min-h-[150px] md:min-h-[334px]">
   <div className="relative">
-    <img src="/service.jpeg" alt="" className="w-full h-16 object-cover rounded-t-lg" />
+    <img src="/needed2.jpg" alt="" className="w-full h-16 object-cover rounded-t-lg" />
     <h3 className="absolute inset-x-0 top-4 left-0 text-lg font-semibold text-center text-black px-2">
-      <span className="text-[#00E5FF]">Need</span> warehouse space
+      <span className="text-[#1D3F3F] bg-[#03E5FE] py-2 px-2">Need</span> warehouse space
     </h3>
   </div>
 
@@ -228,10 +228,10 @@ const LandingPage = () => {
     {/* Have Warehouse Space */}
     <div className="bg-white shadow-lg rounded-lg border flex flex-col items-stretch w-[300px] md:w-[392px] min-h-[150px] md:min-h-[334px]">
   <div className="relative">
-    <img src="/need 2.jpg" alt="" className="w-full h-16 object-cover rounded-t-lg" />
+    <img src="/needed2.jpg" alt="" className="w-full h-16 object-cover rounded-t-lg" />
     <h3 className="absolute inset-x-0 top-4 left-0 text-lg font-semibold text-center text-black px-2">
-      <span className="text-[#00E5FF]">Have</span> warehouse space
-    </h3>
+      <span className="text-[#1D3F3F] bg-[#03E5FE] py-2 px-2">Have</span> warehouse space
+    </h3> 
   </div>
 
   <div className="p-5 w-full flex flex-col justify-between items-center">

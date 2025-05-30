@@ -5,7 +5,7 @@ const PropertyModal = ({ isOpen, position }) => {
 
   return (
     <div
-      className="absolute w-[198px] bg-white shadow-lg border border-gray-300 rounded-md p-2 z-50"
+      className="absolute w-[198px] bg-white shadow-lg border border-gray-300 rounded-md p-2 z-50 modal-content"
       style={{
         top: `${position.top + 22}px`,
         left: `${position.left -160}px`,

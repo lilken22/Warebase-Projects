@@ -53,41 +53,46 @@ const PortfolioMobile = () => {
   const [selectedTab, setSelectedTab] = useState("listed");
   const [currentPage, setCurrentPage] = useState(1);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
+  const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 2 });
   const [isOrderOpen, setIsOrderOpen] = useState(false);
-  const [orderPosition, setOrderPosition] = useState({ top: 0, left: 0 });
+  const [orderPosition, setOrderPosition] = useState({ top: 0, left: 2 });
 
   const navigate = useNavigate();
   const dropdownRef = useRef(null);
   const orderButtonRef = useRef(null);
   const tenureButtonRef = useRef(null);
   const orderModalRef = useRef(null);
-  
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
 
-  const handleDropdownToggle = () => {
+  const handleDropdownToggle = (e) => {
+    e.stopPropagation(); // Prevent event bubbling
     if (tenureButtonRef.current) {
       const buttonRect = tenureButtonRef.current.getBoundingClientRect();
+      // console.log("Tenure button position:", buttonRect);
       setDropdownPosition({
-        top: buttonRect.bottom + window.scrollY,
+        top: buttonRect.bottom + window.scrollY + 5, // Added small offset
         left: buttonRect.left + window.scrollX,
       });
     }
-    setIsDropdownOpen((prev) => !prev);
+    setIsDropdownOpen(!isDropdownOpen);
+    setIsOrderOpen(false); // Close order modal if open
   };
 
-  const handleOrderToggle = () => {
+  const handleOrderToggle = (e) => {
+    e.stopPropagation(); // Prevent event bubbling
     if (orderButtonRef.current) {
-      const Rect = orderButtonRef.current.getBoundingClientRect();
+      const buttonRect = orderButtonRef.current.getBoundingClientRect();
+      // console.log("Order button position:", buttonRect);
       setOrderPosition({
-        top: Rect.bottom + window.scrollY,
-        left: Rect.left + window.scrollX,
+        top: buttonRect.bottom + window.scrollY + 5, // Added small offset
+        left: buttonRect.left + window.scrollX,
       });
     }
-    setIsOrderOpen((prev) => !prev);
+    setIsOrderOpen(!isOrderOpen);
+    setIsDropdownOpen(false); // Close tenure modal if open
   };
 
   useEffect(() => {
@@ -95,15 +100,9 @@ const PortfolioMobile = () => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsDropdownOpen(false);
       }
-      if (
-        orderModalRef.current &&
-        !orderModalRef.current.contains(event.target)
-      ) {
+      if (orderModalRef.current && !orderModalRef.current.contains(event.target)) {
         setIsOrderOpen(false);
       }
-      // if (listModalRef.current && !listModalRef.current.contains(event.target)) {
-      //   setListModalOpen(false);
-      // }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
@@ -167,7 +166,7 @@ const PortfolioMobile = () => {
         <div className="px-4 grid grid-cols-2 gap-4 mt-3">
           {properties.map((property) => (
             <div key={property.id} className="bg-gray-100 p-2 rounded-xl">
-              {/* Image Block - separate from card */}
+              {/* Image Block */}
               <div className="relative rounded-lg overflow-hidden">
                 <img
                   src={property.image}
@@ -201,26 +200,22 @@ const PortfolioMobile = () => {
           onPageChange={handlePageChange}
         />
 
-        <div className="flex justify-center items-center mt-4 rounded-lg">
-          <div className="flex gap-2 bg-[#F9F9F9] rounded-full p-1 w-full max-w-[80%] border border-1 ">
+        <div className="flex justify-center items-center mt-4 rounded-lg relative">
+          <div className="flex gap-2 bg-[#F9F9F9] rounded-full p-1 w-full max-w-[80%] border border-1">
             <FilterButton
               ref={tenureButtonRef}
               onClick={handleDropdownToggle}
-              className="flex-1"
+              className="flex-1 flex justify-between items-center px-4"
             >
-              <div className="flex justify-between items-center gap-4">
-              Tenure <FaChevronDown className="ml-8" />
-              </div>
+              Tenure <FaChevronDown className="ml-2" />
             </FilterButton>
 
             <FilterButton
               ref={orderButtonRef}
               onClick={handleOrderToggle}
-              className="flex-1"
+              className="flex-1 flex justify-between items-center px-4"
             >
-              <div className="flex justify-between items-center gap-4">
-              Order <FaChevronDown className="ml-8" />
-              </div>
+              Order <FaChevronDown className="ml-2" />
             </FilterButton>
 
             <button className="flex items-center justify-center bg-black text-white rounded-full px-4 py-2">
@@ -228,17 +223,24 @@ const PortfolioMobile = () => {
             </button>
           </div>
 
-          <TenureModal
-            isOpen={isDropdownOpen}
-            onClose={() => setIsDropdownOpen(false)}
-            position={dropdownPosition}
-          />
+          {/* Modals */}
+          {isDropdownOpen && (
+            <TenureModal
+              isOpen={isDropdownOpen}
+              onClose={() => setIsDropdownOpen(false)}
+              position={dropdownPosition || {} }
+              ref={dropdownRef}
+            />
+          )}
 
-          <OrderModal
-            isOpen={isOrderOpen}
-            onClose={() => setIsOrderOpen(false)}
-            position={orderPosition}
-          />
+          {isOrderOpen && (
+            <OrderModal
+              isOpen={isOrderOpen}
+              onClose={() => setIsOrderOpen(false)}
+              position={orderPosition}
+              ref={orderModalRef}
+            />
+          )}
         </div>
 
         {/* Bottom Navigation */}
@@ -260,19 +262,21 @@ const TabButton = ({ active, onClick, count, children }) => (
   </button>
 );
 
-const FilterButton = React.forwardRef(({ onClick, children, className = "", ...rest }, ref) => (
-  <button
-    ref={ref}
-    onClick={onClick}
-    className={`px-7 py-3 flex items-center bg-[#FFFFFF] text-[#7B7B7B] rounded-full ${className}`}
-    {...rest}
-  >
-    {children}
-  </button>
-));
+const FilterButton = React.forwardRef(
+  ({ onClick, children, className = "", ...rest }, ref) => (
+    <button
+      ref={ref}
+      onClick={onClick}
+      className={`py-3 flex items-center bg-[#FFFFFF] text-[#7B7B7B] rounded-full ${className}`}
+      {...rest}
+    >
+      {children}
+    </button>
+  )
+);
 
 const SearchBar = () => (
-  <div className=" p-2 rounded-full w-[400px] flex items-center">
+  <div className="p-2 rounded-full w-[400px] flex items-center">
     <div className="flex items-center bg-[#FFFFfF] shadow-sm px-3 py-3 border border-gray-100 rounded-full w-full">
       <input
         type="text"

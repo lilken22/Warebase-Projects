@@ -1,19 +1,91 @@
-import React,  { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { PiSlidersHorizontalFill } from "react-icons/pi";
 import { Menu } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import BottomNav from "./BottomNav";
-import { FaPlus, FaChevronLeft, FaChevronRight, FaSearch} from "react-icons/fa";
-
+import {
+  FaPlus,
+  FaChevronLeft,
+  FaChevronRight,
+  FaSearch,
+} from "react-icons/fa";
+import { IoIosArrowRoundForward } from "react-icons/io";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchBlogs } from "../redux/slices/blog.slice";
+import { selectBlogSlice } from "../redux/selectors/blog.selector";
+import SortModal from "../components/SortModal";
 
 export default function BlogMobile() {
-    const [currentPage, setCurrentPage] = useState(1);
-    const navigate = useNavigate();
+  const { blogs } = useSelector(selectBlogSlice);
+  const dispatch = useDispatch();
+  const [isSortOpen, setIsSortOpen] = useState(false);
+  const [sortPosition, setSortPosition] = useState({ top: 0, left: 0 });
+  const [sortOrderValue, setSortOrderValue] = useState("DESC");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResult, setSearchResult] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const navigate = useNavigate();
+  const sortModalRef = useRef(null);
+  const buttonRef = useRef(null);
 
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
 
-    const handlePageChange = (page) => {
-        setCurrentPage(page);
+  const handleSortToggle = () => {
+    if (buttonRef.current) {
+      const buttonRect = buttonRef.current.getBoundingClientRect();
+      setSortPosition({
+        top: buttonRect.bottom + window.scrollY,
+        left: buttonRect.left + window.scrollX,
+      });
+    }
+    setIsSortOpen((prev) => !prev);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        sortModalRef.current &&
+        !sortModalRef.current.contains(event.target)
+      ) {
+        setIsSortOpen(false);
+      }
     };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const filteredBlogs = () => {
+    if (!searchTerm) setSearchResult(blogs);
+    const result =
+      blogs?.length > 0 &&
+      blogs?.filter((item, index) => {
+        return (
+          item?.title?.includes(searchTerm) ||
+          item?.subtitle?.includes(searchTerm)
+        );
+      });
+    if (result) {
+      setSearchResult(result);
+    }
+  };
+
+  const handleRefresh = () => {
+    setSortOrderValue("DESC");
+    setIsSortOpen(false);
+  };
+
+  useEffect(() => {
+    filteredBlogs();
+  }, [searchTerm, blogs]);
+
+  useEffect(() => {
+    dispatch(fetchBlogs(sortOrderValue)).unwrap();
+  }, [sortOrderValue]);
 
   return (
     <div className="min-h-screen bg-white flex justify-center">
@@ -38,131 +110,78 @@ export default function BlogMobile() {
           <div className="bg-[#F9F9F9] rounded-3xl px-3 py-4 mt-3">
             {/* Search and Filter */}
             <div className="flex items-center gap-2 mt-5">
-              <SearchBar />
-              <button className="bg-[#FFFFFF] shadow-sm border border-gray-50 p-3 rounded-full">
-                <PiSlidersHorizontalFill size={25} className="text-gray-700" />
-              </button>
+              <SearchBar
+                setSearchTerm={setSearchTerm}
+                searchTerm={searchTerm}
+              />
+              <FilterButton ref={buttonRef} onClick={handleSortToggle}>
+                <PiSlidersHorizontalFill size={20} className="text-gray-700 ml-1" />
+              </FilterButton>
             </div>
           </div>
         </div>
 
         {/* blog cards start here*/}
         <div className="grid grid-cols-2 gap-3 w-full mt-4 px-2">
-          {/* Article Card 1 */}
-          <div className="flex flex-col shadow-lg rounded-lg overflow-hidden h-full w-full">
-            {/* Image Section */}
-            <img
-              src="/max.jpeg"
-              alt="Maximizing Warehouse Efficiency"
-              className="w-full h-[120px] object-cover"
-            />
+          {searchResult.length > 0 &&
+            searchResult.map((item, index) => {
+              return (
+                <div
+                  key={index}
+                  className="flex flex-col shadow-lg rounded-lg overflow-hidden h-full w-full"
+                >
+                  {/* Image Section */}
+                  <img
+                    src="/max.jpeg"
+                    alt="Maximizing Warehouse Efficiency"
+                    className="w-full h-[120px] object-cover"
+                  />
 
-            {/* Content Section */}
-            <div className="bg-white p-4 pb-4 flex flex-col flex-grow">
-              {/* Date */}
-              <p className="text-[10px] md:text-base text-[#1D3F3F75] md:mt-0">
-                February 25, 2024
-              </p>
+                  {/* Content Section */}
+                  <div className="bg-white p-4 pb-4 flex flex-col flex-grow">
+                    {/* Date */}
+                    <p className="text-[10px] md:text-base text-[#1D3F3F75] md:mt-0">
+                      {new Date(item?.date).toLocaleDateString()}
+                    </p>
 
-              {/* Title */}
-              <p className="font-medium font-yeseva text-[8px] md:text-base text-[#1D3F3FDE] mt-1">
-                Maximizing Warehouse Efficiency: Tips for Businesses
-              </p>
+                    {/* Title */}
+                    <p className="font-medium font-yeseva text-[8px] md:text-base text-[#1D3F3FDE] mt-1">
+                      {item.title ||
+                        "Maximizing Warehouse Efficiency: Tips for Businesses"}
+                    </p>
 
-              {/* Read More Link */}
-              <Link
-                to="/see-details"
-                className="text-[#1D3F3F] font-aeonik font-normal text-[10px] md:text-sm mt-6 flex text-center items-center justify-start gap-3 underline"
-              >
-                See Details
-              </Link>
-            </div>
-          </div>
+                    {/* Read More Link */}
+                    <div className="flex items-center justify-between mt-4">
+                    <Link
+                      to={`/blogdetails-mobile/${item._id}`}
+                      className="text-[#1D3F3F] font-aeonik font-normal text-[10px] md:text-sm  flex text-center items-center justify-start underline"
+                    >
+                      Read more<IoIosArrowRoundForward className="text-xl" />
+                    </Link>
 
-          {/* Article Card 2 */}
-          <div className="flex flex-col shadow-lg rounded-lg overflow-hidden h-full w-full">
-            <img
-              src="/phone.jpeg"
-              alt="Shared Warehousing"
-              className="w-full h-[120px] object-cover"
-            />
-            <div className="bg-white p-4 pb-4 flex flex-col flex-grow">
-              {/* Date */}
-              <p className="text-[10px] md:text-sm text-[#1D3F3F75] md:mt-0">
-                February 25, 2024
-              </p>
+                    <div className="flex items-center text-center gap-1">
+                      <button
+                        onClick={() => handleToggleFeatured(item._id)}
+                        className={`w-8 h-4 flex items-center rounded-full p-1 duration-300 ease-in-out ${
+                          item.featured ? "bg-green-500" : "bg-gray-300"
+                        }`}
+                      >
+                        <div
+                          className={`bg-white w-3 h-3 rounded-full shadow-md transform duration-300 ease-in-out ${
+                            item.featured ? "translate-x-5" : ""
+                          }`}
+                        ></div>
+                      </button>
 
-              {/* Title */}
-              <p className="font-medium font-yeseva text-[8px] md:text-base text-[#1D3F3FDE] mt-1">
-                Shared Warehousing: A Cost-Effective Solution for Small
-                Businesses
-              </p>
-
-              {/* Read More Link */}
-              <Link
-                to="/see-details"
-                className="text-[#1D3F3F] font-aeonik font-normal text-[10px] md:text-sm mt-auto flex text-center items-center justify-start gap-3 underline"
-              >
-                See Details
-              </Link>
-            </div>
-          </div>
-
-          {/* Article Card 3 */}
-          <div className="flex flex-col shadow-lg rounded-lg overflow-hidden h-full w-full">
-            <img
-              src="/key.jpeg"
-              alt="Listing Your Warehouse"
-              className="w-full h-[120px] object-cover"
-            />
-            <div className="bg-white p-4 pb-4 flex flex-col flex-grow">
-              {/* Date */}
-              <p className="text-[10px] md:text-base text-[#1D3F3F75] md:mt-0">
-                February 25, 2024
-              </p>
-
-              {/* Title */}
-              <p className="font-medium font-yeseva text-[8px] md:text-base text-[#1D3F3FDE] mt-1">
-                How to List Your Warehouse for Rent and Attract Tenants Quickly
-              </p>
-
-              {/* Read More Link */}
-              <Link
-                to="/see-details"
-                className="text-[#1D3F3F] font-aeonik font-normal text-[10px] md:text-sm flex text-center items-center justify-start gap-3 underline mt-6"
-              >
-                See Details
-              </Link>
-            </div>
-            </div>
-
-          {/* Article Card 4 */}
-          <div className="flex flex-col shadow-lg rounded-lg overflow-hidden h-full w-full">
-            <img
-              src="/board.jpeg"
-              alt="Listing Your Warehouse"
-              className="w-full h-[120px] object-cover"
-            />
-            <div className="bg-white p-4 pb-4 flex flex-col flex-grow">
-              {/* Date */}
-              <p className="text-[10px] md:text-base text-[#1D3F3F75] md:mt-0">
-                February 25, 2024
-              </p>
-
-              {/* Title */}
-              <p className="font-medium font-yeseva text-[8px] md:text-base text-[#1D3F3FDE] mt-1">
-              Key Factors to Consider Before Leasing a Warehouse
-              </p>
-
-              {/* Read More Link */}
-              <Link
-                to="/see-details"
-                className="text-[#1D3F3F] font-aeonik font-normal text-[10px] md:text-sm mt-auto flex text-center items-center justify-start gap-3 underline"
-              >
-                See Details
-              </Link>
-            </div>
-          </div>
+                      <span className="text-[10px] md:text-sm text-[#1D3F3F]">
+                        Featured
+                      </span>
+                    </div>
+                  </div>
+                  </div>
+                </div>
+              );
+            })}
         </div>
 
         {/* blog cards end here  */}
@@ -173,29 +192,39 @@ export default function BlogMobile() {
           onPageChange={handlePageChange}
         />
 
-          {/* Bottom Navigation */}
+        {/* Bottom Navigation */}
         <BottomNav />
-
       </div>
     </div>
   );
 }
 
-const SearchBar = () => (
+const SearchBar = ({ setSearchTerm, searchTerm }) => (
   <div className=" p-2 rounded-full w-full flex items-center">
     <div className="flex items-center bg-[#FFFFfF] shadow-sm px-3 py-3 border border-gray-100 rounded-full w-full">
       <input
+        onChange={(e) => setSearchTerm(e.target.value)} // Add this
+        value={searchTerm} // Add this
         type="text"
         placeholder="Search property by name or ID"
         className="bg-transparent outline-none flex-grow text-[#CCCCCC] placeholder-[#CCCCCC] font-Poppins text-[10px]"
       />
       <button className="text-gray-600">
-        <FaSearch />
+        <FaSearch onClick={() => setSearchTerm(searchTerm)} />
       </button>
     </div>
   </div>
 );
 
+const FilterButton = React.forwardRef(({ onClick, children }, ref) => (
+  <button
+    ref={ref}
+    onClick={onClick}
+    className="px-4 py-2 flex items-center bg-white text-gray-700 rounded-full border border-gray-200"
+  >
+    {children}
+  </button>
+));
 
 const Pagination = ({ currentPage, totalPages, onPageChange }) => (
   <div className="flex justify-center items-center mt-6 gap-1 text-[12px]">
@@ -243,4 +272,3 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => (
     </button>
   </div>
 );
-
