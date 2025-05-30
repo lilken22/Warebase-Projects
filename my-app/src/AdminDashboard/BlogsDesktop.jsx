@@ -129,7 +129,7 @@ export default function BlogsDesktop() {
 
             {/* next code in here  which will appear before pagination*/}
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 md:gap-6 w-full mt-8">
-              5{/* Article Card 1 */}
+              {/* Article Card 1 */}
               {searchResult.length > 0 &&
                 searchResult.map((item, index) => {
                   return (
