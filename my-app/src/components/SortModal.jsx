@@ -1,10 +1,15 @@
 import React from "react";
 
-const SortModal = ({ isOpen, position, setSortOrderValue}) => {
+const SortModal = React.forwardRef (({ 
+  isOpen,
+   position,
+    setSortOrderValue},
+     ref) => {
   if (!isOpen) return null;
 
   return (
     <div
+      ref={ref}
       className="fixed w-44 h-16 bg-white border border-gray-200 shadow-lg rounded-xl z-50"
       style={{
         top: `${position.top + 8}px`, // small gap between button and modal
@@ -41,6 +46,6 @@ const SortModal = ({ isOpen, position, setSortOrderValue}) => {
       </div>
     </div>
   );
-};
+});
 
 export default SortModal;

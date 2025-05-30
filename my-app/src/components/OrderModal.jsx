@@ -1,50 +1,117 @@
-import React from "react";
+// import React from "react";
 
-const OrderModal = ({ isOpen, position, setSortOrderValue }) => {
-  if (!isOpen) return null;
+// const OrderModal = React.forwardRef(({
+//   isOpen,
+//   position,
+//   setSortOrderValue,
+//   onClose,
+//   onMouseEnter
+// }, ref) => {
+//   if (!isOpen) return null;
+
+//   const handleOptionChange = (e) => {
+//     setSortOrderValue(e.target.value);
+//     onClose();
+//   };
+
+//   return (
+//     <div
+//       ref={ref}
+//       onMouseEnter={onMouseEnter}
+//       onTouchStart={onMouseEnter} // Add touch support for mobile
+//       className="fixed bg-white shadow-lg border border-gray-300 rounded-lg z-50 min-w-[180px]"
+//       style={{
+//         top: `${position?.top || 0}px`,
+//         left: `${position?.left ? Math.min(position.left, window.innerWidth - 200) : 0}px`, // Ensure it stays on screen
+//       }}
+//     >
+//       <div className="p-2 space-y-2">
+//         <label className="flex items-center text-sm font-medium text-[#1D3F3FDE] p-1 space-x-2">
+//           <input
+//             onChange={handleOptionChange}
+//             type="radio"
+//             name="Order"
+//             value="DESC"
+//             className="form-radio text-black"
+//           />
+//           <span>Newest - Oldest</span>
+//         </label>
+
+//         <label className="flex items-center text-sm font-medium text-[#1D3F3FDE] p-1 space-x-2">
+//           <input
+//             onChange={handleOptionChange}
+//             type="radio"
+//             name="Order"
+//             value="ASC"
+//             className="form-radio text-black"
+//           />
+//           <span>Oldest - Newest</span>
+//         </label>
+//       </div>
+//     </div>
+//   );
+// });
+
+// export default OrderModal;
+
+
+
+  import React from "react";
+
+const OrderModal = React.forwardRef(({
+  isOpen,
+  position,
+  setSortOrderValue,
+  onClose,
+  onMouseEnter
+}, ref) => {
+  if (!isOpen || !position) return null;
+
+  const handleOptionChange = (e) => {
+    setSortOrderValue(e.target.value);
+    // Don't call onClose immediately to prevent race condition
+    setTimeout(() => onClose(), 500);
+  };
 
   return (
     <div
-      className="fixed w-44 h-20 bg-white shadow-lg border border-gray-300 rounded-lg z-50"
+      ref={ref}
+      onMouseEnter={onMouseEnter}
+      onTouchStart={onMouseEnter}
+      onMouseDown={(e) => e.stopPropagation()}
+      onClick={(e) => e.stopPropagation()}
+      className="fixed bg-white shadow-lg border border-gray-300 rounded-lg z-50 min-w-[180px]"
       style={{
-        top: `${position.top + 8}px`, // small gap between button and modal
-        left: `${position.left}px`,
+        top: `${position.top + 8}px`,
+        left: `${Math.min(position.left, window.innerWidth - 200)}px`,
       }}
     >
-      {/* Modal Content */}
-      <div className="p-2">
-        <div className="space-y-0">
-          {/* Min Price Input */}
-          <div>
-            <label className="block text-base font-medium font-aeonik space-x-3 p-1">
-              <input
-                onChange={(e) => setSortOrderValue(e.target.value)}
-                type="radio"
-                name="Order"
-                value="DESC"
-                className="form-radio text-black"
-              />
-              <span className="text-[#1D3F3FDE]">Newest - Oldest</span>
-            </label>
-          </div>
+      <div className="p-2 space-y-2">
+        <label className="flex items-center text-sm font-medium text-[#1D3F3FDE] p-1 space-x-2">
+          <input
+            onChange={handleOptionChange}
+            type="radio"
+            name="Order"
+            value="DESC"
+            className="form-radio text-black"
+          />
+          <span>Newest - Oldest</span>
+        </label>
 
-          {/* Oldest to Newest*/}
-          <div>
-            <label className="block text-base font-medium font-aeonik space-x-3 p-1">
-              <input
-                onChange={(e) => setSortOrderValue(e.target.value)}
-                type="radio"
-                name="Order"
-                value="ASC"
-                className="form-radio text-[#1D3F3FDE]"
-              />
-              <span className="text-[#1D3F3FDE]">Oldest - Newest</span>
-            </label>
-          </div>
-        </div>
+        <label className="flex items-center text-sm font-medium text-[#1D3F3FDE] p-1 space-x-2">
+          <input
+            onChange={handleOptionChange}
+            type="radio"
+            name="Order"
+            value="ASC"
+            className="form-radio text-black"
+          />
+          <span>Oldest - Newest</span>
+        </label>
       </div>
     </div>
   );
-};
+});
 
 export default OrderModal;
+

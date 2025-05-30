@@ -40,21 +40,26 @@ export default function BlogsDesktop() {
     setIsSortOpen((prev) => !prev);
   };
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        sortModalRef.current &&
-        !sortModalRef.current.contains(event.target)
-      ) {
-        setIsSortOpen(false);
-      }
-    };
+ useEffect(() => {
+  const handleClickOutside = (event) => {
+    if (
+      sortModalRef.current &&
+      !sortModalRef.current.contains(event.target) &&
+      buttonRef.current &&
+      !buttonRef.current.contains(event.target)
+    ) {
+      setIsSortOpen(false);
+    }
+  };
 
+  if (isSortOpen) {
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+  }
+
+  return () => {
+    document.removeEventListener("mousedown", handleClickOutside);
+  };
+}, [isSortOpen]);
 
   const filteredBlogs = () => {
     if (!searchTerm) setSearchResult(blogs);
@@ -129,12 +134,15 @@ export default function BlogsDesktop() {
                 searchTerm={searchTerm}
               />
 
-              <SortModal
-                isOpen={isSortOpen}
-                onClose={() => setIsSortOpen(false)}
-                position={sortPosition}
-                setSortOrderValue={setSortOrderValue}
-              />
+              {isSortOpen && (
+                <SortModal
+                  isOpen={isSortOpen}
+                  onClose={() => setIsSortOpen(false)}
+                  position={sortPosition}
+                  setSortOrderValue={setSortOrderValue}
+                  ref={sortModalRef}
+                />
+              )}
             </div>
 
             {/* next code in here  which will appear before pagination*/}
@@ -198,7 +206,7 @@ export default function BlogsDesktop() {
                       </div>
                     </div>
                   );
-              })}
+                })}
             </div>
 
             {/* ends here */}

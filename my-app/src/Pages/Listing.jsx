@@ -116,6 +116,7 @@ import { IMAGE_URL } from "../redux/actionTypes";
 
 export default function Listing() {
   const { properties } = useSelector(selectPropertiesSlice);
+console.log(properties)
   const dispatch = useDispatch();
   // const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   // const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
