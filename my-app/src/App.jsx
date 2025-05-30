@@ -95,9 +95,10 @@ const App = () => {
             {/* <Route path="/overview" element={<Overview/>} /> */}
             <Route path="/blogs" element={<Blogs/>} />
             <Route path="/portfolio" element={<ProtectedRoute><Portfolio/></ProtectedRoute>} />
+            {/* <Route path="/portfolio" element={<Portfolio/>} /> */}
             <Route path="/add-property" element={<ProtectedRoute><AddProperty/></ProtectedRoute>} />
             {/* <Route path="/add-property" element={<AddProperty/>} /> */}
-            <Route path="/desciption-property/:id" element={<DesciptionProperty />} />
+            <Route path="/overview/desciption-property/:id" element={<DesciptionProperty />} />
             <Route path="/settings" element={<Settings/>} />
             {/* <Route path="/logout" element={<Logout/>} /> */}
             <Route path="/create-blog" element={<CreateBlog/>} />
