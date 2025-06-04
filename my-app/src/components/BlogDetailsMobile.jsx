@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect} from 'react'
 import { Menu } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { IoMdArrowDropleft } from "react-icons/io";
@@ -6,15 +6,16 @@ import BottomNav from "../components/BottomNav";
 import { useDispatch, useSelector } from "react-redux";
 import { selectBlogSlice } from "../redux/selectors/blog.selector";
 import { getBlog, fetchLatestBlogs } from "../redux/slices/blog.slice";
-import { toast } from "react-toastify";
-import { getItemFromLocalStorage } from "../utitlity/storage";
+// import { toast } from "react-toastify";
+// import { getItemFromLocalStorage } from "../utitlity/storage";
 import { useParams } from "react-router-dom";
 
 function BlogDetailsMobile () {
   const navigate = useNavigate();
   const { id } = useParams();
     const dispatch = useDispatch();
-    const { blog, latest } = useSelector(selectBlogSlice);
+    // i removed the word latest cause itcausing an issue in creating a PR
+    const { blog } = useSelector(selectBlogSlice);
 
   const handleBackClick = () => {
     navigate("/blog-mobile"); 

@@ -13,7 +13,8 @@ import { useParams } from "react-router-dom";
 export default function SeeDetails() {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const { blog, latest } = useSelector(selectBlogSlice);
+  // i remove the word : latest because it causing me from creating a PR
+  const { blog } = useSelector(selectBlogSlice);
   const navigate = useNavigate();
 
   const handleBackClick = () => {

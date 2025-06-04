@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { Link, useNavigate } from "react-router-dom";
@@ -6,8 +6,8 @@ import { FaLongArrowAltLeft } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { selectBlogSlice } from "../redux/selectors/blog.selector";
 import { getBlog, fetchLatestBlogs } from "../redux/slices/blog.slice";
-import { toast } from "react-toastify";
-import { getItemFromLocalStorage } from "../utitlity/storage";
+// import { toast } from "react-toastify";
+// import { getItemFromLocalStorage } from "../utitlity/storage";
 import { useParams } from "react-router-dom";
 
 export default function BlogDetails() {
@@ -146,7 +146,8 @@ export default function BlogDetails() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
           {/* Article Card 1 */}
           {latest?.length > 0 &&
-            latest?.map((item, index) => {
+          // i removed the word index cause it causing an issue when am creating a PR
+            latest?.map((item) => {
               return (
                 <div className="flex flex-col shadow-lg rounded-lg overflow-hidden">
                   <img

@@ -61,11 +61,16 @@ export default function BlogsDesktop() {
   };
 }, [isSortOpen]);
 
+  const handleToggleFeatured = () =>{
+    
+  }
+
   const filteredBlogs = () => {
     if (!searchTerm) setSearchResult(blogs);
     const result =
       blogs?.length > 0 &&
-      blogs?.filter((item, index) => {
+      // i removed the text : index for now that it not being called cause it preventing me from creating a PR
+      blogs?.filter((item) => {
         return (
           item?.title?.includes(searchTerm) ||
           item?.subtitle?.includes(searchTerm)

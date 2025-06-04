@@ -4,7 +4,7 @@ const TenureModal = React.forwardRef(({
   isOpen,
   position,
   setSortTenureValue,
-  onClose,
+  // onClose,
   onMouseEnter,
 }, ref) => {
   if (!isOpen) return null;

@@ -10,7 +10,8 @@ const WarehouseFormModal = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
   const modalRef = useRef();
   const dispatch = useDispatch();
-  const { isLoading, error } = useSelector(selectMessageSlice);
+  // i removed the text error
+  const { isLoading } = useSelector(selectMessageSlice);
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",

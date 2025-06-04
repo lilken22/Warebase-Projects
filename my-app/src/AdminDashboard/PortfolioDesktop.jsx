@@ -182,7 +182,8 @@ export default function PortfolioDesktop() {
     if (!searchTerm) setSearchResult(properties);
     const result =
       properties?.length > 0 &&
-      properties?.filter((item, index) => {
+      // Please i remove the text: index so i can be able to create a PR
+      properties?.filter((item) => {
         return (
           item?.propertyName?.includes(searchTerm) ||
           item?.propertyId?.includes(searchTerm)
@@ -317,7 +318,8 @@ export default function PortfolioDesktop() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-10">
               {searchResult?.length > 0 &&
-                searchResult?.map((property, index) => (
+              // Please i remove the text: index so i can be able to create a PR
+                searchResult?.map((property) => (
                   <PropertyCard
                     key={property._id}
                     image={property.propertyImage}
@@ -401,7 +403,7 @@ const SearchBar = ({ setSearchTerm, searchTerm }) => (
 );
 
 const PropertyCard = ({
-  image,
+  // image,
   type,
   shared,
   name,

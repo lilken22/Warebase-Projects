@@ -73,9 +73,10 @@ const AddPropertyDesktop = () => {
     }
   };
 
-  const handleClickUpload = () => {
-    fileInputRef.current.click();
-  };
+  //  i commented this out because it causing an error and preventing creating a PR
+  // const handleClickUpload = () => {
+  //   fileInputRef.current.click();
+  // };
 
   const handleDragLeave = (e) => {
     e.preventDefault();
@@ -129,7 +130,8 @@ const AddPropertyDesktop = () => {
     formDataToSend.append("propertyPrice", formData.propertyPrice);
     formDataToSend.append("description", formData.description);
     formDataToSend.append("location", formData.location);
-    selectedFiles?.forEach((file, index) => {
+    // please i removed the text: index since it is not being used for now so it can not cause error that is preventing me creating a PR 
+    selectedFiles?.forEach((file) => {
       formDataToSend.append("images", file);
     });
 
