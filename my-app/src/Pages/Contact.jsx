@@ -10,7 +10,8 @@ import { toast } from "react-toastify";
 const Contact = () => {
 
   const dispatch = useDispatch();
-  const { isLoading,error } = useSelector(selectMessageSlice);
+  // i remove the word error for now so i can be able to create a PR
+  const { isLoading } = useSelector(selectMessageSlice);
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",

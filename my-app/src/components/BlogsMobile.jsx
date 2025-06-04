@@ -18,9 +18,9 @@ import SortModal from "../components/SortModal";
 export default function BlogMobile() {
   const { blogs } = useSelector(selectBlogSlice);
   const dispatch = useDispatch();
-  const [isSortOpen, setIsSortOpen] = useState(false);
-  const [sortPosition, setSortPosition] = useState({ top: 0, left: 0 });
-  const [sortOrderValue, setSortOrderValue] = useState("DESC");
+  const [ setIsSortOpen] = useState(false);
+  const [ setSortPosition] = useState({ top: 0, left: 0 });
+  const [sortOrderValue] = useState("DESC");
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -59,11 +59,17 @@ export default function BlogMobile() {
     };
   }, []);
 
+
+  const handleToggleFeatured = () => {
+    
+  }
+
   const filteredBlogs = () => {
     if (!searchTerm) setSearchResult(blogs);
     const result =
       blogs?.length > 0 &&
-      blogs?.filter((item, index) => {
+      // i removed the index for now so ican be able to create a PR
+      blogs?.filter((item) => {
         return (
           item?.title?.includes(searchTerm) ||
           item?.subtitle?.includes(searchTerm)
@@ -73,11 +79,12 @@ export default function BlogMobile() {
       setSearchResult(result);
     }
   };
-
-  const handleRefresh = () => {
-    setSortOrderValue("DESC");
-    setIsSortOpen(false);
-  };
+  
+  // i commented this out for now so i can be able to push and create a pr
+  // const handleRefresh = () => {
+  //   setSortOrderValue("DESC");
+  //   setIsSortOpen(false);
+  // };
 
   useEffect(() => {
     filteredBlogs();

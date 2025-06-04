@@ -16,23 +16,26 @@ import ListModal from "../components/ListModal";
 import { useSelector, useDispatch } from "react-redux";
 import { selectPropertiesSlice } from "../redux/selectors/property.selector";
 import { fetchProperties } from "../redux/slices/property.slice";
-import {IMAGE_URL} from "../redux/actionTypes";
+import { IMAGE_URL } from "../redux/actionTypes";
 
 export default function PortfolioDesktop() {
-  const {properties} = useSelector(selectPropertiesSlice)
-  const dispatch = useDispatch()
+  const { properties } = useSelector(selectPropertiesSlice);
+  const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedTab, setSelectedTab] = useState("Listed");
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
-  const [isOrderOpen, setIsOrderOpen] = useState(false);
-  const [orderPosition, setOrderPosition] = useState({ top: 0, left: 0 });
+  const [activeModal, setActiveModal] = useState(null); // 'tenure', 'order', or 'list'
+  const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
+  const closeTimerRef = useRef(null); // For delayed closing
+  // const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  // const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
+  // const [isOrderOpen, setIsOrderOpen] = useState(false);
+  // const [orderPosition, setOrderPosition] = useState({ top: 0, left: 0 });
   const [sortOrderValue, setSortOrderValue] = useState("DESC");
   const [sortTenureValue, setSortTenureValue] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResult, setSearchResult] = useState([]);
-  const [listModalOpen, setListModalOpen] = useState(false);
-  const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
+  // const [listModalOpen, setListModalOpen] = useState(false);
+  // const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
   const [selectedPropertyId, setSelectedPropertyId] = useState(null);
   const navigate = useNavigate();
   const dropdownRef = useRef(null);
@@ -41,68 +44,88 @@ export default function PortfolioDesktop() {
   const orderModalRef = useRef(null);
   const listModalRef = useRef(null);
 
+  
+
   const handleDropdownToggle = () => {
     if (tenureButtonRef.current) {
       const buttonRect = tenureButtonRef.current.getBoundingClientRect();
-      setDropdownPosition({
+      setModalPosition({
         top: buttonRect.bottom + window.scrollY,
         left: buttonRect.left + window.scrollX,
       });
+      if (activeModal === "tenure") {
+        closeAllModals();
+      } else {
+        openModal("tenure");
+      }
     }
-    setIsDropdownOpen((prev) => !prev);
   };
+
+  
 
   const handleOrderToggle = () => {
     if (orderButtonRef.current) {
       const Rect = orderButtonRef.current.getBoundingClientRect();
-      setOrderPosition({
+      setModalPosition({
         top: Rect.bottom + window.scrollY,
         left: Rect.left + window.scrollX,
       });
+      if (activeModal === "order") {
+        closeAllModals();
+      } else {
+        openModal("order");
+      }
     }
-    setIsOrderOpen((prev) => !prev);
   };
 
+  
+
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsDropdownOpen(false);
+      // Check if we're clicking outside the active modal
+      if (activeModal) {
+        const isTenureModalClick =
+          activeModal === "tenure" &&
+          dropdownRef.current &&
+          dropdownRef.current.contains(event.target);
+
+        const isOrderModalClick =
+          activeModal === "order" &&
+          orderModalRef.current &&
+          orderModalRef.current.contains(event.target);
+
+        const isListModalClick =
+          activeModal === "list" &&
+          listModalRef.current &&
+          listModalRef.current.contains(event.target);
+
+        const isTriggerClick =
+          (activeModal === "tenure" &&
+            tenureButtonRef.current?.contains(event.target)) ||
+          (activeModal === "order" &&
+            orderButtonRef.current?.contains(event.target)) ||
+          (activeModal === "list" &&
+            event.target.closest(".three-dots-button"));
+
+        if (
+          !isTenureModalClick &&
+          !isOrderModalClick &&
+          !isListModalClick &&
+          !isTriggerClick
+        ) {
+          closeAllModals();
+        }
       }
-      if (
-        orderModalRef.current &&
-        !orderModalRef.current.contains(event.target)
-      ) {
-        setIsOrderOpen(false);
-      }
-      // if (listModalRef.current && !listModalRef.current.contains(event.target)) {
-      //   setListModalOpen(false);
-      // }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      // If modal is open
-      if (
-        listModalOpen &&
-        listModalRef.current &&
-        !listModalRef.current.contains(event.target) &&
-        !event.target.closest(".three-dots-button")
-      ) {
-        setListModalOpen(false); // This should be false, not true
+      if (closeTimerRef.current) {
+        clearTimeout(closeTimerRef.current);
       }
     };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [listModalOpen]);
+  }, [activeModal]);
 
   const handleThreeDotsClick = (e, propertyId) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -111,54 +134,56 @@ export default function PortfolioDesktop() {
       top: rect.bottom + window.scrollY,
       left: rect.left + window.scrollX,
     });
-    setListModalOpen(true);
+    if (activeModal === "list" && selectedPropertyId === propertyId) {
+      closeAllModals();
+    } else {
+      openModal("list");
+    }
   };
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
 
-  // Mock data with proper image paths
-  // const properties = [
-  //   {
-  //     id: "WB01",
-  //     image: "/property four.jpg",
-  //     type: "For Sale",
-  //     shared: false,
-  //     name: "Fidel Warehouse",
-  //     price: "₦5,250,000/Month",
-  //   },
-  //   {
-  //     id: "WB02",
-  //     image: "/property five.jpg",
-  //     type: "For Rent",
-  //     shared: false,
-  //     name: "Fidel Warehouse",
-  //     price: "₦5,250,000/Month",
-  //   },
-  //   {
-  //     id: "WB03",
-  //     image: "/property three.jpg",
-  //     type: "For Lease",
-  //     shared: true,
-  //     name: "Fidel Warehouse",
-  //     price: "₦5,250,000/Month",
-  //   },
-  //   {
-  //     id: "WB04",
-  //     image: "/property six.jpg",
-  //     type: "For Sale",
-  //     shared: false,
-  //     name: "Fidel Warehouse",
-  //     price: "₦5,250,000/Month",
-  //   },
-  // ];
+  const openModal = (modalName) => {
+    // Cancel any pending close operations
+    if (closeTimerRef.current) {
+      clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+    setActiveModal(modalName);
+  };
+
+  const closeAllModals = () => {
+    setActiveModal(null);
+    if (closeTimerRef.current) {
+      clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+  };
+
+  const handleModalMouseEnter = () => {
+    // Cancel close if mouse enters modal
+    if (closeTimerRef.current) {
+      clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+  };
+
+  const handleOptionSelection = (value) => {
+    setSortTenureValue(value);
+    // Close after a short delay to allow UI feedback
+    setTimeout(() => closeAllModals(), 500);
+  };
+
+  
 
   const filteredProperties = () => {
     if (!searchTerm) setSearchResult(properties);
     const result =
       properties?.length > 0 &&
-      properties?.filter((item, index) => {
+      // Please i remove the text: index so i can be able to create a PR
+      properties?.filter((item) => {
         return (
           item?.propertyName?.includes(searchTerm) ||
           item?.propertyId?.includes(searchTerm)
@@ -169,11 +194,17 @@ export default function PortfolioDesktop() {
     }
   };
 
+  // const handleRefresh = () => {
+  //   setSortOrderValue("DESC");
+  //   setSortTenureValue('')
+  //   setIsOrderOpen(false)
+  //   setIsDropdownOpen(false)
+  // };
+
   const handleRefresh = () => {
     setSortOrderValue("DESC");
-    setSortTenureValue('')
-    setIsOrderOpen(false)
-    setIsDropdownOpen(false)
+    setSortTenureValue("");
+    closeAllModals();
   };
 
   useEffect(() => {
@@ -181,7 +212,7 @@ export default function PortfolioDesktop() {
   }, [searchTerm, properties]);
 
   useEffect(() => {
-    dispatch(fetchProperties({sortOrderValue, sortTenureValue}));
+    dispatch(fetchProperties({ sortOrderValue, sortTenureValue }));
   }, [dispatch, sortOrderValue, sortTenureValue]);
 
   return (
@@ -237,40 +268,70 @@ export default function PortfolioDesktop() {
                 <FilterButton ref={orderButtonRef} onClick={handleOrderToggle}>
                   Order <FaChevronDown className="ml-2" />
                 </FilterButton>
-                <button onClick={()=>handleRefresh()} className="px-4 py-2 flex items-center bg-black text-white rounded-full">
+                <button
+                  onClick={() => handleRefresh()}
+                  className="px-4 py-2 flex items-center bg-black text-white rounded-full"
+                >
                   Reset Filter <FaSyncAlt className="ml-2" />
                 </button>
               </div>
 
-              <SearchBar setSearchTerm={setSearchTerm} searchTerm={searchTerm} />
+              <SearchBar
+                setSearchTerm={setSearchTerm}
+                searchTerm={searchTerm}
+              />
 
-              <TenureModal
+              {/* <TenureModal
                 isOpen={isDropdownOpen}
                 onClose={() => setIsDropdownOpen(false)}
                 position={dropdownPosition}
                 setSortTenureValue={setSortTenureValue}
+              /> */}
+
+              <TenureModal
+                ref={dropdownRef}
+                isOpen={activeModal === "tenure"}
+                onClose={closeAllModals} // Keep this for manual close if needed
+                position={modalPosition}
+                setSortTenureValue={handleOptionSelection} // Use the new handler
+                onMouseEnter={handleModalMouseEnter}
+                // onMouseDown={(e) => e.stopPropagation()}
+                 
               />
 
-              <OrderModal
+              {/* <OrderModal
                 isOpen={isOrderOpen}
                 onClose={() => setIsOrderOpen(false)}
                 position={orderPosition}
                 setSortOrderValue={setSortOrderValue}
+              /> */}
+
+              <OrderModal
+                ref={orderModalRef}
+                isOpen={activeModal === "order"}
+                onClose={closeAllModals}
+                position={modalPosition}
+                setSortOrderValue={setSortOrderValue}
+                onMouseEnter={handleModalMouseEnter}
               />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-10">
-              {searchResult?.length > 0 && searchResult?.map((property, index) => (
-                <PropertyCard
-                  key={property._id}
-                  image={property.propertyImage}
-                  type={property.isShared ? 'For lease' : 'For sale'}
-                  shared={property.sharePropertyNumber}
-                  name={property.propertyName}
-                  price={property.propertyPrice}
-                  onThreeDotsClick={(e) => handleThreeDotsClick(e, property.id)}
-                />
-              ))}
+              {searchResult?.length > 0 &&
+              // Please i remove the text: index so i can be able to create a PR
+                searchResult?.map((property) => (
+                  <PropertyCard
+                    key={property._id}
+                    image={property.propertyImage}
+                    type={property.isShared ? "For lease" : "For sale"}
+                    shared={property.sharePropertyNumber}
+                    name={property.propertyName}
+                    price={property.propertyPrice}
+                    onThreeDotsClick={(e) =>
+                      handleThreeDotsClick(e, property.id)
+                    }
+                  />
+                ))}
             </div>
 
             <Pagination
@@ -282,12 +343,21 @@ export default function PortfolioDesktop() {
         </div>
       </div>
 
-      <ListModal
+      {/* <ListModal
         ref={listModalRef}
         isOpen={listModalOpen}
         onClose={() => setListModalOpen(false)}
         position={modalPosition}
         propertyId={selectedPropertyId}
+      /> */}
+
+      <ListModal
+        ref={listModalRef}
+        isOpen={activeModal === "list"}
+        onClose={closeAllModals}
+        position={modalPosition}
+        propertyId={selectedPropertyId}
+        onMouseEnter={handleModalMouseEnter}
       />
     </div>
   );
@@ -315,25 +385,25 @@ const FilterButton = React.forwardRef(({ onClick, children }, ref) => (
   </button>
 ));
 
-const SearchBar = ({setSearchTerm, searchTerm}) => (
+const SearchBar = ({ setSearchTerm, searchTerm }) => (
   <div className="bg-gray-200 p-2 rounded-full w-[400px] flex items-center">
     <div className="flex items-center bg-white px-4 py-3 rounded-full w-full">
       <input
-        onChange={(e)=>setSearchTerm(e.target.value)}
+        onChange={(e) => setSearchTerm(e.target.value)}
         value={searchTerm}
         type="text"
         placeholder="Search property by name or ID"
         className="bg-transparent outline-none flex-grow text-gray-700 placeholder-gray-500"
       />
       <button className="text-gray-600">
-        <FaSearch onClick={()=>setSearchTerm(searchTerm)} />
+        <FaSearch onClick={() => setSearchTerm(searchTerm)} />
       </button>
     </div>
   </div>
 );
 
 const PropertyCard = ({
-  image,
+  // image,
   type,
   shared,
   name,

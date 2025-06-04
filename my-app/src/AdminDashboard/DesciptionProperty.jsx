@@ -6,8 +6,8 @@ import { IoMdArrowDropleft } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { getSingleProperty } from "../redux/slices/property.slice";
 import { selectPropertiesSlice } from "../redux/selectors/property.selector";
-import { toast } from "react-toastify";
-import { getItemFromLocalStorage } from "../utitlity/storage";
+// import { toast } from "react-toastify";
+// import { getItemFromLocalStorage } from "../utitlity/storage";
 import { useParams } from "react-router-dom";
 
 export default function DescriptionProperty() {

@@ -156,5 +156,5 @@ const dashboard_slice = createSlice({
   },
 });
 
-export const { } = dashboard_slice.actions;
+export const {} = dashboard_slice.actions;
 export default dashboard_slice.reducer;

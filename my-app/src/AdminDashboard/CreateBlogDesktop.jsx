@@ -17,7 +17,7 @@ const CreateBlogDesktop = () => {
   const dispatch = useDispatch();
   const token = getItemFromLocalStorage("wb_token");
   const [selectedFiles, setSelectedFiles] = useState([]);
-  const [isChecked, setIsChecked] = useState(false);
+  // const [isChecked, setIsChecked] = useState(false);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -106,7 +106,8 @@ const CreateBlogDesktop = () => {
     const formDataToSend = new FormData();
     formDataToSend.append("title", formData.title);
     formDataToSend.append("article", formData.article);
-    selectedFiles?.forEach((file, index) => {
+    // please i removed the text : index so i can be able to create a PR
+    selectedFiles?.forEach((file) => {
       formDataToSend.append("images", file);
     });
 

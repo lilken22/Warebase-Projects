@@ -4,7 +4,7 @@ import {
   sendExploreMessageThunk,
   subscribeNewsletterThunk
 } from "../thunks/message.thunk";
-import { data } from "react-router-dom";
+// import { data } from "react-router-dom";
 // import { act } from "react";
 
 
