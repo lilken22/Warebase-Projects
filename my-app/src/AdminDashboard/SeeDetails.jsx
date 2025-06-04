@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect} from 'react'
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
@@ -6,8 +6,8 @@ import { IoMdArrowDropleft } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { selectBlogSlice } from "../redux/selectors/blog.selector";
 import { getBlog, fetchLatestBlogs } from "../redux/slices/blog.slice";
-import { toast } from "react-toastify";
-import { getItemFromLocalStorage } from "../utitlity/storage";
+// import { toast } from "react-toastify";
+// import { getItemFromLocalStorage } from "../utitlity/storage";
 import { useParams } from "react-router-dom";
 
 export default function SeeDetails() {

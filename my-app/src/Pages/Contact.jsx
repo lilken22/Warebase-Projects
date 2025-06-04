@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 const Contact = () => {
 
   const dispatch = useDispatch();
-  const { isLoading,error } = useSelector(selectMessageSlice);
+  const { isLoading, error } = useSelector(selectMessageSlice);
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
