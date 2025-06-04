@@ -116,7 +116,6 @@ import { IMAGE_URL } from "../redux/actionTypes";
 
 export default function Listing() {
   const { properties } = useSelector(selectPropertiesSlice);
-<<<<<<< HEAD
   const dispatch = useDispatch();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [sortOrderValue, setSortOrderValue] = useState("DESC");
@@ -140,12 +139,6 @@ export default function Listing() {
   });
   const [isWarehouseFormModalOpen, setIsWarehouseFormModalOpen] = useState(false);
   const dropdownRef = useRef(null);
-=======
-   console.log(properties)
-  const dispatch = useDispatch();  
-  // const [sortOrderValue, setSortOrderValue] = useState("DESC");
-  // const [sortTenureValue, setSortTenureValue] = useState("");  
->>>>>>> f4e2cb5b1e9f510ccac872afc411ff7071badbbf
   // const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   // const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
   // const [isStateModalOpen, setIsStateModalOpen] = useState(false);
