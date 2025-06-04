@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Menu } from "lucide-react";
 import { PiSlidersHorizontalFill } from "react-icons/pi";
 import BottomNav from "../components/BottomNav";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import {
   FaSyncAlt,
   FaChevronDown,
@@ -13,95 +13,112 @@ import {
 } from "react-icons/fa";
 import TenureModal from "../components/TenureModal";
 import OrderModal from "../components/OrderModal";
+import ListModal from "../components/ListModal";
 import { useSelector, useDispatch } from "react-redux";
 import { selectPropertiesSlice } from "../redux/selectors/property.selector";
 import { fetchProperties } from "../redux/slices/property.slice";
-import {IMAGE_URL} from "../redux/actionTypes";
-
-const properties = [
-  {
-    id: "WB01",
-    image: "/property four.jpg",
-    title: "Fidel Warehouse",
-    price: "₦5,250,000/Month",
-    status: "For Sale",
-  },
-  {
-    id: "WB02",
-    image: "/property five.jpg",
-    title: "Fidel Warehouse",
-    price: "₦5,250,000/Month",
-    status: "For Rent",
-  },
-  {
-    id: "WB03",
-    image: "/property four.jpg",
-    title: "Fidel Warehouse",
-    price: "₦5,250,000/Month",
-    status: "For Sale",
-  },
-  {
-    id: "WB04",
-    image: "/property five.jpg",
-    title: "Fidel Warehouse",
-    price: "₦5,250,000/Month",
-    status: "For Rent",
-  },
-];
+import { IMAGE_URL } from "../redux/actionTypes";
 
 const PortfolioMobile = () => {
-  const [selectedTab, setSelectedTab] = useState("listed");
+  const { properties } = useSelector(selectPropertiesSlice);
+  const dispatch = useDispatch();
+  const [selectedTab, setSelectedTab] = useState("Listed");
   const [currentPage, setCurrentPage] = useState(1);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 2 });
-  const [isOrderOpen, setIsOrderOpen] = useState(false);
-  const [orderPosition, setOrderPosition] = useState({ top: 0, left: 2 });
+  const [activeModal, setActiveModal] = useState(null); // 'tenure', 'order', 'list'
+  const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
+  const [sortOrderValue, setSortOrderValue] = useState("DESC");
+  const [sortTenureValue, setSortTenureValue] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResult, setSearchResult] = useState([]);
+  const [selectedPropertyId, setSelectedPropertyId] = useState(null);
 
   const navigate = useNavigate();
   const dropdownRef = useRef(null);
   const orderButtonRef = useRef(null);
   const tenureButtonRef = useRef(null);
   const orderModalRef = useRef(null);
+  const listModalRef = useRef(null);
+
+  // Unified modal handlers
+  const openModal = (modalName) => setActiveModal(modalName);
+  const closeAllModals = () => setActiveModal(null);
+
+  const handleDropdownToggle = (e) => {
+    e.stopPropagation();
+    if (tenureButtonRef.current) {
+      const buttonRect = tenureButtonRef.current.getBoundingClientRect();
+      setModalPosition({
+        top: buttonRect.bottom + window.scrollY,
+        left: buttonRect.left + window.scrollX,
+      });
+      openModal(activeModal === "tenure" ? null : "tenure");
+    }
+  };
+
+  const handleOrderToggle = (e) => {
+    e.stopPropagation();
+    if (orderButtonRef.current) {
+      const buttonRect = orderButtonRef.current.getBoundingClientRect();
+      setModalPosition({
+        top: buttonRect.bottom + window.scrollY,
+        left: buttonRect.left + window.scrollX,
+      });
+      openModal(activeModal === "order" ? null : "order");
+    }
+  };
+
+  const handleThreeDotsClick = (e, propertyId) => {
+    e.stopPropagation();
+    const rect = e.currentTarget.getBoundingClientRect();
+    setModalPosition({
+      top: rect.bottom + window.scrollY,
+      left: rect.left + window.scrollX,
+    });
+    setSelectedPropertyId(propertyId);
+    openModal("list");
+  };
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
 
-  const handleDropdownToggle = (e) => {
-    e.stopPropagation(); // Prevent event bubbling
-    if (tenureButtonRef.current) {
-      const buttonRect = tenureButtonRef.current.getBoundingClientRect();
-      // console.log("Tenure button position:", buttonRect);
-      setDropdownPosition({
-        top: buttonRect.bottom + window.scrollY + 5, // Added small offset
-        left: buttonRect.left + window.scrollX,
-      });
-    }
-    setIsDropdownOpen(!isDropdownOpen);
-    setIsOrderOpen(false); // Close order modal if open
+  const handleRefresh = () => {
+    setSortOrderValue("DESC");
+    setSortTenureValue("");
+    closeAllModals();
   };
 
-  const handleOrderToggle = (e) => {
-    e.stopPropagation(); // Prevent event bubbling
-    if (orderButtonRef.current) {
-      const buttonRect = orderButtonRef.current.getBoundingClientRect();
-      // console.log("Order button position:", buttonRect);
-      setOrderPosition({
-        top: buttonRect.bottom + window.scrollY + 5, // Added small offset
-        left: buttonRect.left + window.scrollX,
-      });
-    }
-    setIsOrderOpen(!isOrderOpen);
-    setIsDropdownOpen(false); // Close tenure modal if open
+  const filteredProperties = () => {
+    if (!searchTerm) return properties;
+    return properties.filter((item) => 
+      item?.propertyName?.includes(searchTerm) || 
+      item?.id?.includes(searchTerm)
+    );
   };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsDropdownOpen(false);
-      }
-      if (orderModalRef.current && !orderModalRef.current.contains(event.target)) {
-        setIsOrderOpen(false);
+      if (activeModal) {
+        const isTenureModalClick = 
+          activeModal === "tenure" && 
+          dropdownRef.current?.contains(event.target);
+        
+        const isOrderModalClick = 
+          activeModal === "order" && 
+          orderModalRef.current?.contains(event.target);
+        
+        const isListModalClick = 
+          activeModal === "list" && 
+          listModalRef.current?.contains(event.target);
+
+        const isTriggerClick =
+          (activeModal === "tenure" && tenureButtonRef.current?.contains(event.target)) ||
+          (activeModal === "order" && orderButtonRef.current?.contains(event.target)) ||
+          (activeModal === "list" && event.target.closest(".three-dots-button"));
+
+        if (!isTenureModalClick && !isOrderModalClick && !isListModalClick && !isTriggerClick) {
+          closeAllModals();
+        }
       }
     };
 
@@ -109,7 +126,15 @@ const PortfolioMobile = () => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [activeModal]);
+
+  useEffect(() => {
+    setSearchResult(filteredProperties());
+  }, [searchTerm, properties]);
+
+  useEffect(() => {
+    dispatch(fetchProperties({ sortOrderValue, sortTenureValue }));
+  }, [dispatch, sortOrderValue, sortTenureValue]);
 
   return (
     <div className="min-h-screen bg-white flex justify-center">
@@ -155,7 +180,7 @@ const PortfolioMobile = () => {
 
             {/* Search and Filter */}
             <div className="flex items-center gap-2 mt-5">
-              <SearchBar />
+              <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
               <button className="bg-[#FFFFFF] shadow-sm border border-gray-50 p-3 rounded-full">
                 <PiSlidersHorizontalFill size={25} className="text-gray-700" />
               </button>
@@ -164,31 +189,55 @@ const PortfolioMobile = () => {
         </div>
 
         <div className="px-4 grid grid-cols-2 gap-4 mt-3">
-          {properties.map((property) => (
-            <div key={property.id} className="bg-gray-100 p-2 rounded-xl">
+          {searchResult?.map((property) => (
+            <div key={property.id} className="bg-gray-100 p-2 rounded-xl relative">
               {/* Image Block */}
               <div className="relative rounded-lg overflow-hidden">
                 <img
-                  src={property.image}
-                  alt={property.title}
+                  src={property.propertyImage || "/property-placeholder.jpg"}
+                  alt={property.propertyName}
                   className="h-36 w-full object-cover rounded-xl"
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = "/property-placeholder.jpg";
+                  }}
                 />
-                <span className="absolute top-0 left-0 bg-red-500 text-white text-[10px] font-medium px-3 py-1 rounded-bl-md">
-                  {property.status}
+                <span className="absolute top-0 left-0 bg-red-500 text-white text-[10px] font-medium px-2 py-1 rounded-bl-md">
+                  {property.isShared ? "For Lease" : "For Sale"}
                 </span>
+                {property.isShared && (
+                  <span className="absolute top-2 right-0 bg-white text-[#1C1C1C] text-[10px] px-2 py-1 rounded-l-md shadow-sm">
+                    Shared
+                  </span>
+                )}
               </div>
 
               {/* White Card Block */}
               <div className="bg-white rounded-xl shadow-[#D3D3D340] p-3 mt-3">
-                <h3 className="text-sm font-bold text-[#1D3F3F] font-aeonik">
-                  {property.title}
-                </h3>
+                <div className="flex justify-between items-start">
+                  <h3 className="text-sm font-bold text-[#1D3F3F] font-aeonik">
+                    {property.propertyName}
+                  </h3>
+                  <button
+                    onClick={(e) => handleThreeDotsClick(e, property.id)}
+                    className="text-[#1D3F3F] p-1 rounded-full three-dots-button"
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="#1D3F3F">
+                      <circle cx="12" cy="6" r="1.5" />
+                      <circle cx="12" cy="12" r="1.5" />
+                      <circle cx="12" cy="18" r="1.5" />
+                    </svg>
+                  </button>
+                </div>
                 <p className="text-xs text-[#1D3F3F] font-aeonik font-normal mt-1">
-                  {property.price}
+                  {property.propertyPrice}
                 </p>
-                <button className="text-[10px] text-[#1D3F3FDE] mt-1 font-normal font-aeonik underline">
+                <Link
+                  to="/desciption-property"
+                  className="text-[10px] text-[#1D3F3FDE] mt-1 font-normal font-aeonik underline block"
+                >
                   See Description
-                </button>
+                </Link>
               </div>
             </div>
           ))}
@@ -218,29 +267,44 @@ const PortfolioMobile = () => {
               Order <FaChevronDown className="ml-2" />
             </FilterButton>
 
-            <button className="flex items-center justify-center bg-black text-white rounded-full px-4 py-2">
+            <button 
+              onClick={handleRefresh}
+              className="flex items-center justify-center bg-black text-white rounded-full px-4 py-2"
+            >
               <FaSyncAlt />
             </button>
           </div>
 
           {/* Modals */}
-          {isDropdownOpen && (
-            <TenureModal
-              isOpen={isDropdownOpen}
-              onClose={() => setIsDropdownOpen(false)}
-              position={dropdownPosition || {} }
-              ref={dropdownRef}
-            />
-          )}
+          <TenureModal
+            ref={dropdownRef}
+            isOpen={activeModal === "tenure"}
+            onClose={closeAllModals}
+            position={modalPosition}
+            setSortTenureValue={(value) => {
+              setSortTenureValue(value);
+              closeAllModals();
+            }}
+          />
 
-          {isOrderOpen && (
-            <OrderModal
-              isOpen={isOrderOpen}
-              onClose={() => setIsOrderOpen(false)}
-              position={orderPosition}
-              ref={orderModalRef}
-            />
-          )}
+          <OrderModal
+            ref={orderModalRef}
+            isOpen={activeModal === "order"}
+            onClose={closeAllModals}
+            position={modalPosition}
+            setSortOrderValue={(value) => {
+              setSortOrderValue(value);
+              closeAllModals();
+            }}
+          />
+
+          <ListModal
+            ref={listModalRef}
+            isOpen={activeModal === "list"}
+            onClose={closeAllModals}
+            position={modalPosition}
+            propertyId={selectedPropertyId}
+          />
         </div>
 
         {/* Bottom Navigation */}
@@ -250,7 +314,26 @@ const PortfolioMobile = () => {
   );
 };
 
-// Reusable Components
+// the reusable component
+
+// Updated SearchBar component
+const SearchBar = ({ searchTerm, setSearchTerm }) => (
+  <div className="p-2 rounded-full flex-1 flex items-center">
+    <div className="flex items-center bg-[#FFFFfF] shadow-sm px-3 py-3 border border-gray-100 rounded-full w-full">
+      <input
+        type="text"
+        placeholder="Search property by name or ID"
+        className="bg-transparent outline-none flex-grow text-[#CCCCCC] placeholder-[#CCCCCC] font-Poppins text-[10px]"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
+      <button className="text-gray-600">
+        <FaSearch />
+      </button>
+    </div>
+  </div>
+);
+
 const TabButton = ({ active, onClick, count, children }) => (
   <button
     className={`px-3 py-3 text-sm font-bold font-aeonik rounded-full ${
@@ -273,21 +356,6 @@ const FilterButton = React.forwardRef(
       {children}
     </button>
   )
-);
-
-const SearchBar = () => (
-  <div className="p-2 rounded-full w-[400px] flex items-center">
-    <div className="flex items-center bg-[#FFFFfF] shadow-sm px-3 py-3 border border-gray-100 rounded-full w-full">
-      <input
-        type="text"
-        placeholder="Search property by name or ID"
-        className="bg-transparent outline-none flex-grow text-[#CCCCCC] placeholder-[#CCCCCC] font-Poppins text-[10px]"
-      />
-      <button className="text-gray-600">
-        <FaSearch />
-      </button>
-    </div>
-  </div>
 );
 
 const Pagination = ({ currentPage, totalPages, onPageChange }) => (
@@ -336,5 +404,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => (
     </button>
   </div>
 );
+
+
 
 export default PortfolioMobile;

@@ -7,8 +7,8 @@ import ListModal from "../components/ListModal";
 import { useDispatch, useSelector } from "react-redux";
 import { selectDashboardSlice } from "../redux/selectors/dashboard.selector";
 import { fetchLatestProperties, fetchAllTotalProperties, fetchLeaseProperties, fetchSaleProperties } from "../redux/slices/dashboard.slice";
-import { toast } from "react-toastify";
-import { getItemFromLocalStorage } from "../utitlity/storage";
+// import { toast } from "react-toastify";
+// import { getItemFromLocalStorage } from "../utitlity/storage";
 
 {
   /* // StatCard component for cleaner code */

@@ -210,3 +210,275 @@ const App = () => {
 };
 
 export default App;
+
+
+
+
+
+
+
+
+
+
+// Mock data with proper image paths
+  // const properties = [
+  //   {
+  //     id: "WB01",
+  //     image: "/property four.jpg",
+  //     type: "For Sale",
+  //     shared: false,
+  //     name: "Fidel Warehouse",
+  //     price: "₦5,250,000/Month",
+  //   },
+  //   {
+  //     id: "WB02",
+  //     image: "/property five.jpg",
+  //     type: "For Rent",
+  //     shared: false,
+  //     name: "Fidel Warehouse",
+  //     price: "₦5,250,000/Month",
+  //   },
+  //   {
+  //     id: "WB03",
+  //     image: "/property three.jpg",
+  //     type: "For Lease",
+  //     shared: true,
+  //     name: "Fidel Warehouse",
+  //     price: "₦5,250,000/Month",
+  //   },
+  //   {
+  //     id: "WB04",
+  //     image: "/property six.jpg",
+  //     type: "For Sale",
+  //     shared: false,
+  //     name: "Fidel Warehouse",
+  //     price: "₦5,250,000/Month",
+  //   },
+  // ];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // useEffect(() => {
+  //   const handleClickOutside = (event) => {
+  //     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+  //       setIsDropdownOpen(false);
+  //     }
+  //     if (
+  //       orderModalRef.current &&
+  //       !orderModalRef.current.contains(event.target)
+  //     ) {
+  //       setIsOrderOpen(false);
+  //     }
+
+  //   };
+
+  //   document.addEventListener("mousedown", handleClickOutside);
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleClickOutside);
+  //   };
+  // }, []);
+
+  // useEffect(() => {
+  //   const handleClickOutside = (event) => {
+  //     if (
+  //       listModalOpen &&
+  //       listModalRef.current &&
+  //       !listModalRef.current.contains(event.target) &&
+  //       !event.target.closest(".three-dots-button")
+  //     ) {
+  //       setListModalOpen(false);
+  //     }
+  //   };
+
+  //   document.addEventListener("mousedown", handleClickOutside);
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleClickOutside);
+  //   };
+  // }, [listModalOpen]);
+
+  // Replace your existing useEffect with:
+  // useEffect(() => {
+  //   const handleClickOutside = (event) => {
+  //     const clickedOutsideAllModals =
+  //       (!dropdownRef.current || !dropdownRef.current.contains(event.target)) &&
+  //       (!orderModalRef.current ||
+  //         !orderModalRef.current.contains(event.target)) &&
+  //       (!listModalRef.current ||
+  //         !listModalRef.current.contains(event.target)) &&
+  //       !event.target.closest(".three-dots-button");
+
+  //     if (activeModal && clickedOutsideAllModals) {
+  //       closeTimerRef.current = setTimeout(() => {
+  //         closeAllModals();
+  //       }, 200);
+  //     }
+  //   };
+
+  //   document.addEventListener("mousedown", handleClickOutside);
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleClickOutside);
+  //     if (closeTimerRef.current) {
+  //       clearTimeout(closeTimerRef.current);
+  //     }
+  //   };
+  // }, [activeModal]);
+
+  // const handleThreeDotsClick = (e, propertyId) => {
+  //   const rect = e.currentTarget.getBoundingClientRect();
+  //   setSelectedPropertyId(propertyId);
+  //   setModalPosition({
+  //     top: rect.bottom + window.scrollY,
+  //     left: rect.left + window.scrollX,
+  //   });
+  //   setListModalOpen(true);
+  // };
+
+  //   const handleOptionSelection = (value) => {
+  //   setSortTenureValue(value);
+  //   setTimeout(() => closeAllModals(), 300);
+  // };
+
+
+
+  // const handleOrderToggle = () => {
+  //   if (orderButtonRef.current) {
+  //     const Rect = orderButtonRef.current.getBoundingClientRect();
+  //     setOrderPosition({
+  //       top: Rect.bottom + window.scrollY,
+  //       left: Rect.left + window.scrollX,
+  //     });
+  //   }
+  //   setIsOrderOpen((prev) => !prev);
+  // };
+
+
+  // const handleDropdownToggle = () => {
+  //   if (tenureButtonRef.current) {
+  //     const buttonRect = tenureButtonRef.current.getBoundingClientRect();
+  //     setDropdownPosition({
+  //       top: buttonRect.bottom + window.scrollY,
+  //       left: buttonRect.left + window.scrollX,
+  //     });
+  //   }
+  //   setIsDropdownOpen((prev) => !prev);
+  // };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  import React from "react";
+
+const OrderModal = React.forwardRef(({
+  isOpen,
+  position,
+  setSortOrderValue,
+  onClose,
+  onMouseEnter
+}, ref) => {
+  if (!isOpen || !position) return null;
+
+  const handleOptionChange = (e) => {
+    setSortOrderValue(e.target.value);
+    // Don't call onClose immediately to prevent race condition
+    setTimeout(() => onClose(), 500);
+  };
+
+  return (
+    <div
+      ref={ref}
+      onMouseEnter={onMouseEnter}
+      onTouchStart={onMouseEnter}
+      onMouseDown={(e) => e.stopPropagation()}
+      onClick={(e) => e.stopPropagation()}
+      className="fixed bg-white shadow-lg border border-gray-300 rounded-lg z-50 min-w-[180px]"
+      style={{
+        top: `${position.top + 8}px`,
+        left: `${Math.min(position.left, window.innerWidth - 200)}px`,
+      }}
+    >
+      <div className="p-2 space-y-2">
+        <label className="flex items-center text-sm font-medium text-[#1D3F3FDE] p-1 space-x-2">
+          <input
+            onChange={handleOptionChange}
+            type="radio"
+            name="Order"
+            value="DESC"
+            className="form-radio text-black"
+          />
+          <span>Newest - Oldest</span>
+        </label>
+
+        <label className="flex items-center text-sm font-medium text-[#1D3F3FDE] p-1 space-x-2">
+          <input
+            onChange={handleOptionChange}
+            type="radio"
+            name="Order"
+            value="ASC"
+            className="form-radio text-black"
+          />
+          <span>Oldest - Newest</span>
+        </label>
+      </div>
+    </div>
+  );
+});
+
+export default OrderModal;
