@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 // note that i remove useSelctor cause it causing an error on git hub
 import { useDispatch } from 'react-redux';
 import { authenticateUser } from '../redux/slices/auth.slice';
+import { toast } from 'react-toastify';
 
 function Login() {
   const dispatch = useDispatch()
@@ -27,11 +28,10 @@ function Login() {
         if(result.token){
           navigate('/overview');
         }
-      }else {
-        setError('Please enter both email and password.');
       }
     } catch (error) {
-      setError(error?.message || "Failed to login, please try again")
+      toast(error?.response?.data?.error || "Failed to login, please try again")
+      setError(error?.response?.data?.error || "Failed to login, please try again")
     }
      
   };

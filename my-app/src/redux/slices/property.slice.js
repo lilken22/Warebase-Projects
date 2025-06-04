@@ -2,7 +2,8 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   fetchPropertiesThunk,
   createPropertyThunk,
-  getSinglePropertyThunk
+  getSinglePropertyThunk,
+  deletePropertyThunk
 } from "../thunks/property.thunk";
 
 const initialState = {
@@ -16,9 +17,9 @@ const initialState = {
 // ===================================charles==============
 export const fetchProperties = createAsyncThunk(
   "api/fetchProperties",
-  async (sortData, { rejectWithValue }) => {
+  async (filters, { rejectWithValue }) => {
     try {
-      return await fetchPropertiesThunk(sortData);
+      return await fetchPropertiesThunk(filters);
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
@@ -30,6 +31,17 @@ export const getSingleProperty = createAsyncThunk(
   async (id, { rejectWithValue }) => {
     try {
       return await getSinglePropertyThunk(id);
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const deleteOrUnlistSingleProperty = createAsyncThunk(
+  "api/deleteOrUnlistSingleProperty",
+  async (data, { rejectWithValue }) => {
+    try {
+      return await deletePropertyThunk(data);
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
@@ -89,16 +101,16 @@ const property_slice = createSlice({
       .addCase(createProperty.rejected, (state) => {
         state.isLoading = false;
       })
-    //   .addCase(editBlog.pending, (state) => {
-    //     state.isLoading = true;
-    //   })
-    //   .addCase(editBlog.fulfilled, (state, action) => {
-    //     state.isLoading = false;
-    //     state.error = false;
-    //   })
-    //   .addCase(editBlog.rejected, (state) => {
-    //     state.isLoading = false;
-    //   });
+      .addCase(deleteOrUnlistSingleProperty.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteOrUnlistSingleProperty.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = false;
+      })
+      .addCase(deleteOrUnlistSingleProperty.rejected, (state) => {
+        state.isLoading = false;
+      });
   },
 });
 

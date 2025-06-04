@@ -67,58 +67,69 @@ const App = () => {
       <ScrollToTop />
       {/* <Navbar /> */}
       <main className="flex-grow">
-
         <Routes>
-           {/* Public Routes */}
+          {/* Public Routes */}
           <Route path="/" element={<Landing />} />
           <Route path="/about" element={<About />} />
           <Route path="/listing" element={<Listing />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/PropertyDetails/:id" element={<PropertyDetails />} /> 
-          <Route path="/Login" element={<Login />} /> 
-          <Route path="/EmailReset" element={<EmailReset />} /> 
-          <Route path="/CheckMail" element={<CheckMail />} /> 
-          <Route path="/PasswordReset" element={<PasswordReset />} /> 
+          <Route path="/PropertyDetails/:id" element={<PropertyDetails />} />
+          <Route path="/Login" element={<Login />} />
+          <Route path="/EmailReset" element={<EmailReset />} />
+          <Route path="/CheckMail" element={<CheckMail />} />
+          <Route path="/PasswordReset" element={<PasswordReset />} />
           <Route path="/PasswordSuccessful" element={<PasswordSuccessful />} />
           <Route path="/EmailTemplate" element={<EmailTemplate />} />
           <Route path="/blogdetails/:id" element={<BlogDetails />} />
 
           {/* Dashboard Routes */}
-          <Route path="/dashboard" element={
-            <ProtectedRoute>
-               <DashBoard />
-            </ProtectedRoute>
-            } />
-            {/* <Route index element={<Overview />} /> */}
-            <Route path="/overview" element={<ProtectedRoute><Overview/></ProtectedRoute>} />
-            {/* <Route path="/overview" element={<Overview/>} /> */}
-            <Route path="/blogs" element={<Blogs/>} />
-            <Route path="/portfolio" element={<ProtectedRoute><Portfolio/></ProtectedRoute>} />
-            {/* <Route path="/portfolio" element={<Portfolio/>} /> */}
-            <Route path="/add-property" element={<ProtectedRoute><AddProperty/></ProtectedRoute>} />
-            {/* <Route path="/add-property" element={<AddProperty/>} /> */}
-            <Route path="/overview/desciption-property/:id" element={<DesciptionProperty />} />
-            <Route path="/settings" element={<Settings/>} />
-            {/* <Route path="/logout" element={<Logout/>} /> */}
-            <Route path="/create-blog" element={<CreateBlog/>} />
-            <Route path="/see-details/:id" element={<SeeDetails/>} />
-            <Route path="/portfolio-mobile" element={<PortfolioMobile/>} />
-            <Route path="/bottom-nav" element={<BottomNav/>} />
-            <Route path="/overview-mobile" element={<OverviewMobile/>} />
-            <Route path="/propertydetails-mobile" element={<PropertyDetailsMobile/>} />
-            <Route path="/blog-mobile" element={<BlogsMobile/>} />
-            <Route path="/blogdetails-mobile/:id" element={<BlogDetailsMobile/>} />
-            <Route path="/createblog-mobile" element={<CreateBlogMobile/>} />
-            <Route path="/settings-mobile" element={<SettingsMobile/>} />
-            <Route path="/settings/profile" element={<SettingsProfile/>} />
-            <Route path="/settings/portfolio" element={<SettingsPortfolio/>} />
-            <Route path="/settings/security" element={<SettingsSecurity/>} />
-            <Route path="/addproperty-mobile" element={<AddPropertyMobile/>} />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <DashBoard />
+              </ProtectedRoute>
+            }
+          />
+          {/* <Route index element={<Overview />} /> */}
+          {/* <Route path="/overview" element={<ProtectedRoute><Overview/></ProtectedRoute>} /> */}
+          {/* <Route path="/portfolio" element={<ProtectedRoute><Portfolio/></ProtectedRoute>} /> */}
+          {/* <Route path="/add-property" element={<ProtectedRoute><AddProperty/></ProtectedRoute>} /> */}
+
+          <Route path="/overview" element={<Overview />} />
+          <Route path="/portfolio" element={<Portfolio />} />
+          <Route path="/add-property" element={<AddProperty />} />
+          
+          <Route
+            path="/desciption-property/:id"
+            element={<DesciptionProperty />}
+          />
+          <Route path="/blogs" element={<Blogs />} />
+          <Route path="/settings" element={<Settings />} />
+          {/* <Route path="/logout" element={<Logout/>} /> */}
+          <Route path="/create-blog" element={<CreateBlog />} />
+          <Route path="/see-details/:id" element={<SeeDetails />} />
+          <Route path="/portfolio-mobile" element={<PortfolioMobile />} />
+          <Route path="/bottom-nav" element={<BottomNav />} />
+          <Route path="/overview-mobile" element={<OverviewMobile />} />
+          <Route
+            path="/propertydetails-mobile"
+            element={<PropertyDetailsMobile />}
+          />
+          <Route path="/blog-mobile" element={<BlogsMobile />} />
+          <Route
+            path="/blogdetails-mobile/:id"
+            element={<BlogDetailsMobile />}
+          />
+          <Route path="/createblog-mobile" element={<CreateBlogMobile />} />
+          <Route path="/settings-mobile" element={<SettingsMobile />} />
+          <Route path="/settings/profile" element={<SettingsProfile />} />
+          <Route path="/settings/portfolio" element={<SettingsPortfolio />} />
+          <Route path="/settings/security" element={<SettingsSecurity />} />
+          <Route path="/addproperty-mobile" element={<AddPropertyMobile />} />
           {/* </Route> */}
         </Routes>
-
-        
       </main>
 
       {/* <Footer /> */}

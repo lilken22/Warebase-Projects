@@ -1,19 +1,34 @@
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import { IoMdCreate } from "react-icons/io";
 import { FiEye, FiEyeOff } from "react-icons/fi";
+import { useDispatch, useSelector } from "react-redux";
+import { selectUserSlice } from "../redux/selectors/user.selector";
+import { toast } from "react-toastify";
+import { getItemFromLocalStorage } from "../utitlity/storage";
+import {
+  getCurrentUserData, updateCurrentUserData,
+  updateCurrentUserPasswordData, updateSupportContactData
+} from "../redux/slices/user.slice";
 
 const SettingsDesktop = () => {
-  const [activeTab, setActiveTab] = useState("profile");
-  const [isEditing, setIsEditing] = useState(false);
-  const [userData, setUserData] = useState({
-    name: "Adebayo Oguntoju",
-    role: "Admin",
-    email: "adebayooguntoju@gmail.com",
-    phone: "+234 0722635533",
-    contactEmail: "support@warebase.com.ng",
-  });
+   const { adminData, supportData } = useSelector(selectUserSlice);
+   const dispatch = useDispatch();
+   const token = getItemFromLocalStorage("wb_token");
+   const [activeTab, setActiveTab] = useState("profile");
+   const [isEditing, setIsEditing] = useState(false);
+
+   const [userData, setUserData] = useState({
+     name: "",
+     role: "",
+     email: "",
+     phone: "",
+     password: "",
+     contactEmail: "",
+     contactPhone: "",
+   });
+  
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isChangingPassword, setIsChangingPassword] = useState(false);
@@ -32,12 +47,36 @@ const SettingsDesktop = () => {
     }
   };
 
-  const toggleEdit = () => {
+  const handleSaveProfileChanges = async() => {
     if (isEditing) {
-      // Optionally: handle form submit logic here
+      try {
+        const body = {
+          email: userData?.email,
+          fullName: userData?.name
+        }
+        await dispatch(updateCurrentUserData({token, body})).unwrap()
+      } catch (error) {
+        console.error(error)
+      }
     }
     setIsEditing(!isEditing);
   };
+
+  const handleSaveSupportChanges = async () => {
+    if (isEditing) {
+      try {
+        const body = {
+          support_email: userData?.contactEmail,
+          support_phone: userData?.contactPhone,
+        };
+        await dispatch(updateSupportContactData({ token, body })).unwrap();
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    setIsEditing(!isEditing);
+  };
+
 
   const handlePasswordChange = (e) => {
     const { name, value } = e.target;
@@ -47,16 +86,54 @@ const SettingsDesktop = () => {
     }));
   };
 
-  const handlePasswordSubmit = (e) => {
+  const handlePasswordSubmit = async(e) => {
     e.preventDefault();
     // Add password change logic here
-    setIsChangingPassword(false);
-    setPasswordData({
-      currentPassword: "",
-      newPassword: "",
-      confirmPassword: "",
-    });
+    try {
+      if (isChangingPassword) {
+         const body = {
+          new_password: passwordData?.newPassword,
+          confirm_password: passwordData?.confirmPassword
+        }
+        await dispatch(updateCurrentUserPasswordData({token, body})).unwrap()
+        setIsChangingPassword(false);
+        setPasswordData({
+          currentPassword: "",
+          newPassword: "",
+          confirmPassword: "",
+        });
+      }
+    } catch (error) {
+      console.error(error)
+      return
+    }
   };
+
+
+
+  useEffect(() => {
+    if(!token) return toast('session expires, please login')
+      dispatch(getCurrentUserData({token})).unwrap();
+  }, [dispatch]);
+  
+  useEffect(() => {
+    if (adminData) {
+      setUserData({
+        name: adminData?.fullName,
+        email: adminData?.email,
+        role: adminData?.role,
+        phone: adminData?.phone,
+        password: adminData?.password,
+      })
+    }
+    if (supportData) {
+      setUserData((prevData) => ({
+        ...prevData,
+        contactEmail: supportData?.supportEmail,
+        contactPhone: supportData?.supportPhone,
+      }))
+    }
+  },[adminData, supportData])
 
   return (
     <div className="flex min-h-screen bg-[#f8f9fa]">
@@ -144,7 +221,7 @@ const SettingsDesktop = () => {
                                 }
                                 className="text-sm text-[#1D3F3F] font-aeonik border rounded px-2 py-2 w-full"
                               />
-                              <input
+                              {/* <input
                                 type="text"
                                 value={userData.role}
                                 onChange={(e) =>
@@ -154,7 +231,7 @@ const SettingsDesktop = () => {
                                   })
                                 }
                                 className="text-sm text-[#9C9C9C] font-aeonik border rounded px-2 py-2 w-full"
-                              />
+                              /> */}
                               <input
                                 type="email"
                                 value={userData.email}
@@ -173,7 +250,7 @@ const SettingsDesktop = () => {
                                 {userData.name}
                               </h4>
                               <p className="text-sm text-[#9C9C9C] font-normal font-aeonik">
-                                {userData.role}
+                                {String(userData.role).toUpperCase()}
                               </p>
                               <p className="text-sm text-[#9C9C9C] font-normal font-aeonik">
                                 {userData.email}
@@ -186,7 +263,7 @@ const SettingsDesktop = () => {
                       {/* Edit/Save Button */}
                       <div>
                         <button
-                          onClick={toggleEdit}
+                          onClick={handleSaveProfileChanges}
                           className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all ${
                             isEditing
                               ? "bg-black text-white"
@@ -220,11 +297,11 @@ const SettingsDesktop = () => {
                           <div>
                             <input
                               type="text"
-                              value={userData.phone || ""}
+                              value={userData.contactPhone || ""}
                               onChange={(e) =>
                                 setUserData({
                                   ...userData,
-                                  phone: e.target.value,
+                                  contactPhone: e.target.value,
                                 })
                               }
                               className="text-sm text-[#1D3F3F] font-aeonik border rounded px-2 py-2 w-full"
@@ -244,7 +321,7 @@ const SettingsDesktop = () => {
                         ) : (
                           <div>
                             <p className="text-sm text-[#1D3F3F] font-aeonik">
-                              {userData.phone || "+234 0722635533"}
+                              {userData.contactPhone || "+234 0722635533"}
                             </p>
                             <p className="text-sm text-[#1D3F3F] font-aeonik">
                               {userData.contactEmail ||
@@ -257,7 +334,7 @@ const SettingsDesktop = () => {
                       {/* Edit Button */}
                       <div>
                         <button
-                          onClick={toggleEdit}
+                          onClick={handleSaveSupportChanges}
                           className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all ${
                             isEditing
                               ? "bg-black text-white"

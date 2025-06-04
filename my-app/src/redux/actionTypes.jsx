@@ -2,9 +2,9 @@
 import { Navigate } from "react-router-dom";
 import { getItemFromLocalStorage } from "../utitlity/storage";
 
-export const URL = "https://dev-api.warebase.com.ng/api/v1";
+// export const URL = "https://dev-api.warebase.com.ng/api/v1";
 export const IMAGE_URL = "https://dev-api.warebase.com.ng";
-// export const URL = "http://localhost:3535/api/v1";
+export const URL = "http://localhost:3535/api/v1";
 // export const IMAGE_URL = "http://localhost:3535";
 
 

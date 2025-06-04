@@ -19,7 +19,7 @@ import { fetchProperties } from "../redux/slices/property.slice";
 import {IMAGE_URL} from "../redux/actionTypes";
 
 export default function PortfolioDesktop() {
-  const {properties} = useSelector(selectPropertiesSlice)
+  const { properties } = useSelector(selectPropertiesSlice)
   const dispatch = useDispatch()
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedTab, setSelectedTab] = useState("Listed");
@@ -28,6 +28,7 @@ export default function PortfolioDesktop() {
   const [isOrderOpen, setIsOrderOpen] = useState(false);
   const [orderPosition, setOrderPosition] = useState({ top: 0, left: 0 });
   const [sortOrderValue, setSortOrderValue] = useState("DESC");
+  const [sortFieldValue, setSortFieldValue] = useState("date");
   const [sortTenureValue, setSortTenureValue] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResult, setSearchResult] = useState([]);
@@ -181,8 +182,28 @@ export default function PortfolioDesktop() {
   }, [searchTerm, properties]);
 
   useEffect(() => {
-    dispatch(fetchProperties({sortOrderValue, sortTenureValue}));
-  }, [dispatch, sortOrderValue, sortTenureValue]);
+
+    if (String(selectedTab).toLowerCase() === "unlisted") {
+      dispatch(
+        fetchProperties({
+          sortField: sortFieldValue,
+          sortOrder: sortOrderValue,
+          tenure: sortTenureValue,
+          active: "false",
+        })
+      );
+    } else {
+      dispatch(
+        fetchProperties({
+          sortField: sortFieldValue,
+          sortOrder: sortOrderValue,
+          tenure: sortTenureValue,
+          active: "true",
+        })
+      );
+    }
+    
+  }, [dispatch, sortOrderValue, sortTenureValue, sortFieldValue, selectedTab]);
 
   return (
     <div className="flex min-h-screen bg-[#F8F9FA]">
@@ -237,12 +258,18 @@ export default function PortfolioDesktop() {
                 <FilterButton ref={orderButtonRef} onClick={handleOrderToggle}>
                   Order <FaChevronDown className="ml-2" />
                 </FilterButton>
-                <button onClick={()=>handleRefresh()} className="px-4 py-2 flex items-center bg-black text-white rounded-full">
+                <button
+                  onClick={() => handleRefresh()}
+                  className="px-4 py-2 flex items-center bg-black text-white rounded-full"
+                >
                   Reset Filter <FaSyncAlt className="ml-2" />
                 </button>
               </div>
 
-              <SearchBar setSearchTerm={setSearchTerm} searchTerm={searchTerm} />
+              <SearchBar
+                setSearchTerm={setSearchTerm}
+                searchTerm={searchTerm}
+              />
 
               <TenureModal
                 isOpen={isDropdownOpen}
@@ -260,17 +287,21 @@ export default function PortfolioDesktop() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-10">
-              {searchResult?.length > 0 && searchResult?.map((property, index) => (
-                <PropertyCard
-                  key={property._id}
-                  image={property.propertyImage}
-                  type={property.isShared ? 'For lease' : 'For sale'}
-                  shared={property.sharePropertyNumber}
-                  name={property.propertyName}
-                  price={property.propertyPrice}
-                  onThreeDotsClick={(e) => handleThreeDotsClick(e, property.id)}
-                />
-              ))}
+              {searchResult?.length > 0 &&
+                searchResult?.map((property, index) => (
+                  <PropertyCard
+                    key={property._id}
+                    id={property._id}
+                    image={property.propertyImage}
+                    type={property.isShared ? "For lease" : "For sale"}
+                    shared={property.sharePropertyNumber}
+                    name={property.propertyName}
+                    price={property.propertyPrice}
+                    onThreeDotsClick={(e) =>
+                      handleThreeDotsClick(e, property._id)
+                    }
+                  />
+                ))}
             </div>
 
             <Pagination
@@ -334,6 +365,7 @@ const SearchBar = ({setSearchTerm, searchTerm}) => (
 
 const PropertyCard = ({
   image,
+  id,
   type,
   shared,
   name,
@@ -380,7 +412,7 @@ const PropertyCard = ({
       </p>
       <div className="mt-2">
         <Link
-          to="/desciption-property"
+          to={`/desciption-property/${id}`}
           className="text-sm text-[#1D3F3FDE] font-medium font-aeonik underline"
         >
           See Description

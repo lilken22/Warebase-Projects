@@ -15,7 +15,6 @@ export default function DescriptionProperty() {
   const { id } = useParams();
   const dispatch = useDispatch();
   const { property } = useSelector(selectPropertiesSlice);
-  console.log(property)
 
   const handleBackClick = () => {
     navigate("/portfolio");

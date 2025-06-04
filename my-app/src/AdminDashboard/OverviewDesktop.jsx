@@ -225,7 +225,7 @@ const OverviewDesktop = () => {
                       {/* "See Description" Link */}
                       <div className="mt-2">
                         <Link
-                          to={ `desciption-property/${property?._id}`}
+                          to={ `/desciption-property/${property?._id}`}
                           className="text-sm text-[#1D3F3FDE] font-medium font-aeonik underline"
                         >
                           See Description

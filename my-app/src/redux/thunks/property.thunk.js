@@ -49,10 +49,13 @@ export const editPropertyThunk = async (data) => {
   }
 };
 
-export const fetchPropertiesThunk = async (sortData) => {
-  const {sortOrderValue, sortTenureValue} = sortData
+export const fetchPropertiesThunk = async (filters) => {
+  const { sortField = "date", sortOrder = "DESC", active = 'true', tenure = '' } = filters
+  console.log(active)
   try {
-    const response = await axios.get(`${URL}/properties/findAll/?sortOrder=${sortOrderValue}&type=${sortTenureValue}`);
+    const response = await axios.get(`${URL}/properties/findAll/?sortOrder=${sortOrder}&sortField=${sortField}&active=${active}&tenure=${tenure}`);
+
+    console.log(response)
     if (response?.status === 200) {
       response?.data?.data;
       return response?.data;
@@ -78,16 +81,22 @@ export const getSinglePropertyThunk = async (id) => {
 export const deletePropertyThunk = async (data) => {
   const token = data?.token;
   const id = data?.id;
+  const type = data?.type || 'soft';
+
+  console.log(id)
   try {
-    const response = await axios.delete(`${URL}/properties/${id}/delete`, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await axios.delete(
+      `${URL}/properties/${id}/delete?deleteType=${type}`,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     if (response?.status === 200) {
-      toast.success("Property deleted Successfully!");
+      toast.success("Property unlisted Successfully!");
       return response?.data;
     }
   } catch (err) {

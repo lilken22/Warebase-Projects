@@ -27,8 +27,8 @@ export const authenticateUserThunk = async (data) => {
       return response.data;
     }
   } catch (error) {
-    console.log(error);
-    toast.error(error?.response?.data?.message);
+    console.error(error);
+    toast.error(error?.response?.data?.error);
     return error;
   }
 };
@@ -48,7 +48,7 @@ export const signupUserThunk = async (user) => {
     }
   } catch (err) {
     console.log(err);
-    toast.error(err?.response?.data?.message);
+    toast.error(err?.response?.data?.error);
     return err;
   }
 };
@@ -67,7 +67,7 @@ export const enrollUserThunk = async (user) => {
     }
   } catch (err) {
     console.log(err);
-    toast.error(err?.response?.data?.message);
+   toast.error(err?.response?.data?.error);
     return err;
   }
 };
@@ -95,7 +95,7 @@ export const enrollUserLaterThunk = async (data) => {
     }
   } catch (err) {
     console.log(err);
-    toast.error(err?.response?.data?.message);
+    toast.error(err?.response?.data?.error);
     return err?.response?.data?.message || "An Error Occured Pls Contact Admin";
   }
 };

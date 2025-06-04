@@ -3,8 +3,16 @@ import { IoMdCreate } from "react-icons/io";
 import { RiDeleteBack2Fill } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import UnlistModal from "../components/UnlistModal";
+import { useSelector, useDispatch } from "react-redux";
+import { selectPropertiesSlice } from "../redux/selectors/property.selector";
+import { fetchProperties, deleteOrUnlistSingleProperty } from "../redux/slices/property.slice";
+import { toast } from "react-toastify";
+import { getItemFromLocalStorage } from "../utitlity/storage";
 
 const ListModal = forwardRef(({ isOpen, onClose, position, propertyId }, ref) => {
+
+  const dispatch = useDispatch()
+  const token = getItemFromLocalStorage("wb_token");
   const navigate = useNavigate();
   const [isUnlistModalOpen, setIsUnlistModalOpen] = useState(false);
 
@@ -20,6 +28,20 @@ const ListModal = forwardRef(({ isOpen, onClose, position, propertyId }, ref) =>
     e.stopPropagation();
     setIsUnlistModalOpen(true);
   };
+
+  const handleUnlistPropert = async (id) => {
+    const data = {
+      token,
+      id
+    }
+    try {
+      await dispatch(deleteOrUnlistSingleProperty(data)).unwrap()
+      await dispatch(fetchProperties()).unwrap()
+      onClose()
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   return (
     <div
@@ -39,7 +61,9 @@ const ListModal = forwardRef(({ isOpen, onClose, position, propertyId }, ref) =>
             className="flex items-center w-full p-1 rounded text-left"
           >
             <IoMdCreate className="text-[#AAAAAA] w-5 h-6" />
-            <span className="text-[#1D3F3FDE] font-aeonik text-base font-medium ml-2">Edit</span>
+            <span className="text-[#1D3F3FDE] font-aeonik text-base font-medium ml-2">
+              Edit
+            </span>
           </button>
 
           <button
@@ -47,7 +71,9 @@ const ListModal = forwardRef(({ isOpen, onClose, position, propertyId }, ref) =>
             className="flex items-center w-full p-1 rounded text-left"
           >
             <RiDeleteBack2Fill className="text-[#AAAAAA] w-6 h-6" />
-            <span className="text-[#1D3F3FDE] font-aeonik text-base font-medium ml-2">Unlist</span>
+            <span className="text-[#1D3F3FDE] font-aeonik text-base font-medium ml-2">
+              Unlist
+            </span>
           </button>
         </div>
       </div>
@@ -56,7 +82,7 @@ const ListModal = forwardRef(({ isOpen, onClose, position, propertyId }, ref) =>
         isOpen={isUnlistModalOpen}
         onClose={() => setIsUnlistModalOpen(false)}
         propertyId={propertyId}
-        onConfirm={() => console.log(`Unlisting property ${propertyId}`)}
+        onConfirm={() => handleUnlistPropert(propertyId)}
       />
     </div>
   );
