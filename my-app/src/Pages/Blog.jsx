@@ -7,6 +7,7 @@ import { FaArrowRight } from "react-icons/fa6"; // Icons for previous and next
 import { useSelector, useDispatch } from "react-redux";
 import { fetchBlogs } from "../redux/slices/blog.slice";
 import { selectBlogSlice } from "../redux/selectors/blog.selector";
+import { IMAGE_URL } from "../redux/actionTypes";
 
 export default function Blog() {
   const { blogs, featuredPost } = useSelector(selectBlogSlice);
@@ -14,6 +15,11 @@ export default function Blog() {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1); // State to track the current page
 
+   const isDev = import.meta.env.DEV; // true in dev, false in production
+   function getImageUrl(path) {
+     return isDev ? path : `${IMAGE_URL}${path}`;
+  }
+  
   const handleReadMoreClick = () => {
     navigate("/blogdetails");
   };

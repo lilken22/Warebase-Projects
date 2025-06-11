@@ -12,107 +12,7 @@ import "../index.css";
 import { useSelector, useDispatch } from "react-redux";
 import { selectPropertiesSlice } from "../redux/selectors/property.selector";
 import { fetchProperties } from "../redux/slices/property.slice";
-import { IMAGE_URL } from "../redux/actionTypes";
-
-// data array moved here
-// const data = [
-//   {
-//     imageUrl: "/property one.jpg",
-//     propertyType: "unshared",
-//     location: "delta",
-//     priceRange: [30000, 40000],
-//     sizeRange: "",
-//     isForSale: true,
-//   },
-//   {
-//     imageUrl: "/property two.jpg",
-//     propertyType: "shared",
-//     location: "delta",
-//     priceRange: [30000, 40000],
-//     sizeRange: "",
-//     isForSale: false,
-//   },
-//   {
-//     imageUrl: "/property three.jpg",
-//     propertyType: "shared",
-//     location: "delta",
-//     priceRange: [30000, 40000],
-//     sizeRange: "",
-//     isForSale: false,
-//   },
-//   {
-//     imageUrl: "/property one.jpg",
-//     propertyType: "unshared",
-//     location: "delta",
-//     priceRange: [30000, 40000],
-//     sizeRange: "",
-//     isForSale: true,
-//   },
-//   {
-//     imageUrl: "/property two.jpg",
-//     propertyType: "shared",
-//     location: "delta",
-//     priceRange: [30000, 40000],
-//     sizeRange: "",
-//     isForSale: false,
-//   },
-//   {
-//     imageUrl: "/property one.jpg",
-//     propertyType: "unshared",
-//     location: "delta",
-//     priceRange: [30000, 40000],
-//     sizeRange: "",
-//     isForSale: true,
-//   },
-//   {
-//     imageUrl: "/property three.jpg",
-//     propertyType: "unshared",
-//     location: "delta",
-//     priceRange: [30000, 40000],
-//     sizeRange: "",
-//     isForSale: true,
-//   },
-//   {
-//     imageUrl: "/property two.jpg",
-//     propertyType: "shared",
-//     location: "delta",
-//     priceRange: [30000, 40000],
-//     sizeRange: "",
-//     isForSale: false,
-//   },
-//   {
-//     imageUrl: "/property three.jpg",
-//     propertyType: "shared",
-//     location: "delta",
-//     priceRange: [30000, 40000],
-//     sizeRange: "",
-//     isForSale: false,
-//   },
-//   {
-//     imageUrl: "/property two.jpg",
-//     propertyType: "unshared",
-//     location: "delta",
-//     priceRange: [30000, 40000],
-//     sizeRange: "",
-//     isForSale: true,
-//   },
-//   {
-//     imageUrl: "/property two.jpg",
-//     propertyType: "unshared",
-//     location: "delta",
-//     priceRange: [30000, 40000],
-//     sizeRange: "",
-//     isForSale: true,
-//   },
-//   {
-//     imageUrl: "/property three.jpg",
-//     propertyType: "shared",
-//     location: "delta",
-//     priceRange: [30000, 40000],
-//     sizeRange: "",
-//     isForSale: false,
-//   },
-// ];
+import { IMAGE_URL} from "../redux/actionTypes";
 
 export default function Listing() {
   const { properties } = useSelector(selectPropertiesSlice);
@@ -139,25 +39,6 @@ export default function Listing() {
   });
   const [isWarehouseFormModalOpen, setIsWarehouseFormModalOpen] = useState(false);
   const dropdownRef = useRef(null);
-  // const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  // const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
-  // const [isStateModalOpen, setIsStateModalOpen] = useState(false);
-  // const [stateModalPosition, setStateModalPosition] = useState({
-  //   top: 0,
-  //   left: 0,
-  // });
-  // const [isPriceModalOpen, setIsPriceModalOpen] = useState(false);
-  // const [priceModalPosition, setPriceModalPosition] = useState({
-  //   top: 0,
-  //   left: 0,
-  // });
-  // const [isSizeModalOpen, setIsSizeModalOpen] = useState(false);
-  // const [sizeModalPosition, setSizeModalPosition] = useState({
-  //   top: 0,
-  //   left: 0,
-  // });
-  // const [isWarehouseFormModalOpen, setIsWarehouseFormModalOpen] = useState(false);
-  // const dropdownRef = useRef(null);
   const buttonRef = useRef(null);
   const stateModalRef = useRef(null);
   // const navigate = useNavigate();
@@ -202,69 +83,11 @@ export default function Listing() {
   const handlePriceModal = (e) => openModal("price", e);
   const handleSizeModal = (e) => openModal("size", e);
   const handleWarehouseModal = () => openModal("warehouse");
-  // const handleDropdownToggle = () => {
-  //   if (buttonRef.current) {
-  //     const buttonRect = buttonRef.current.getBoundingClientRect();
-  //     setDropdownPosition({
-  //       top: buttonRect.bottom + window.scrollY,
-  //       left: buttonRect.left + window.scrollX,
-  //     });
-  //   }
-  //   setIsDropdownOpen((prev) => !prev);
-  // };
-
-  // useEffect(() => {
-  //   const handleClickOutside = (event) => {
-  //     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-  //       setIsDropdownOpen(false);
-  //     }
-  //     if (stateModalRef.current && !stateModalRef.current.contains(event.target)) {
-  //       setIsStateModalOpen(false);
-  //     }
-  //   };
-
-  //   document.addEventListener("mousedown", handleClickOutside);
-  //   return () => {
-  //     document.removeEventListener("mousedown", handleClickOutside);
-  //   };
-  // }, []);
-
-  // const handleStateModalToggle = (event) => {
-  //   if (event.target) {
-  //     const buttonRect = event.target.getBoundingClientRect();
-  //     setStateModalPosition({
-  //       top: buttonRect.bottom + window.scrollY,
-  //       left: buttonRect.left + window.scrollX,
-  //     });
-  //   }
-  //   setIsStateModalOpen((prev) => !prev);
-  // };
-
-  // const handlePriceModalToggle = (event) => {
-  //   if (event.target) {
-  //     const buttonRect = event.target.getBoundingClientRect();
-  //     setPriceModalPosition({
-  //       top: buttonRect.bottom + window.scrollY,
-  //       left: buttonRect.left + window.scrollX,
-  //     });
-  //   }
-  //   setIsPriceModalOpen((prev) => !prev);
-  // };
-
-  // const handleSizeModalToggle = (event) => {
-  //   if (event.target) {
-  //     const buttonRect = event.target.getBoundingClientRect();
-  //     setSizeModalPosition({
-  //       top: buttonRect.bottom + window.scrollY,
-  //       left: buttonRect.left + window.scrollX,
-  //     });
-  //   }
-  //   setIsSizeModalOpen((prev) => !prev);
-  // };
-
-  // const handleWarehouseFormModalToggle = () => {
-  //   setIsWarehouseFormModalOpen((prev) => !prev);
-  // };
+ 
+  const isDev = import.meta.env.DEV; // true in dev, false in production
+  function getImageUrl(path) {
+    return isDev ? path : `${IMAGE_URL}${path}`;
+  }
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -453,7 +276,7 @@ export default function Listing() {
                       >
                         <div className="relative">
                           <img
-                            src={`${item.propertyImage[0]}`}
+                            src={`${getImageUrl(item.propertyImage[0])}`}
                             alt={`Property ${index + 1}`}
                             className="w-full h-40 object-cover"
                           />
