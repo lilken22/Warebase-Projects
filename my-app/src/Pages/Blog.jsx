@@ -51,11 +51,13 @@ export default function Blog() {
           <div className="grid grid-cols-1 lg:grid-cols-2 mb-12">
             {/* Image Section */}
             <div className="flex-1">
-              <img
-                src={featuredPost?.imageUrl[0]}
-                alt="Warehouse Guide"
-                className="w-full h-[330px] object-cover rounded-l-md"
-              />
+              {featuredPost?.imageUrl?.[0] && (
+                <img
+                  src={featuredPost?.imageUrl[0]}
+                  alt="Warehouse Guide"
+                  className="w-full h-[330px] object-cover rounded-l-md"
+                />
+              )}
             </div>
 
             {/* Content Section (Joined with Image) */}
