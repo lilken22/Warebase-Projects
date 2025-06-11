@@ -84,10 +84,10 @@ export default function Listing() {
   const handleSizeModal = (e) => openModal("size", e);
   const handleWarehouseModal = () => openModal("warehouse");
  
-  const isDev = import.meta.env.DEV; // true in dev, false in production
-  function getImageUrl(path) {
-    return isDev ? path : `${IMAGE_URL}${path}`;
-  }
+  // const isDev = import.meta.env.DEV; // true in dev, false in production
+  // function getImageUrl(path) {
+  //   return isDev ? path : `${IMAGE_URL}${path}`;
+  // }
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -276,7 +276,7 @@ export default function Listing() {
                       >
                         <div className="relative">
                           <img
-                            src={`${getImageUrl(item.propertyImage[0])}`}
+                            src={`${item.propertyImage[0]}`}
                             alt={`Property ${index + 1}`}
                             className="w-full h-40 object-cover"
                           />

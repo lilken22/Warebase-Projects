@@ -15,10 +15,10 @@ export default function Blog() {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1); // State to track the current page
 
-   const isDev = import.meta.env.DEV; // true in dev, false in production
-   function getImageUrl(path) {
-     return isDev ? path : `${IMAGE_URL}${path}`;
-  }
+  //  const isDev = import.meta.env.DEV; // true in dev, false in production
+  //  function getImageUrl(path) {
+  //    return isDev ? path : `${IMAGE_URL}${path}`;
+  // }
   
   const handleReadMoreClick = () => {
     navigate("/blogdetails");
