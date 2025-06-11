@@ -88,22 +88,22 @@ jobs:
     needs: [Build, Deploy]
     runs-on: ubuntu-latest
     steps:
-    - name: Success Notification
-      if: ${{ success() }}
+    - name: Notify Success
+      if: ${{ needs.Build.result == 'success' && needs.Deploy.result == 'success' }}
       uses: mikesprague/teams-incoming-webhook-action@v1
       with:
         github-token: ${{ github.token }}
         webhook-url: ${{ secrets.MS_TEAMS_WEBHOOK_URL }}
         deploy-card: true
-        title: 'Deployment to Frontend(Dev) was Successful🥳🎉'
+        title: '✅ Deployment to Frontend(Dev) was Successful 🥳🎉'
         color: 'success'
 
-    - name: Failure Notification
-      if: ${{ failure() }}
+    - name: Notify Failure
+      if: ${{ needs.Build.result != 'success' || needs.Deploy.result != 'success' }}
       uses: mikesprague/teams-incoming-webhook-action@v1
       with:
         github-token: ${{ github.token }}
         webhook-url: ${{ secrets.MS_TEAMS_WEBHOOK_URL }}
         deploy-card: true
-        title: 'Deployment to Frontend(Dev) Failed ☹️💔'
+        title: '❌ Deployment to Frontend(Dev) Failed ☹️💔'
         color: 'failure'
