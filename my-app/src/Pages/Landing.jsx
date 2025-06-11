@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 
 const LandingPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null); // State to track selected radio button
   const navigate = useNavigate();
   const servicesRef = useRef(null);
@@ -44,12 +45,12 @@ const LandingPage = () => {
     if (!subscribeForm)
       return toast.error("Please enter your email to subscribe");
     try {
-      const response = await dispatch(
+      setIsLoading(true)
+      await dispatch(
         subscribeNewsletter({ email: subscribeForm })
       );
-      if (response === 200) {
-        setSubscribeForm("");
-      }
+      setSubscribeForm("");
+      setIsLoading(false)
     } catch (error) {
       console.error(error);
     }
@@ -804,6 +805,7 @@ const LandingPage = () => {
               {/* Subscribe Button Inside Input */}
               <button
                 onClick={handleSubscribeNewsletter}
+                disabled={isLoading}
                 className="absolute top-1/2 right-0 transform -translate-y-1/2 px-4 py-2 bg-black text-white rounded-xl hover:bg-gray-800 transition w-[90px] md:w-[190px] text-sm md:text-lg  h-10 md:h-16" /* Adjusted button size and font for mobile */
               >
                 Subscribe

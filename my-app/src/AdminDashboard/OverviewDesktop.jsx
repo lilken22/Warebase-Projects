@@ -198,7 +198,7 @@ const OverviewDesktop = () => {
                     {/* Image Section */}
                     <div className="relative rounded-xl overflow-hidden">
                       <img
-                        src={property?.propertyImage}
+                        src={property?.propertyImage[0]}
                         alt={`Property ${index + 1}`}
                         className="w-full h-52 object-cover rounded-2xl"
                       />

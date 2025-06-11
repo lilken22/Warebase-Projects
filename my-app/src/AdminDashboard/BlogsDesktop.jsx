@@ -13,10 +13,13 @@ import {
 } from "react-icons/fa";
 import { IoIosArrowRoundForward } from "react-icons/io";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchBlogs } from "../redux/slices/blog.slice";
+import { fetchBlogs, makeFeaturedBlog} from "../redux/slices/blog.slice";
 import { selectBlogSlice } from "../redux/selectors/blog.selector";
+import { toast } from "react-toastify";
+import { getItemFromLocalStorage } from "../utitlity/storage";
 
 export default function BlogsDesktop() {
+  const token = getItemFromLocalStorage("wb_token");
   const { blogs } = useSelector(selectBlogSlice);
   const dispatch = useDispatch();
   const [isSortOpen, setIsSortOpen] = useState(false);
@@ -61,8 +64,13 @@ export default function BlogsDesktop() {
   };
 }, [isSortOpen]);
 
-  const handleToggleFeatured = () =>{
-    
+  const handleToggleFeatured = async(id) =>{
+    try {
+      await dispatch(makeFeaturedBlog({ token, id })).unwrap()
+      await dispatch(fetchBlogs(sortOrderValue)).unwrap();
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   const filteredBlogs = () => {
@@ -162,7 +170,7 @@ export default function BlogsDesktop() {
                     >
                       {/* Image */}
                       <img
-                        src="/max.jpeg"
+                        src={item.imageUrl[0]}
                         alt="Maximizing Warehouse Efficiency"
                         className="w-[170px] md:w-full h-[85px] md:h-[200px] object-cover"
                       />
@@ -194,12 +202,14 @@ export default function BlogsDesktop() {
                             <button
                               onClick={() => handleToggleFeatured(item._id)}
                               className={`w-10 h-5 flex items-center rounded-full p-1 duration-300 ease-in-out ${
-                                item.featured ? "bg-green-500" : "bg-gray-300"
+                                item.isFeatured
+                                  ? "bg-green-500"
+                                  : "bg-gray-300"
                               }`}
                             >
                               <div
                                 className={`bg-white w-4 h-4 rounded-full shadow-md transform duration-300 ease-in-out ${
-                                  item.featured ? "translate-x-5" : ""
+                                  item.isFeatured ? "translate-x-5" : ""
                                 }`}
                               ></div>
                             </button>

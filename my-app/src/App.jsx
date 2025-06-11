@@ -93,13 +93,13 @@ const App = () => {
             }
           />
           {/* <Route index element={<Overview />} /> */}
-          {/* <Route path="/overview" element={<ProtectedRoute><Overview/></ProtectedRoute>} /> */}
-          {/* <Route path="/portfolio" element={<ProtectedRoute><Portfolio/></ProtectedRoute>} /> */}
-          {/* <Route path="/add-property" element={<ProtectedRoute><AddProperty/></ProtectedRoute>} /> */}
+          <Route path="/overview" element={<ProtectedRoute><Overview/></ProtectedRoute>} />
+          <Route path="/portfolio" element={<ProtectedRoute><Portfolio/></ProtectedRoute>} />
+          <Route path="/add-property" element={<ProtectedRoute><AddProperty/></ProtectedRoute>} />
 
-          <Route path="/overview" element={<Overview />} />
+          {/* <Route path="/overview" element={<Overview />} />
           <Route path="/portfolio" element={<Portfolio />} />
-          <Route path="/add-property" element={<AddProperty />} />
+          <Route path="/add-property" element={<AddProperty />} /> */}
           
           <Route
             path="/desciption-property/:id"

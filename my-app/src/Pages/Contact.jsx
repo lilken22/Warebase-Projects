@@ -30,21 +30,18 @@ const Contact = () => {
   const handleSubmit = async(e) => {
     if(!formData) return toast.error('Please fill the required form details')
     e.preventDefault();
-    console.log(formData)
     try {
-      const response = await dispatch(sendContactMessage(formData));
-      if(response === 200){
-        setFormData({
-          fullName: "",
-          email: "",
-          phone: "",
-          companyName: "",
-          warehouseLocation: "",
-          warehouseSize: "",
-          price: "",
-          intendedUsage: "",
-        })
-      }
+      await dispatch(sendContactMessage(formData));
+       setFormData({
+         fullName: "",
+         email: "",
+         phone: "",
+         companyName: "",
+         warehouseLocation: "",
+         warehouseSize: "",
+         price: "",
+         intendedUsage: "",
+       });
     } catch (error) {
       console.error(error)
     }

@@ -119,7 +119,6 @@ const blog_slice = createSlice({
         state.isLoading = false;
         state.error = false;
         state.blogs = action?.payload?.data || [];
-        state.mesaage = action?.payload?.message;
         // i removed the index cause it's bringing an error of being defined but not used in github (index)
         state.featuredPost = action?.payload?.data?.find((item) => {
           return item.isFeatured === true;

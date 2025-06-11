@@ -434,15 +434,15 @@ const PropertyCard = ({
 }) => (
   <div className="bg-[#F9F9F9] p-4 rounded-lg shadow-md">
     <div className="relative rounded-xl overflow-hidden bg-gray-100 h-52">
-      {/* <img
-        src={image}
+      <img
+        src={image[0]}
         alt={name}
         className="w-full h-full object-cover rounded-2xl"
         onError={(e) => {
           e.target.onerror = null;
           e.target.src = "https://via.placeholder.com/400x300";
         }}
-      /> */}
+      />
       <span className="absolute top-0 left-0 bg-[#F11414] text-white text-xs px-2 py-1 rounded">
         {type}
       </span>
