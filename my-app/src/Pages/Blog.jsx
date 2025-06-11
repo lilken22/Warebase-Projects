@@ -20,8 +20,8 @@ export default function Blog() {
   //    return isDev ? path : `${IMAGE_URL}${path}`;
   // }
   
-  const handleReadMoreClick = () => {
-    navigate("/blogdetails");
+  const handleReadMoreClick = (id) => {
+    navigate(`/blogdetails/${id}`);
   };
 
   // Function to handle page change
@@ -83,7 +83,7 @@ export default function Blog() {
                 {/* Read More Button */}
                 <button
                   className="px-10 py-4 bg-[#1C1C1C] text-white rounded-full text-sm font-semibold hover:bg-[#1D3F3F75] transition"
-                  onClick={handleReadMoreClick}
+                  onClick={() => handleReadMoreClick(featuredPost._id)}
                 >
                   Read More
                 </button>
