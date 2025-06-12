@@ -104,7 +104,8 @@ const property_slice = createSlice({
       .addCase(deleteOrUnlistSingleProperty.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(deleteOrUnlistSingleProperty.fulfilled, (state, action) => {
+      // the action was removed cause its causing an issue in PR
+      .addCase(deleteOrUnlistSingleProperty.fulfilled, (state) => {
         state.isLoading = false;
         state.error = false;
       })

@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { sendExploreMessage } from "../redux/slices/message.slice";
+import { useSelector } from "react-redux";
+// import { useDispatch } from "react-redux";
+// import { sendExploreMessage } from "../redux/slices/message.slice";
 import { selectMessageSlice } from "../redux/selectors/message.selector";
 import { toast } from "react-toastify";
 import ReactQuill from "react-quill";
@@ -41,7 +42,7 @@ const WarehouseFormModal = ({ isOpen, onClose }) => {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const navigate = useNavigate();
   const modalRef = useRef();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   // i removed the text error
   const { isLoading } = useSelector(selectMessageSlice);
   const [formData, setFormData] = useState({
