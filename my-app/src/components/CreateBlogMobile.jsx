@@ -3,12 +3,27 @@ import { Menu } from "lucide-react";
 import { IoMdArrowDropleft } from "react-icons/io";
 import { FaCloudUploadAlt, FaTimes } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import { useDispatch } from "react-redux";
+import { createBlog } from "../redux/slices/blog.slice";
+import { toast } from "react-toastify";
+import { getItemFromLocalStorage } from "../utitlity/storage";
 
 export default function CreateBlogMobile() {
   const [previewImages, setPreviewImages] = useState([]);
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const token = getItemFromLocalStorage("wb_token");
+  const [selectedFiles, setSelectedFiles] = useState([]);
+
+  const [formData, setFormData] = useState({
+    title: "",
+    article: "",
+    image: "",
+  });
 
   const handleImageUpload = (files) => {
     const validFiles = Array.from(files).filter(
@@ -24,7 +39,9 @@ export default function CreateBlogMobile() {
 
   const handleFileInputChange = (e) => {
     if (e.target.files.length) {
-      handleImageUpload(e.target.files);
+      const newFiles = Array.from(e.target.files);
+      setSelectedFiles((prevFiles) => [...prevFiles, ...newFiles]);
+      handleImageUpload(newFiles);
     }
   };
 
@@ -37,6 +54,38 @@ export default function CreateBlogMobile() {
     URL.revokeObjectURL(updatedImages[index]);
     updatedImages.splice(index, 1);
     setPreviewImages(updatedImages);
+  };
+
+  const createNewBlog = async () => {
+    const formDataToSend = new FormData();
+    formDataToSend.append("title", formData.title);
+    formDataToSend.append("article", formData.article);
+    selectedFiles.forEach((file) => {
+      formDataToSend.append("images", file);
+    });
+
+    try {
+      await dispatch(createBlog({ token, body: formDataToSend })).unwrap();
+      setFormData({
+        title: "",
+        article: "",
+        image: "",
+      });
+      setPreviewImages([]);
+      setSelectedFiles([]);
+      toast.success("Blog created successfully");
+      navigate("/blog-mobile");
+    } catch (error) {
+      toast.error(error.message || "An error occurred while creating blog");
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const handleDragEnter = (e) => {
@@ -91,7 +140,10 @@ export default function CreateBlogMobile() {
             <h2 className="text-lg font-normal text-[#1D3F3F] font-aeonik">
               Share Your Story: Add Your Blog Content Below
             </h2>
-            <p className="text-[#627777] font-aeonik font-normal text-xs mt-4">Check the share box and type in the number of occupant if the warehouse space is a shared property</p>
+            <p className="text-[#627777] font-aeonik font-normal text-xs mt-4">
+              Check the share box and type in the number of occupant if the
+              warehouse space is a shared property
+            </p>
 
             {/* Image Upload Section */}
             <div className="mt-6">
@@ -169,6 +221,9 @@ export default function CreateBlogMobile() {
                   Title
                 </label>
                 <input
+                  onChange={(e) => handleInputChange(e)}
+                  value={formData.title}
+                  name="title"
                   type="text"
                   className="w-full p-3 border rounded-lg bg-[#F3F3F3] mt-1"
                   placeholder="Enter Blog Title"
@@ -178,24 +233,27 @@ export default function CreateBlogMobile() {
                 <label className="block text-[#1C1C1C] font-normal font-aeonik text-base mt-5">
                   Article
                 </label>
-                <textarea
-                  className="w-full p-3 border rounded-lg min-h-[120px] bg-[#F3F3F3]"
-                  placeholder="Enter your blog content here..."
+                <ReactQuill
+                  theme="snow"
+                  value={formData.article}
+                  onChange={(value) =>
+                    setFormData((prev) => ({ ...prev, article: value }))
+                  }
+                  className="bg-white mt-2 rounded-lg"
+                  placeholder="Write your blog content here..."
                 />
               </div>
 
               <div className="flex justify-center items-center space-x-4 mt-8">
                 <button
-                  onClick={() => {
-                    console.log("Publishing blog...");
-                  }}
+                  onClick={createNewBlog}
                   className="px-10 py-2 bg-black text-white rounded-3xl hover:bg-gray-800 transition-colors focus:outline-none focus:ring-black text-lg font-aeonik font-medium"
                 >
                   Publish
                 </button>
                 <button
                   onClick={() => {
-                    navigate("/blogs");
+                    navigate("/blog-mobile");
                   }}
                   className="px-10 py-2 bg-white text-gray-600 rounded-3xl border border-gray-100 hover:bg-gray-50 transition-colors focus:outline-none font-aeonik font-medium text-lg shadow-lg focus:ring-gray-300"
                 >

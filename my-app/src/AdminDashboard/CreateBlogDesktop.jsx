@@ -8,6 +8,8 @@ import { useDispatch } from "react-redux";
 import { createBlog } from "../redux/slices/blog.slice";
 import { toast } from "react-toastify";
 import { getItemFromLocalStorage } from "../utitlity/storage";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 const CreateBlogDesktop = () => {
   const [previewImages, setPreviewImages] = useState([]);
@@ -236,12 +238,13 @@ const CreateBlogDesktop = () => {
                   <label className="block text-[#1C1C1C] font-normal font-aeonik text-base mt-5">
                     Article
                   </label>
-                  <textarea
-                    onChange={(e) => handleInputChange(e)}
+                  <ReactQuill
+                    theme="snow"
                     value={formData.article}
-                    name="article"
-                    className="w-full p-3 border rounded-lg min-h-[120px] bg-[#F3F3F3]"
-                    placeholder="Enter your blog content here..."
+                    onChange={(value) =>
+                      setFormData((prev) => ({ ...prev, article: value }))
+                    }
+                    className="bg-white mt-2 rounded-lg"
                   />
                 </div>
 

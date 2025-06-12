@@ -3,12 +3,74 @@ import { Menu } from "lucide-react";
 import { IoMdArrowDropleft } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { FaTimes, FaCloudUploadAlt } from "react-icons/fa";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+// Add these imports at the top
+import { useDispatch } from "react-redux";
+import { createProperty } from "../redux/slices/property.slice";
+import { toast } from "react-toastify";
+import { getItemFromLocalStorage } from "../utitlity/storage";
 
 export default function AddPropertyMobile() {
   const navigate = useNavigate();
   const [previewImages, setPreviewImages] = useState([]);
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef(null);
+
+  const [isChecked, setIsChecked] = useState(false);
+  const [selectedFiles, setSelectedFiles] = useState([]);
+
+  // Inside component
+  const dispatch = useDispatch();
+  const token = getItemFromLocalStorage("wb_token");
+
+  const [formData, setFormData] = useState({
+    isShared: isChecked,
+    sharePropertyNumber: 0,
+    propertyName: "",
+    propertyId: "",
+    propertyPrice: 0,
+    description: "",
+    location: "",
+    propertySize: "",
+  });
+
+  const createNewProperty = async () => {
+    if (!formData.propertyName || !formData.propertyPrice) return;
+
+    const formDataToSend = new FormData();
+    formDataToSend.append("isShared", formData.isShared);
+    formDataToSend.append("sharePropertyNumber", formData.sharePropertyNumber);
+    formDataToSend.append("propertyName", formData.propertyName);
+    formDataToSend.append("propertySize", formData.propertySize);
+    formDataToSend.append("propertyPrice", formData.propertyPrice);
+    formDataToSend.append("description", formData.description);
+    formDataToSend.append("location", formData.location);
+
+    selectedFiles.forEach((file) => {
+      formDataToSend.append("images", file);
+    });
+
+    try {
+      await dispatch(createProperty({ token, body: formDataToSend })).unwrap();
+      // Reset form
+      setFormData({
+        isShared: false,
+        sharePropertyNumber: "",
+        propertyName: "",
+        propertyId: "",
+        propertyPrice: "",
+        description: "",
+        location: "",
+        propertySize: "",
+      });
+      setSelectedFiles([]);
+      setPreviewImages([]);
+      toast.success("Property created successfully!");
+    } catch (error) {
+      toast.error(error.message || "An error occurred while creating property");
+    }
+  };
 
   const handleImageUpload = (files) => {
     const validFiles = Array.from(files).filter(
@@ -19,16 +81,34 @@ export default function AddPropertyMobile() {
       alert("Some files were invalid. Only images under 5MB are allowed.");
     }
 
-    const imagePreviews = validFiles.map((file) =>
-      URL.createObjectURL(file)
-    );
-    setPreviewImages([...previewImages, ...imagePreviews]);
+    const imagePreviews = validFiles.map((file) => URL.createObjectURL(file));
+    setPreviewImages((prev) => [...prev, ...imagePreviews]);
+    setSelectedFiles((prev) => [...prev, ...validFiles]);
   };
 
   const handleFileInputChange = (e) => {
     if (e.target.files.length) {
-      handleImageUpload(e.target.files);
+      const newFiles = Array.from(e.target.files);
+      setSelectedFiles((prevFiles) => [...prevFiles, ...newFiles]);
+      handleImageUpload(newFiles);
     }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleCheckboxChange = () => {
+    const newChecked = !isChecked;
+    setIsChecked(newChecked);
+    setFormData({
+      ...formData,
+      isShared: newChecked,
+    });
   };
 
   const handleClickUpload = () => {
@@ -92,18 +172,41 @@ export default function AddPropertyMobile() {
         {/* Header Text */}
         <div className="mt-4 mb-4">
           <h1 className="text-base font-medium text-gray-800">
-            Fill in the form below to list your property and make it available to potential renters.
+            Fill in the form below to list your property and make it available
+            to potential renters.
           </h1>
           <p className="text-sm text-gray-500 mt-2">
-            Check the share box and type in the number of occupant if the warehouse space is a shared property.
+            Check the share box and type in the number of occupant if the
+            warehouse space is a shared property.
           </p>
         </div>
 
         {/* Share Row */}
         <div className="flex items-center justify-between border-b pb-2 mb-4">
           <div className="flex items-center space-x-2 bg-[#F3F3F3] px-3 py-2">
-            <input type="checkbox" id="share" className="w-4 h-4" />
-            <label htmlFor="share" className="text-sm text-[#1D3F3FDE] font-aeonik font-normal">Share</label>
+            <input
+              type="checkbox"
+              id="share"
+              checked={isChecked}
+              onChange={handleCheckboxChange}
+              className="w-4 h-4"
+            />
+            <label
+              htmlFor="share"
+              className="text-sm text-[#1D3F3FDE] font-aeonik font-normal"
+            >
+              Share
+            </label>
+            {isChecked && (
+              <input
+                onChange={handleInputChange}
+                name="sharePropertyNumber"
+                value={formData.sharePropertyNumber}
+                type="number"
+                placeholder="Enter digit"
+                className="ml-2 px-2 w-20 py-1 border border-gray-300 rounded-md"
+              />
+            )}
           </div>
           <div className="text-base font-bold text-[#1D3F3F]">WB01</div>
         </div>
@@ -112,12 +215,16 @@ export default function AddPropertyMobile() {
         <div className="mt-5 grid grid-cols-1 min-[360px]:grid-cols-2 gap-4">
           <div>
             <label className="text-[#627777] text-xs block mb-1 h-[16px]">
-            Property Name <span className="text-red-600">*</span>
+              Property Name <span className="text-red-600">*</span>
             </label>
+            {/* Example for one input - apply similar pattern to all */}
             <input
-              type="number"
+              type="text"
+              name="propertyName"
+              value={formData.propertyName}
+              onChange={handleInputChange}
               className="w-full p-3 border rounded-lg bg-[#F3F3F3]"
-              placeholder="#"
+              placeholder="Enter property name"
             />
           </div>
 
@@ -126,37 +233,48 @@ export default function AddPropertyMobile() {
               Warehouse Size 1000sqft <span className="text-red-600">*</span>
             </label>
             <div className="flex items-center border rounded-lg bg-[#F3F3F3] mt-1 overflow-hidden">
-            <input
-              type="text"
-              className="w-full p-3 border rounded-lg bg-[#F3F3F3]"
-              placeholder="Enter size"
-            />
-            <span className="px-3 text-[#627777]">sq.ft</span>
+              {/* Example for one input - apply similar pattern to all */}
+              <input
+                type="text"
+                name="propertyName"
+                value={formData.propertyName}
+                onChange={handleInputChange}
+                className="w-full p-3 border rounded-lg bg-[#F3F3F3]"
+                placeholder="Enter property name"
+              />
+              <span className="px-3 text-[#627777]">sq.ft</span>
             </div>
           </div>
-          
+
           <div className="">
             <label className="text-[#627777] text-xs block mb-1 h-[16px]">
               Warehouse Location <span className="text-red-600">*</span>
             </label>
+            {/* Example for one input - apply similar pattern to all */}
             <input
               type="text"
+              name="propertyName"
+              value={formData.propertyName}
+              onChange={handleInputChange}
               className="w-full p-3 border rounded-lg bg-[#F3F3F3]"
-              placeholder="Enter Location"
+              placeholder="Enter property name"
             />
           </div>
 
           <div>
             <label className="text-[#627777] text-xs block mb-1 h-[16px]">
-            Price <span className="text-red-600">*</span>
+              Price <span className="text-red-600">*</span>
             </label>
+            {/* Example for one input - apply similar pattern to all */}
             <input
-              type="number"
+              type="text"
+              name="propertyName"
+              value={formData.propertyName}
+              onChange={handleInputChange}
               className="w-full p-3 border rounded-lg bg-[#F3F3F3]"
-              placeholder="#"
+              placeholder="Enter property name"
             />
           </div>
-        
 
           <div className="col-span-2">
             <label className="text-[#627777] text-sm block mb-1">
@@ -172,9 +290,13 @@ export default function AddPropertyMobile() {
             <label className="text-[#627777] text-sm block mb-1">
               Property Type/Description <span className="text-red-600">*</span>
             </label>
-            <textarea
-              className="w-full p-3 border rounded-lg min-h-[100px] bg-[#F3F3F3]"
-              placeholder="Enter Description"
+            <ReactQuill
+              value={formData.description}
+              onChange={(value) =>
+                setFormData((prev) => ({ ...prev, description: value }))
+              }
+              theme="snow"
+              className="bg-white rounded-md"
             />
           </div>
         </div>
@@ -182,7 +304,8 @@ export default function AddPropertyMobile() {
         {/* Upload Section */}
         <div className="mt-6">
           <label className="text-sm text-[#627777] block mb-2">
-            Upload Image <span className="text-xs text-[#9FA0A0]">(max of 4 images)</span>{" "}
+            Upload Image{" "}
+            <span className="text-xs text-[#9FA0A0]">(max of 4 images)</span>{" "}
             <span className="text-red-600">*</span>
           </label>
           <div
@@ -196,7 +319,9 @@ export default function AddPropertyMobile() {
           >
             <div className="flex flex-col items-center justify-center cursor-pointer">
               <FaCloudUploadAlt
-                className={`text-3xl mb-1 ${isDragging ? "text-[#00E5FF]" : "text-gray-400"}`}
+                className={`text-3xl mb-1 ${
+                  isDragging ? "text-[#00E5FF]" : "text-gray-400"
+                }`}
               />
               <p className="text-xs text-gray-500">
                 <span
@@ -257,7 +382,10 @@ export default function AddPropertyMobile() {
 
         {/* Buttons */}
         <div className="flex flex-col sm:flex-row justify-center gap-3 mt-6">
-          <button className="w-full sm:w-auto px-12 py-2 bg-black text-white rounded-3xl text-sm font-medium">
+          <button
+            onClick={createNewProperty}
+            className="w-full sm:w-auto px-12 py-2 bg-black text-white rounded-3xl text-sm font-medium"
+          >
             Submit
           </button>
           <button className="w-full sm:w-auto px-12 py-2 bg-white text-gray-600 rounded-3xl border shadow text-sm font-medium">

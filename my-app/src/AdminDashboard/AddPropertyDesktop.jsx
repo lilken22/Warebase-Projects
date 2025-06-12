@@ -5,10 +5,12 @@ import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 import { FaTimes, FaCloudUploadAlt } from "react-icons/fa";
 // note that i removes useSelctor cause it causing an error on git hub
-import { useDispatch  } from "react-redux";
+import { useDispatch } from "react-redux";
 import { createProperty } from "../redux/slices/property.slice";
 import { toast } from "react-toastify";
 import { getItemFromLocalStorage } from "../utitlity/storage";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 const AddPropertyDesktop = () => {
   const dispatch = useDispatch();
@@ -32,16 +34,15 @@ const AddPropertyDesktop = () => {
     propertySize: "",
   });
 
-  
   const handleImageUpload = (files) => {
     const validFiles = Array.from(files).filter(
       (file) => file.type.startsWith("image/") && file.size <= 5 * 1024 * 1024 // 5MB
     );
-  
+
     if (validFiles.length !== files.length) {
       alert("Some files were invalid. Only images under 5MB are allowed.");
     }
-  
+
     const imagePreviews = validFiles.map((file) => URL.createObjectURL(file));
     setPreviewImages((prev) => [...prev, ...imagePreviews]);
     setSelectedFiles((prev) => [...prev, ...validFiles]);
@@ -84,7 +85,6 @@ const AddPropertyDesktop = () => {
     setIsDragging(false);
   };
 
-
   const handleBackClick = () => {
     navigate("/portfolio");
   };
@@ -101,8 +101,6 @@ const AddPropertyDesktop = () => {
     setIsDragging(true);
   };
 
-
-
   const handleDragOver = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -118,7 +116,6 @@ const AddPropertyDesktop = () => {
     }
   };
 
-
   const createNewProperty = async () => {
     if (!formData.propertyName || !formData.propertyPrice) return;
 
@@ -130,11 +127,10 @@ const AddPropertyDesktop = () => {
     formDataToSend.append("propertyPrice", formData.propertyPrice);
     formDataToSend.append("description", formData.description);
     formDataToSend.append("location", formData.location);
-    // please i removed the text: index since it is not being used for now so it can not cause error that is preventing me creating a PR 
+    // please i removed the text: index since it is not being used for now so it can not cause error that is preventing me creating a PR
     selectedFiles?.forEach((file) => {
       formDataToSend.append("images", file);
     });
-
 
     try {
       await dispatch(createProperty({ token, body: formDataToSend })).unwrap();
@@ -148,8 +144,8 @@ const AddPropertyDesktop = () => {
         location: "",
         propertySize: "",
       });
-    setSelectedFiles([]);
-    setPreviewImages([]);
+      setSelectedFiles([]);
+      setPreviewImages([]);
     } catch (error) {
       console.error(error);
       toast.error(error.message || "An error occured while creating property");
@@ -304,19 +300,20 @@ const AddPropertyDesktop = () => {
                   </div>
 
                   {/* intended usage */}
-                  <div>
-                    <label className="block text-[#627777] font-normal font-aeonik text-base mt-5">
+                  <div className="mt-5">
+                    <label className="block text-[#627777] font-normal font-aeonik text-base mb-1">
                       Property Type/Description{" "}
-                      <span className=" font-aeonik font-normal text-red-600 text-lg text-center">
+                      <span className="font-aeonik font-normal text-red-600 text-lg">
                         *
                       </span>
                     </label>
-                    <textarea
-                      onChange={(e) => handleInputChange(e)}
-                      name="description"
+                    <ReactQuill
                       value={formData.description}
-                      className="w-full p-3 border rounded-lg min-h-[120px] bg-[#F3F3F3]"
-                      placeholder="Enter your description details"
+                      onChange={(value) =>
+                        setFormData((prev) => ({ ...prev, description: value }))
+                      }
+                      theme="snow"
+                      className="bg-white rounded-md"
                     />
                   </div>
                 </div>

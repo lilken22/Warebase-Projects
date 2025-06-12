@@ -482,3 +482,34 @@ const OrderModal = React.forwardRef(({
 });
 
 export default OrderModal;
+
+
+
+
+
+
+
+
+
+this is from the createblog
+  <textarea
+                    onChange={(e) => handleInputChange(e)}
+                    value={formData.article}
+                    name="article"
+                    className="w-full p-3 border rounded-lg min-h-[120px] bg-[#F3F3F3]"
+                    placeholder="Enter your blog content here..."
+                  />
+
+
+
+
+                  this is for the mobile of createblog
+                  <div>
+  <label className="block text-[#1C1C1C] font-normal font-aeonik text-base mt-5">
+    Article
+  </label>
+  <textarea
+    className="w-full p-3 border rounded-lg min-h-[120px] bg-[#F3F3F3]"
+    placeholder="Enter your blog content here..."
+  />
+</div>
