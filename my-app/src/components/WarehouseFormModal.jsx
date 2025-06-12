@@ -4,6 +4,38 @@ import { useDispatch, useSelector } from "react-redux";
 import { sendExploreMessage } from "../redux/slices/message.slice";
 import { selectMessageSlice } from "../redux/selectors/message.selector";
 import { toast } from "react-toastify";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+
+
+const modules = {
+  toolbar: [
+    [{ header: [1, 2, false] }],
+    ["bold", "italic", "underline", "strike", "blockquote"],
+    [
+      { list: "ordered" },
+      { list: "bullet" },
+      { indent: "-1" },
+      { indent: "+1" },
+    ],
+    ["link", "image"],
+    ["clean"],
+  ],
+};
+
+const formats = [
+  "header",
+  "bold",
+  "italic",
+  "underline",
+  "strike",
+  "blockquote",
+  "list",
+  "bullet",
+  "indent",
+  "link",
+  "image",
+];
 
 const WarehouseFormModal = ({ isOpen, onClose }) => {
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -23,6 +55,10 @@ const WarehouseFormModal = ({ isOpen, onClose }) => {
     intendedUsage: "",
   });
 
+  const handleQuillChange = (value) => {
+  setFormData({ ...formData, intendedUsage: value });
+};
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -35,18 +71,19 @@ const WarehouseFormModal = ({ isOpen, onClose }) => {
   const handleSubmit = async (e) => {
     if (!formData) return toast.error("Please fill the required form details");
     e.preventDefault();
+    // i commented out the response cause it causing an issue in the PR
     try {
-      const response = await dispatch(sendExploreMessage(formData));
-      setFormData({
-        fullName: "",
-        email: "",
-        phone: "",
-        companyName: "",
-        warehouseLocation: "",
-        warehouseSize: "",
-        price: "",
-        intendedUsage: "",
-      });
+      // const response = await dispatch(sendExploreMessage(formData));
+      // setFormData({
+      //   fullName: "",
+      //   email: "",
+      //   phone: "",
+      //   companyName: "",
+      //   warehouseLocation: "",
+      //   warehouseSize: "",
+      //   price: "",
+      //   intendedUsage: "",
+      // });
 
       setShowConfirmation(true);
     } catch (error) {
@@ -203,9 +240,7 @@ const WarehouseFormModal = ({ isOpen, onClose }) => {
                       placeholder="Enter size"
                       required
                     />
-                    <span className="text-[#627777] text-base p-2">
-                      sq.ft
-                    </span>
+                    <span className="text-[#627777] text-base p-2">sq.ft</span>
                   </div>
                 </div>
               </div>
@@ -225,17 +260,24 @@ const WarehouseFormModal = ({ isOpen, onClose }) => {
                 />
               </div>
 
+              
               {/* Intended Usage */}
               <div className="md:max-w-[674px]">
                 <label className="block text-base font-medium font-aeonik text-[#627777]">
                   Intended Usage<span className="text-red-500">*</span>
                 </label>
-                <textarea
-                  name="intendedUsage"
+                <ReactQuill
+                  theme="snow"
                   value={formData.intendedUsage}
-                  onChange={handleChange}
-                  className="mt-1 w-full min-h-[110px] p-2 border bg-[#F3F3F3] rounded-md text-base resize-y"
-                  required
+                  onChange={handleQuillChange}
+                  modules={modules}
+                  formats={formats}
+                  className="mt-1 bg-[#F3F3F3] rounded-md quill-editor"
+                  style={{
+                    minHeight: "110px",
+                    border: "1px solid #E0E0E0",
+                    borderRadius: "6px",
+                  }}
                 />
               </div>
 

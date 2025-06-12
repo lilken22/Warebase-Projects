@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { FaLongArrowAltLeft } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { selectBlogSlice } from "../redux/selectors/blog.selector";
@@ -14,11 +14,11 @@ export default function BlogDetails() {
   const { id } = useParams();
   const dispatch = useDispatch();
   const { blog, latest } = useSelector(selectBlogSlice);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  const handleReadMoreClick = () => {
-    navigate("/blogdetails");
-  };
+  // const handleReadMoreClick = () => {
+  //   navigate("/blogdetails");
+  // };
 
   useEffect(() => {
     if (id) {

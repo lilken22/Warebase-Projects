@@ -3,10 +3,11 @@ import { IoMdCreate } from "react-icons/io";
 import { RiDeleteBack2Fill } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import UnlistModal from "../components/UnlistModal";
-import { useSelector, useDispatch } from "react-redux";
-import { selectPropertiesSlice } from "../redux/selectors/property.selector";
+import { useDispatch } from "react-redux";
+// import { useSelector } from "react-redux";
+// import { selectPropertiesSlice } from "../redux/selectors/property.selector";
 import { fetchProperties, deleteOrUnlistSingleProperty } from "../redux/slices/property.slice";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 import { getItemFromLocalStorage } from "../utitlity/storage";
 
 const ListModal = forwardRef(({ isOpen, onClose, position, propertyId }, ref) => {

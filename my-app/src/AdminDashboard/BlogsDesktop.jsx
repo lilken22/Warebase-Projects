@@ -15,7 +15,7 @@ import { IoIosArrowRoundForward } from "react-icons/io";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchBlogs, makeFeaturedBlog} from "../redux/slices/blog.slice";
 import { selectBlogSlice } from "../redux/selectors/blog.selector";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 import { getItemFromLocalStorage } from "../utitlity/storage";
 
 export default function BlogsDesktop() {

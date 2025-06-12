@@ -57,5 +57,25 @@
   overflow: hidden;
 }
 
+
+/* Customize Quill editor to match your design */
+.ql-container {
+  min-height: 110px;
+  border: none !important;
+  background-color: #F3F3F3 !important;
+}
+
+.ql-toolbar {
+  background-color: #F3F3F3 !important;
+  border: none !important;
+  border-bottom: 1px solid #E0E0E0 !important;
+}
+
+.ql-editor {
+  min-height: 110px;
+  font-size: 16px;
+  color: #333;
+}
+
   
 

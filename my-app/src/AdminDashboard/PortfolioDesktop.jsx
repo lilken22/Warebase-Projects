@@ -31,7 +31,8 @@ export default function PortfolioDesktop() {
   // const [isOrderOpen, setIsOrderOpen] = useState(false);
   // const [orderPosition, setOrderPosition] = useState({ top: 0, left: 0 });
   const [sortOrderValue, setSortOrderValue] = useState("DESC");
-  const [sortFieldValue, setSortFieldValue] = useState("date");
+  // the setsortfieldvalue was removed by me when i try created a PR but it causing an issue cause it not being used
+  const [sortFieldValue] = useState("date");
   const [sortTenureValue, setSortTenureValue] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResult, setSearchResult] = useState([]);
@@ -339,7 +340,8 @@ export default function PortfolioDesktop() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-10">
               {searchResult?.length > 0 &&
-                searchResult?.map((property, index) => (
+              // i removed the index for now cause it causing an issue in PR cause it not defined
+                searchResult?.map((property) => (
                   <PropertyCard
                     key={property._id}
                     id={property._id}

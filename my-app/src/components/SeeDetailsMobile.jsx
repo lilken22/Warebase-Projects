@@ -2,8 +2,9 @@ import React, {useEffect} from 'react'
 import BottomNav from "./BottomNav";
 import { useNavigate } from "react-router-dom";
 import { IoMdArrowDropleft } from "react-icons/io";
-import { useDispatch, useSelector } from "react-redux";
-import { selectBlogSlice } from "../redux/selectors/blog.selector";
+import { useDispatch } from "react-redux";
+// import { useSelector } from "react-redux";
+// import { selectBlogSlice } from "../redux/selectors/blog.selector";
 import { getBlog, fetchLatestBlogs } from "../redux/slices/blog.slice";
 // import { toast } from "react-toastify";
 // import { getItemFromLocalStorage } from "../utitlity/storage";
