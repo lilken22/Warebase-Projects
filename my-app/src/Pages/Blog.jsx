@@ -7,16 +7,21 @@ import { FaArrowRight } from "react-icons/fa6"; // Icons for previous and next
 import { useSelector, useDispatch } from "react-redux";
 import { fetchBlogs } from "../redux/slices/blog.slice";
 import { selectBlogSlice } from "../redux/selectors/blog.selector";
+import { IMAGE_URL } from "../redux/actionTypes";
 
 export default function Blog() {
-  const { blogs } = useSelector(selectBlogSlice);
-  console.log(blogs);
+  const { blogs, featuredPost } = useSelector(selectBlogSlice);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1); // State to track the current page
 
-  const handleReadMoreClick = () => {
-    navigate("/blogdetails");
+  //  const isDev = import.meta.env.DEV; // true in dev, false in production
+  //  function getImageUrl(path) {
+  //    return isDev ? path : `${IMAGE_URL}${path}`;
+  // }
+  
+  const handleReadMoreClick = (id) => {
+    navigate(`/blogdetails/${id}`);
   };
 
   // Function to handle page change
@@ -42,50 +47,50 @@ export default function Blog() {
         </p>
 
         {/* Featured Blog Post */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 mb-12">
-          {/* Image Section */}
-          <div className="flex-1">
-            <img
-              src="/Bookshelf.jpeg"
-              alt="Warehouse Guide"
-              className="w-full h-[330px] object-cover rounded-l-md"
-            />
-          </div>
+        {featuredPost && (
+          <div className="grid grid-cols-1 lg:grid-cols-2 mb-12">
+            {/* Image Section */}
+            <div className="flex-1">
+              {featuredPost?.imageUrl?.[0] && (
+                <img
+                  src={featuredPost?.imageUrl[0]}
+                  alt="Warehouse Guide"
+                  className="w-full h-[330px] object-cover rounded-l-md"
+                />
+              )}
+            </div>
 
-          {/* Content Section (Joined with Image) */}
-          <div className="flex-1 flex flex-col bg-[#FFFFFF] shadow-md rounded-r-md w-full h-[330px] flex-shrink-0 justify-between p-6 sm:p-8">
-            {/* Title */}
-            <h3 className="text-xl md:text-3xl font-medium font-yeseva text-[#1D3F3F]">
-              The Ultimate Guide to Renting a
-              <br className="hidden sm:inline" /> Warehouse Space
-            </h3>
+            {/* Content Section (Joined with Image) */}
+            <div className="flex-1 flex flex-col bg-[#FFFFFF] shadow-md rounded-r-md w-full h-[330px] flex-shrink-0 justify-between p-6 sm:p-8">
+              {/* Title */}
+              <h3 className="text-xl md:text-3xl font-medium font-yeseva text-[#1D3F3F]">
+                {featuredPost?.title}
+                <br className="hidden sm:inline" /> Warehouse Space
+              </h3>
 
-            {/* Description */}
-            <p className="text-[#627777] text-sm md:text-base font-normal font-aeonik leading-relaxed">
-              Finding the right warehouse can be overwhelming.
-              <br className="hidden sm:inline" />
-              This guide walks you through key factors like location, size,
-              <br className="hidden sm:inline" />
-              and costs to help you make the best decision.
-            </p>
+              {/* Description */}
+              <p className="text-[#627777] text-sm md:text-base font-normal font-aeonik leading-relaxed">
+                {featuredPost?.content}
+              </p>
 
-            {/* Date */}
-            <p className="text-sm text-[#1D3F3F75] md:text-base font-normal font-aeonik">
-              January 15, 2025
-            </p>
+              {/* Date */}
+              <p className="text-sm text-[#1D3F3F75] md:text-base font-normal font-aeonik">
+                {new Date(featuredPost?.date).toLocaleDateString()}
+              </p>
 
-            {/* Buttons */}
-            <div className="flex flex-wrap items-center justify-between gap-4 sm:gap-6">
-              {/* Read More Button */}
-              <button
-                className="px-10 py-4 bg-[#1C1C1C] text-white rounded-full text-sm font-semibold hover:bg-[#1D3F3F75] transition"
-                onClick={handleReadMoreClick}
-              >
-                Read More
-              </button>
+              {/* Buttons */}
+              <div className="flex flex-wrap items-center justify-between gap-4 sm:gap-6">
+                {/* Read More Button */}
+                <button
+                  className="px-10 py-4 bg-[#1C1C1C] text-white rounded-full text-sm font-semibold hover:bg-[#1D3F3F75] transition"
+                  onClick={() => handleReadMoreClick(featuredPost._id)}
+                >
+                  Read More
+                </button>
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
         {/* "Our Stories" Heading */}
         <div className="mb-6">
@@ -100,10 +105,13 @@ export default function Blog() {
           {blogs?.length > 0 &&
             blogs?.map((item, index) => {
               return (
-                <div key={index} className="flex flex-col shadow-lg rounded-lg overflow-hidden h-full w-full">
+                <div
+                  key={index}
+                  className="flex flex-col shadow-lg rounded-lg overflow-hidden h-full w-full"
+                >
                   {/* Image Section */}
                   <img
-                    src="/max.jpeg"
+                    src={item.imageUrl[0]}
                     alt="Maximizing Warehouse Efficiency"
                     className="w-[170px] md:w-full h-[85px] md:h-[200px] object-cover"
                   />
@@ -117,7 +125,8 @@ export default function Blog() {
 
                     {/* Title */}
                     <p className="font-medium font-yeseva text-[8px] md:text-base text-[#1D3F3FDE] mt-1">
-                      {item.title || 'Maximizing Warehouse Efficiency: Tips for Businesses'}
+                      {item.title ||
+                        "Maximizing Warehouse Efficiency: Tips for Businesses"}
                     </p>
 
                     {/* Read More Link */}

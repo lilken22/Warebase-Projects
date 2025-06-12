@@ -24,7 +24,6 @@ const AddPropertyDesktop = () => {
   const fileInputRef = useRef(null);
 
   const [formData, setFormData] = useState({
-    isShared: isChecked,
     sharePropertyNumber: 0,
     propertyName: "",
     propertyId: "",
@@ -120,7 +119,7 @@ const AddPropertyDesktop = () => {
     if (!formData.propertyName || !formData.propertyPrice) return;
 
     const formDataToSend = new FormData();
-    formDataToSend.append("isShared", formData.isShared);
+    formDataToSend.append("isShared", isChecked ? "true" : "false");
     formDataToSend.append("sharePropertyNumber", formData.sharePropertyNumber);
     formDataToSend.append("propertyName", formData.propertyName);
     formDataToSend.append("propertySize", formData.propertySize);
@@ -135,7 +134,6 @@ const AddPropertyDesktop = () => {
     try {
       await dispatch(createProperty({ token, body: formDataToSend })).unwrap();
       setFormData({
-        isShared: false,
         sharePropertyNumber: "",
         propertyName: "",
         propertyId: "",
@@ -144,6 +142,10 @@ const AddPropertyDesktop = () => {
         location: "",
         propertySize: "",
       });
+
+
+
+      setIsChecked(false)
       setSelectedFiles([]);
       setPreviewImages([]);
     } catch (error) {

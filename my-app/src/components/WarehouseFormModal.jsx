@@ -37,21 +37,18 @@ const WarehouseFormModal = ({ isOpen, onClose }) => {
     e.preventDefault();
     try {
       const response = await dispatch(sendExploreMessage(formData));
-      if (response === 200) {
-        setFormData({
-          fullName: "",
-          email: "",
-          phone: "",
-          companyName: "",
-          warehouseLocation: "",
-          warehouseSize: "",
-          price: "",
-          intendedUsage: "",
-        });
+      setFormData({
+        fullName: "",
+        email: "",
+        phone: "",
+        companyName: "",
+        warehouseLocation: "",
+        warehouseSize: "",
+        price: "",
+        intendedUsage: "",
+      });
 
-        setShowConfirmation(true);
-        onClose();
-      }
+      setShowConfirmation(true);
     } catch (error) {
       console.error(error);
     }

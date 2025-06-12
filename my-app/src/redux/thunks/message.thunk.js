@@ -24,7 +24,7 @@ export const sendExploreMessageThunk = async (data) => {
     });
     if (response?.status === 200) {
       toast.success("message sent Successfully!");
-      return response?.status;
+      return response.status;
     }
   } catch (err) {
     // note i changed the text (message to toast because it was giving an error in github)

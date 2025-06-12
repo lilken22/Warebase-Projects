@@ -120,6 +120,8 @@ const CreateBlogDesktop = () => {
         article: "",
         image: "",
       });
+      setSelectedFiles([])
+      setPreviewImages([])
     } catch (error) {
       console.error(error);
       toast.error(error.message || "An error occured while creating property");

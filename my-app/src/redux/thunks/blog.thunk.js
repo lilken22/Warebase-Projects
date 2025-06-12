@@ -84,9 +84,9 @@ export const fetchBlogsThunk = async (sort='DESC') => {
   }
 };
 
-export const fetchLatestBlogsThunk = async () => {
+export const fetchLatestBlogsThunk = async (sort = "DESC") => {
   try {
-    const response = await axios.get(`${URL}/blogs/latest`);
+    const response = await axios.get(`${URL}/blogs/latest?sortOrder=${sort}`);
     if (response?.status === 200) {
       return response?.data;
     }

@@ -6,7 +6,7 @@ import { CgNotes } from "react-icons/cg";
 import ListModal from "../components/ListModal";
 import { useDispatch, useSelector } from "react-redux";
 import { selectDashboardSlice } from "../redux/selectors/dashboard.selector";
-import { fetchLatestProperties, fetchAllTotalProperties, fetchLeaseProperties, fetchSaleProperties } from "../redux/slices/dashboard.slice";
+import { fetchLatestProperties, fetchAllTotalProperties, fetchLeaseProperties, fetchSaleProperties, fetchSharedProperties } from "../redux/slices/dashboard.slice";
 // import { toast } from "react-toastify";
 // import { getItemFromLocalStorage } from "../utitlity/storage";
 
@@ -39,6 +39,7 @@ const OverviewDesktop = () => {
     dispatch(fetchAllTotalProperties())
     dispatch(fetchSaleProperties())
     dispatch(fetchLeaseProperties())
+    dispatch(fetchSharedProperties())
   },[dispatch])
   return (
     <div className="flex min-h-screen bg-[#F8F9FA]">
@@ -198,7 +199,7 @@ const OverviewDesktop = () => {
                     {/* Image Section */}
                     <div className="relative rounded-xl overflow-hidden">
                       <img
-                        src={property?.propertyImage}
+                        src={property?.propertyImage[0]}
                         alt={`Property ${index + 1}`}
                         className="w-full h-52 object-cover rounded-2xl"
                       />

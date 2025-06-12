@@ -32,9 +32,7 @@ export const fetchAllLeasePropertiesThunk = async () => {
 export const fetchAllSharedPropertiesThunk = async () => {
   try {
     const response = await axios.get(`${URL}/dashboard/fetch_all_shared_properties`);
-    console.log(response.data)
     if (response?.status === 200) {
-      console.log(response.data)
       return response?.data;
     }
   } catch (err) {
