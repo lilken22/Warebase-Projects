@@ -1,6 +1,6 @@
 import React from "react";
 
-const PropertyModal = ({ isOpen, position }) => {
+const PropertyModal = ({ isOpen, position, handleFilter }) => {
   if (!isOpen) return null;
 
   return (
@@ -13,12 +13,12 @@ const PropertyModal = ({ isOpen, position }) => {
     >
       {/* Modal Content */}
       <label className="flex items-center space-x-2 p-2 rounded-md">
-        <input type="radio" name="property" value="Shared" className="form-radio text-black" />
+        <input onChange={(e)=>handleFilter(e)} type="radio" name="tenureValue" value="SHARED" className="form-radio text-black" />
         <span className="text-gray-800">Shared</span>
       </label>
 
       <label className="flex items-center space-x-2 p-2 rounded-md ">
-        <input type="radio" name="property" value="Unshared" className="form-radio text-black" />
+        <input onChange={(e)=>handleFilter(e)} type="radio" name="tenureValue" value="LEASE" className="form-radio text-black" />
         <span className="text-gray-800">Unshared</span>
       </label>
     </div>

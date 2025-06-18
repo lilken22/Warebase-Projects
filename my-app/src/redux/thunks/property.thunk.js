@@ -50,10 +50,22 @@ export const editPropertyThunk = async (data) => {
 };
 
 export const fetchPropertiesThunk = async (filters) => {
-  const { sortField = "date", sortOrder = "DESC", active = 'true', tenure = '' } = filters
+  const {
+    sortField = "date",
+    sortOrder = "DESC",
+    active = "true",
+    tenure = "",
+    propertySizeMin = "",
+    propertySizeMax = "",
+    propertyPriceMin = "",
+    propertyPriceMax = "",
+    location = "",
+  } = filters;
+  
+      
   try {
     const response = await axios.get(
-      `${URL}/properties/findAll/?sortOrder=${sortOrder}&sortField=${sortField}&active=${active}&tenure=${tenure}`,
+      `${URL}/properties/findAll/?sortOrder=${sortOrder}&sortField=${sortField}&active=${active}&tenure=${tenure}&propertySizeMin=${propertySizeMin}&propertySizeMax=${propertySizeMax}&propertyPriceMin=${propertyPriceMin}&propertyPriceMax=${propertyPriceMax}&location=${location}`,
       {
         withCredentials: true,
       }
