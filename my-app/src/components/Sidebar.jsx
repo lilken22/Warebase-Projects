@@ -8,6 +8,7 @@ import {
 import { CiMenuFries } from "react-icons/ci";
 import { FiSettings } from "react-icons/fi";
 import { PiCirclesFourFill, PiBriefcaseMetalFill } from "react-icons/pi";
+import { setItemToLocalStorage, clearItemsFromLocalStorage } from "../utitlity/storage";
 
 const SideBar = () => {
   const location = useLocation();
@@ -25,7 +26,7 @@ const SideBar = () => {
   };
 
   const handleConfirmLogout = () => {
-    console.log("User logged out");
+    clearItemsFromLocalStorage()
     navigate("/Login");
     setShowLogoutModal(false);
   };

@@ -1,12 +1,14 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { Link, useNavigate } from "react-router-dom";
 import WarehouseFormModal from "../components/WarehouseFormModal";
 import { FaArrowRight } from "react-icons/fa6";
-import { useDispatch } from "react-redux";
 import { subscribeNewsletter } from "../redux/slices/message.slice";
 import { toast } from "react-toastify";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchBlogs } from "../redux/slices/blog.slice";
+import { selectBlogSlice } from "../redux/selectors/blog.selector";
 
 const LandingPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -14,6 +16,8 @@ const LandingPage = () => {
   const [selectedOption, setSelectedOption] = useState(null); // State to track selected radio button
   const navigate = useNavigate();
   const servicesRef = useRef(null);
+  const { blogs, featuredPost } = useSelector(selectBlogSlice);
+   const [latestBlogs, setLatestBlogs] = useState([]);
   const dispatch = useDispatch();
   const [subscribeForm, setSubscribeForm] = useState("");
 
@@ -26,8 +30,8 @@ const LandingPage = () => {
   const handleClick = () => {
     navigate("/about"); // Navigate to the About page
   };
-  const handleReadMoreClick = () => {
-    navigate("/blogdetails");
+  const handleReadMoreClick = (id) => {
+    navigate(`/blogdetails/${id}`);
   };
   const handlePropertyClick = () => {
     navigate("/listing");
@@ -45,16 +49,28 @@ const LandingPage = () => {
     if (!subscribeForm)
       return toast.error("Please enter your email to subscribe");
     try {
-      setIsLoading(true)
-      await dispatch(
-        subscribeNewsletter({ email: subscribeForm })
-      );
+      setIsLoading(true);
+      await dispatch(subscribeNewsletter({ email: subscribeForm }));
       setSubscribeForm("");
-      setIsLoading(false)
+      setIsLoading(false);
     } catch (error) {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    dispatch(fetchBlogs()).unwrap();
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (blogs && blogs.length > 0) {
+      const sorted = [...blogs].sort(
+        (a, b) => new Date(b.date) - new Date(a.date)
+      );
+      const latestFour = sorted.slice(0, 4);
+      setLatestBlogs(latestFour);
+    }
+  }, [blogs]);
 
   return (
     <div className="min-h-screen bg-white text-[rgb(26, 24, 24)] font-serif flex flex-col justify-between">
@@ -82,7 +98,9 @@ const LandingPage = () => {
             </h1>
             <div className="flex justify-center">
               <p className="text-xs md:text-xl text-[#1D3F3FDE] mt-6 font-aeonik font-normal text-center max-w-[307px] md:max-w-[847px] min-h-[56px]">
-              Looking for warehouses, industrial spaces that meet your needs? Do you want to lease a property, share a space with others, list your industrial properties with us, buy or sell them?
+                Looking for warehouses, industrial spaces that meet your needs?
+                Do you want to lease a property, share a space with others, list
+                your industrial properties with us, buy or sell them?
               </p>
             </div>
 
@@ -596,11 +614,13 @@ const LandingPage = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 mb-12">
             {/* Image Section */}
             <div className="flex-1">
-              <img
-                src="/Bookshelf.jpeg"
-                alt="Warehouse Guide"
-                className="w-full h-[330px] object-cover rounded-l-md"
-              />
+              {featuredPost?.imageUrl?.[0] && (
+                <img
+                  src={featuredPost?.imageUrl[0]}
+                  alt="Warehouse Guide"
+                  className="w-full h-[330px] object-cover rounded-l-md"
+                />
+              )}
             </div>
 
             {/* Content Section (Joined with Image) */}
@@ -610,8 +630,7 @@ const LandingPage = () => {
             >
               {/* Title */}
               <h3 className="text-xl md:text-3xl font-medium font-yeseva text-[#1D3F3F]">
-                The Ultimate Guide to Renting a
-                <br className="hidden sm:inline" /> Warehouse Space
+                {featuredPost?.title}
               </h3>
 
               {/* Description */}
@@ -625,7 +644,7 @@ const LandingPage = () => {
 
               {/* Date */}
               <p className="text-sm text-[#1D3F3F75] md:text-base font-normal font-aeonik">
-                January 15, 2025
+                {new Date(featuredPost?.date).toLocaleDateString()}
               </p>
 
               {/* Buttons */}
@@ -633,7 +652,7 @@ const LandingPage = () => {
                 {/* Read More Button */}
                 <button
                   className="px-9 py-3 bg-[#1C1C1C] text-white rounded-full text-sm font-semibold hover:bg-[#1D3F3F75] transition"
-                  onClick={handleReadMoreClick}
+                  onClick={() => handleReadMoreClick(featuredPost._id)}
                 >
                   Read More
                 </button>
@@ -651,122 +670,39 @@ const LandingPage = () => {
 
           {/* Grid of Articles */}
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {/* Article Card 1 */}
-            <div className="flex flex-col shadow-lg rounded-lg overflow-hidden h-[190px] md:h-[440px] w-[170px] md:w-[330px]">
-              {/* Image Section */}
-              <img
-                src="/max.jpeg"
-                alt="Maximizing Warehouse Efficiency"
-                className="w-[170px] md:w-full h-[85px] md:h-[200px] object-cover"
-              />
+            {
+              latestBlogs?.length > 0 && latestBlogs?.map((item, index) => {
+                return (
+                  <div className="flex flex-col shadow-lg rounded-lg overflow-hidden h-[190px] md:h-[fit-content] w-[170px] md:w-[330px]">
+                    <img
+                      src={item?.imageUrl[0]}
+                      alt="Maximizing Warehouse Efficiency"
+                      className="w-[170px] md:w-full h-[85px] md:h-[200px] object-cover"
+                    />
 
-              {/* Content Section */}
-              <div className="bg-white p-4 pb-4 flex flex-col flex-grow">
-                {/* Date */}
-                <p className="text-[10px] md:text-base text-[#1D3F3F75] md:mt-3">
-                  February 25, 2024
-                </p>
+                    <div className="bg-white p-4 pb-4 flex flex-col flex-grow">
+                      <p className="text-[10px] md:text-base text-[#1D3F3F75] md:mt-3">
+                        {new Date(item?.date).toLocaleDateString()}
+                      </p>
 
-                {/* Title */}
-                <p className="font-medium font-yeseva text-[8px] md:text-lg text-[#1D3F3FDE] mt-2">
-                  Maximizing Warehouse Efficiency: Tips for Businesses
-                </p>
+                      <p className="font-medium font-yeseva text-[8px] md:text-lg text-[#1D3F3FDE] mt-2">
+                        {item.title ||
+                          "Maximizing Warehouse Efficiency: Tips for Businesses"}
+                      </p>
 
-                {/* Read More Link */}
-                <Link
-                  to="/blogdetails"
-                  className="text-[#1D3F3F] font-aeonik font-bold text-[10px] md:text-lg mt-auto flex text-center items-center justify-start gap-3"
-                >
-                  Read More <FaArrowRight />
-                </Link>
-              </div>
-            </div>
-
-            {/* Article Card 2 */}
-            <div className="flex flex-col shadow-lg rounded-lg overflow-hidden h-[190px] md:h-[440px] w-[170px] md:w-[330px]">
-              <img
-                src="/phone.jpeg"
-                alt="Shared Warehousing"
-                className="w-[170px] md:w-full h-[85px] md:h-[200px] object-cover"
-              />
-              <div className="bg-white p-4 pb-4 flex flex-col flex-grow">
-                {/* Date */}
-                <p className="text-[10px] md:text-base text-[#1D3F3F75] md:mt-3">
-                  February 25, 2024
-                </p>
-
-                {/* Title */}
-                <p className="font-medium font-yeseva text-[8px] md:text-lg text-[#1D3F3FDE] mt-2">
-                  Shared Warehousing: A Cost-Effective Solution for Small
-                  Businesses
-                </p>
-
-                {/* Read More Link */}
-                <Link
-                  to="/blogdetails"
-                  className="text-[#1D3F3F] font-aeonik font-bold text-[10px] md:text-lg mt-auto flex text-center items-center justify-start gap-3"
-                >
-                  Read More <FaArrowRight />
-                </Link>
-              </div>
-            </div>
-
-            {/* Article Card 3 */}
-            <div className="flex flex-col shadow-lg rounded-lg overflow-hidden h-[190px] md:h-[440px] w-[170px] md:w-[330px]">
-              <img
-                src="/key.jpeg"
-                alt="Listing Your Warehouse"
-                className="w-[170px] md:w-full h-[85px] md:h-[200px] object-cover"
-              />
-              <div className="bg-white p-4 pb-4 flex flex-col flex-grow">
-                {/* Date */}
-                <p className="text-[10px] md:text-base text-[#1D3F3F75] md:mt-3">
-                  February 25, 2024
-                </p>
-
-                {/* Title */}
-                <p className="font-medium font-yeseva text-[8px] md:text-lg text-[#1D3F3FDE] mt-2">
-                  How to List Your Warehouse for Rent and Attract Tenants
-                  Quickly
-                </p>
-
-                {/* Read More Link */}
-                <Link
-                  to="/blogdetails"
-                  className="text-[#1D3F3F] font-aeonik font-bold text-[10px] md:text-lg mt-auto flex text-center items-center justify-start gap-3"
-                >
-                  Read More <FaArrowRight />
-                </Link>
-              </div>
-            </div>
-
-            {/* Article Card 4 */}
-            <div className="flex flex-col shadow-lg rounded-lg overflow-hidden h-[190px] md:h-[440px] w-[170px] md:w-[330px]">
-              <img
-                src="/board.jpeg"
-                alt="Key Factors for Leasing"
-                className="w-[170px] md:w-full h-[85px] md:h-[200px] object-cover"
-              />
-              <div className="bg-white p-4 pb-4 flex flex-col flex-grow">
-                {/* Date */}
-                <p className="text-[10px] md:text-base text-[#1D3F3F75] md:mt-3">
-                  February 25, 2024
-                </p>
-
-                {/* Title */}
-                <p className="font-medium font-yeseva text-[8px] md:text-lg text-[#1D3F3FDE] mt-2">
-                  Key Factors to Consider Before Leasing a Warehouse
-                </p>
-
-                {/* Read More Link */}
-                <Link
-                  to="/blogdetails"
-                  className="text-[#1D3F3F] font-aeonik font-bold text-[10px] md:text-lg mt-auto flex text-center items-center justify-start gap-3"
-                >
-                  Read More <FaArrowRight />
-                </Link>
-              </div>
-            </div>
+                      <Link
+                        to={`/blogdetails/${item._id}`}
+                        className="text-[#1D3F3F] font-aeonik font-bold text-[10px] md:text-lg mt-auto flex text-center items-center justify-start gap-3"
+                      >
+                        Read More <FaArrowRight />
+                      </Link>
+                    </div>
+                  </div>
+                );
+              })
+            }
+           
+            
           </div>
         </section>
 

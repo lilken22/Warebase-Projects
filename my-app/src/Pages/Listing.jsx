@@ -12,11 +12,16 @@ import "../index.css";
 import { useSelector, useDispatch } from "react-redux";
 import { selectPropertiesSlice } from "../redux/selectors/property.selector";
 import { fetchProperties } from "../redux/slices/property.slice";
+
 // import { IMAGE_URL} from "../redux/actionTypes";
+
+import { IMAGE_URL } from "../redux/actionTypes";
+
 
 export default function Listing() {
   const { properties } = useSelector(selectPropertiesSlice);
   const dispatch = useDispatch();
+
   // const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   // the setSortOrderValue, setSortFieldValue,  setSortTenureValue are being commented out or temporarily removed cause it causing issue in the PR creation 
@@ -42,6 +47,31 @@ export default function Listing() {
   // });
   // const [isWarehouseFormModalOpen, setIsWarehouseFormModalOpen] = useState(false);
   // const dropdownRef = useRef(null);
+
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [sortOrderValue, setSortOrderValue] = useState("DESC");
+  const [sortFieldValue, setSortFieldValue] = useState("date");
+  const [sortTenureValue, setSortTenureValue] = useState("");
+  const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
+  const [isStateModalOpen, setIsStateModalOpen] = useState(false);
+  const [stateModalPosition, setStateModalPosition] = useState({
+    top: 0,
+    left: 0,
+  });
+  const [isPriceModalOpen, setIsPriceModalOpen] = useState(false);
+  const [priceModalPosition, setPriceModalPosition] = useState({
+    top: 0,
+    left: 0,
+  });
+  const [isSizeModalOpen, setIsSizeModalOpen] = useState(false);
+  const [sizeModalPosition, setSizeModalPosition] = useState({
+    top: 0,
+    left: 0,
+  });
+  const [isWarehouseFormModalOpen, setIsWarehouseFormModalOpen] =
+    useState(false);
+  const dropdownRef = useRef(null);
+
   const buttonRef = useRef(null);
   const stateModalRef = useRef(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -50,7 +80,42 @@ export default function Listing() {
 
   const [activeModal, setActiveModal] = useState(null);
   const modalPositions = useRef({});
-  // const stateModalRef = useRef(null);
+
+  const [filters, setFilters] = useState({
+    location: "",
+    minSize: "",
+    maxSize: "",
+    minPrice: "",
+    maxPrice: "",
+    sortField: "tenure",
+    tenureValue: "",
+  });
+
+  const handleFilterInputChange = (e) => {
+    const { name, value } = e.target;
+    if (!value || !name) return;
+    setFilters((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const handleFilterSearch = async () => {
+    // if (!filters) return;
+    try {
+      await dispatch(
+        fetchProperties({
+          sortField: filters.sortField,
+          sortOrder: sortOrderValue,
+          tenure: filters.tenureValue,
+          propertySizeMin: filters.minSize,
+          propertySizeMax: filters.maxSize,
+          propertyPriceMin: filters.minPrice,
+          propertyPriceMax: filters.maxPrice,
+          location: filters.location,
+        })
+      ).unwrap();
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const closeAllModals = () => setActiveModal(null);
 
@@ -66,30 +131,56 @@ export default function Listing() {
   };
 
   useEffect(() => {
-  const handleClickOutside = (event) => {
-    // Check if we're clicking outside ALL modals and not on a trigger
-    const clickedOutsideAllModals = !event.target.closest(".modal-content");
-    const clickedOnTrigger = event.target.closest(".modal-trigger");
-    
-    if (activeModal && clickedOutsideAllModals && !clickedOnTrigger) {
-      closeAllModals();
-    }
-  };
+    const handleClickOutside = (event) => {
+      // Check if we're clicking outside ALL modals and not on a trigger
+      const clickedOutsideAllModals = !event.target.closest(".modal-content");
+      const clickedOnTrigger = event.target.closest(".modal-trigger");
 
-  document.addEventListener("mousedown", handleClickOutside);
-  return () => document.removeEventListener("mousedown", handleClickOutside);
-}, [activeModal]);
+      if (activeModal && clickedOutsideAllModals && !clickedOnTrigger) {
+        closeAllModals();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [activeModal]);
 
   const handlePropertyModal = (e) => openModal("property", e);
   const handleStateModal = (e) => openModal("state", e);
   const handlePriceModal = (e) => openModal("price", e);
   const handleSizeModal = (e) => openModal("size", e);
   const handleWarehouseModal = () => openModal("warehouse");
- 
+
   // const isDev = import.meta.env.DEV; // true in dev, false in production
   // function getImageUrl(path) {
   //   return isDev ? path : `${IMAGE_URL}${path}`;
   // }
+
+  const handleRefresh = async() => {
+    setSortOrderValue("DESC");
+    setSortFieldValue("data");
+    setSortTenureValue("");
+    setFilters({
+      location: "",
+      minSize: "",
+      maxSize: "",
+      minPrice: "",
+      maxPrice: "",
+      sortField: "tenure",
+      tenureValue: "",
+    });
+
+    await handleFilterSearch()
+  };
+
+  const handleTenureChange = (value, toggleValue = true) => {
+    if (!value) {
+      handleRefresh();
+    }
+    setToggleData(toggleValue);
+    setSortFieldValue("tenure");
+    setSortTenureValue(value);
+  };
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -105,11 +196,17 @@ export default function Listing() {
 
   useEffect(() => {
     filterData();
-  }, [toggleData]);
+  }, [properties, dispatch]);
 
   useEffect(() => {
-    dispatch(fetchProperties({sortField: sortFieldValue, sortOrder:sortOrderValue, tenure:sortTenureValue})).unwrap();
-  }, [dispatch]);
+    dispatch(
+      fetchProperties({
+        sortField: sortFieldValue,
+        sortOrder: sortOrderValue,
+        tenure: sortTenureValue,
+      })
+    ).unwrap();
+  }, [dispatch, sortFieldValue, sortOrderValue, sortTenureValue]);
 
   const displayData = filteredData.length > 0 ? filteredData : properties;
   return (
@@ -122,7 +219,7 @@ export default function Listing() {
             <div className="w-full max-w-[1200px]">
               <div className="w-[240px] h-[48px] bg-[#ECECEC] rounded-xl flex p-[4px]">
                 <button
-                  onClick={() => setToggleData(true)}
+                  onClick={() => handleTenureChange("SALE", true)}
                   className={`w-1/2 h-full rounded-lg text-sm font-aeonik transition-all duration-200 ${
                     toggleData
                       ? "bg-white text-[#1D3F3F] font-medium"
@@ -132,7 +229,7 @@ export default function Listing() {
                   For Sale
                 </button>
                 <button
-                  onClick={() => setToggleData(false)}
+                  onClick={() => handleTenureChange("LEASE", false)}
                   className={`w-1/2 h-full rounded-lg text-sm font-aeonik transition-all duration-200 ${
                     !toggleData
                       ? "bg-white text-[#1D3F3F] font-medium"
@@ -220,13 +317,19 @@ export default function Listing() {
 
                   <div className="grid grid-cols-2 h-[50px] md:h-[100%] md:gap-1 md:flex md:flex-grow-0 md:w-[full] md:pl-2 md:px-4 mt-2 md:mt-4">
                     <div>
-                      <button className="bg-[#1C1C1C] text-[#FFFFFF] h-[45px] w-[85px] md:w-[120px] text-xs md:text-sm rounded-lg">
+                      <button
+                        onClick={() => handleRefresh()}
+                        className="bg-[rgb(28,28,28)] text-[#FFFFFF] h-[45px] w-[85px] md:w-[120px] text-xs md:text-sm rounded-lg"
+                      >
                         Reset Filter ↺
                       </button>
                     </div>
 
                     <div>
-                      <button className="bg-[#0B97D1] text-[#FFFFFF] h-[45px] w-[80px] md:w-[120px] text-xs md:text-sm rounded-lg">
+                      <button
+                        onClick={() => handleFilterSearch()}
+                        className="bg-[#0B97D1] text-[#FFFFFF] h-[45px] w-[80px] md:w-[120px] text-xs md:text-sm rounded-lg"
+                      >
                         Search
                       </button>
                     </div>
@@ -238,6 +341,7 @@ export default function Listing() {
                 isOpen={activeModal === "property"}
                 onClose={closeAllModals}
                 position={modalPositions.current.property}
+                handleFilter={handleFilterInputChange}
               />
 
               <StateModal
@@ -245,18 +349,21 @@ export default function Listing() {
                 isOpen={activeModal === "state"}
                 onClose={closeAllModals}
                 position={modalPositions.current.state}
+                handleFilter={handleFilterInputChange}
               />
 
               <PriceModal
                 isOpen={activeModal === "price"}
                 onClose={closeAllModals}
                 position={modalPositions.current.price}
+                handleFilter={handleFilterInputChange}
               />
 
               <SizeModal
                 isOpen={activeModal === "size"}
                 onClose={closeAllModals}
                 position={modalPositions.current.size}
+                handleFilter={handleFilterInputChange}
               />
 
               <WarehouseFormModal
@@ -314,6 +421,12 @@ export default function Listing() {
                             Price:{" "}
                             <span className="font-yeseva font-light text-sm">
                               {item?.propertyPrice}/Month
+                            </span>
+                          </p>
+                          <p className="text-sm text-[#627777DE]">
+                            Size:{" "}
+                            <span className="font-yeseva font-light text-sm">
+                              {item?.propertySize}
                             </span>
                           </p>
                           <div className="mt-4 flex justify-between">
