@@ -32,7 +32,7 @@ jobs:
 
       - name: Copy env
         run: |
-          cp env.example.txt my-app/.env.production
+          cp env.example.txt my-app/env.production
 
       - name: Add Backend URL to env
         run: |
