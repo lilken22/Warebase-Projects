@@ -1,0 +1,78 @@
+name: Deploy to cPanel
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["dev"]
+    
+jobs:
+  Build:
+    name: Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Deploy Started Notification
+        uses: mikesprague/teams-incoming-webhook-action@v1
+        continue-on-error: true
+        with:
+          github-token: ${{ github.token }}
+          webhook-url: ${{ secrets.MS_TEAMS_WEBHOOK_URL }}
+          deploy-card: true
+          title: '🚀 Deployment Started to Frontend (Dev)'
+          color: 'info'
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Copy env
+        run: |
+          cp env.example.txt my-app/.env.production
+
+      - name: Add Backend URL to env
+        run: |
+          sed -i "s|^VITE_API_URL=.*|VITE_API_URL=${{ secrets.DEV_API_URL }}|" .env.production
+        working-directory: my-app
+
+      - name: SFTP Deploy
+        uses: sand4rt/ftp-deployer@v1.8
+        with:
+          sftp: true
+          host: ${{ secrets.FTP_HOST }}
+          port: 22
+          username: ${{ secrets.FTP_USERNAME }} 
+          password: ${{ secrets.SFTP_PASSWORD }}
+          local_folder: "./my-app/"
+          remote_folder: "/home/gurugeek/public_html/Project-Warebase/dev/frontend2"
+          cleanup: false 
+          exclude: '["README.md", ".github/**", ".git*", ".git/**"]'
+          passive: true
+
+  notifications:
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+    - name: Notify Success
+      if: ${{ needs.Build.result == 'success' && needs.Deploy.result == 'success' }}
+      uses: mikesprague/teams-incoming-webhook-action@v1
+      with:
+        github-token: ${{ github.token }}
+        webhook-url: ${{ secrets.MS_TEAMS_WEBHOOK_URL }}
+        deploy-card: true
+        title: '✅ Deployment to Frontend(Dev) was Successful 🥳🎉'
+        color: 'success'
+
+    - name: Notify Failure
+      if: ${{ needs.Build.result != 'success' || needs.Deploy.result != 'success' }}
+      uses: mikesprague/teams-incoming-webhook-action@v1
+      with:
+        github-token: ${{ github.token }}
+        webhook-url: ${{ secrets.MS_TEAMS_WEBHOOK_URL }}
+        deploy-card: true
+        title: '❌ Deployment to Frontend(Dev) Failed ☹️💔'
+        color: 'failure'
