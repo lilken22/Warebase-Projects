@@ -36,7 +36,7 @@ jobs:
 
       - name: Add Backend URL to env
         run: |
-          sed -i "s|^VITE_API_URL=.*|VITE_API_URL=${{ secrets.DEV_API_URL }}|" .env.production
+          sed -i "s|^VITE_API_URL=.*|VITE_API_URL=${{ secrets.DEV_API_URL }}|" env.production
         working-directory: my-app
 
       - name: SFTP Deploy
