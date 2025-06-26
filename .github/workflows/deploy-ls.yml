@@ -5,8 +5,7 @@ on:
   push:
     branches:
       - dev
-    paths-ignore:
-      - .env_example
+    paths-ignore: [".github/**"]
 
 jobs: 
   Archive-Build:
@@ -47,7 +46,7 @@ jobs:
         with:
           name: warebase-frontend
           path: ./warebase-frontend.zip
-          retention-days: 7
+          retention-days: 2
 
   Deploy:
     name: Deploy to Lightsail
