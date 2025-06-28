@@ -22,32 +22,6 @@ export default function Listing() {
   const { properties } = useSelector(selectPropertiesSlice);
   const dispatch = useDispatch();
 
-  // const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-  // the setSortOrderValue, setSortFieldValue,  setSortTenureValue are being commented out or temporarily removed cause it causing issue in the PR creation 
-  const [sortOrderValue] = useState("DESC");
-  const [sortFieldValue] = useState("date");
-  const [sortTenureValue] = useState("");
-
-  // const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
-  // const [isStateModalOpen, setIsStateModalOpen] = useState(false);
-  // const [stateModalPosition, setStateModalPosition] = useState({
-  //   top: 0,
-  //   left: 0,
-  // });
-  // const [isPriceModalOpen, setIsPriceModalOpen] = useState(false);
-  // const [priceModalPosition, setPriceModalPosition] = useState({
-  //   top: 0,
-  //   left: 0,
-  // });
-  // const [isSizeModalOpen, setIsSizeModalOpen] = useState(false);
-  // const [sizeModalPosition, setSizeModalPosition] = useState({
-  //   top: 0,
-  //   left: 0,
-  // });
-  // const [isWarehouseFormModalOpen, setIsWarehouseFormModalOpen] = useState(false);
-  // const dropdownRef = useRef(null);
-
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [sortOrderValue, setSortOrderValue] = useState("DESC");
   const [sortFieldValue, setSortFieldValue] = useState("date");

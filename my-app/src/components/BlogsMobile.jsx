@@ -11,16 +11,18 @@ import {
 } from "react-icons/fa";
 import { IoIosArrowRoundForward } from "react-icons/io";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchBlogs } from "../redux/slices/blog.slice";
 import { selectBlogSlice } from "../redux/selectors/blog.selector";
 import SortModal from "../components/SortModal";
+import { fetchBlogs, makeFeaturedBlog } from "../redux/slices/blog.slice";
+import { getItemFromLocalStorage } from "../utitlity/storage";
 
 export default function BlogMobile() {
   const { blogs } = useSelector(selectBlogSlice);
   const dispatch = useDispatch();
-  const [ setIsSortOpen] = useState(false);
-  const [ setSortPosition] = useState({ top: 0, left: 0 });
-  const [sortOrderValue] = useState("DESC");
+  const token = getItemFromLocalStorage("wb_token");
+  const [isSortOpen, setIsSortOpen] = useState(false);
+  const [sortPosition, setSortPosition] = useState({ top: 0, left: 0 });
+  const [sortOrderValue, setSortOrderValue] = useState("DESC");
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -59,10 +61,14 @@ export default function BlogMobile() {
     };
   }, []);
 
-
-  const handleToggleFeatured = () => {
-    
-  }
+  const handleToggleFeatured = async (id) => {
+    try {
+      await dispatch(makeFeaturedBlog({ token, id })).unwrap();
+      await dispatch(fetchBlogs(sortOrderValue)).unwrap();
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const filteredBlogs = () => {
     if (!searchTerm) setSearchResult(blogs);
@@ -79,12 +85,11 @@ export default function BlogMobile() {
       setSearchResult(result);
     }
   };
-  
-  // i commented this out for now so i can be able to push and create a pr
-  // const handleRefresh = () => {
-  //   setSortOrderValue("DESC");
-  //   setIsSortOpen(false);
-  // };
+
+  const handleRefresh = () => {
+    setSortOrderValue("DESC");
+    setIsSortOpen(false);
+  };
 
   useEffect(() => {
     filteredBlogs();
@@ -122,7 +127,10 @@ export default function BlogMobile() {
                 searchTerm={searchTerm}
               />
               <FilterButton ref={buttonRef} onClick={handleSortToggle}>
-                <PiSlidersHorizontalFill size={20} className="text-gray-700 ml-1" />
+                <PiSlidersHorizontalFill
+                  size={20}
+                  className="text-gray-700 ml-1"
+                />
               </FilterButton>
             </div>
           </div>
@@ -139,7 +147,7 @@ export default function BlogMobile() {
                 >
                   {/* Image Section */}
                   <img
-                    src="/max.jpeg"
+                    src={item.imageUrl[0]}
                     alt="Maximizing Warehouse Efficiency"
                     className="w-full h-[120px] object-cover"
                   />
@@ -159,32 +167,33 @@ export default function BlogMobile() {
 
                     {/* Read More Link */}
                     <div className="flex items-center justify-between mt-4">
-                    <Link
-                      to={`/blogdetails-mobile/${item._id}`}
-                      className="text-[#1D3F3F] font-aeonik font-normal text-[10px] md:text-sm  flex text-center items-center justify-start underline"
-                    >
-                      Read more<IoIosArrowRoundForward className="text-xl" />
-                    </Link>
-
-                    <div className="flex items-center text-center gap-1">
-                      <button
-                        onClick={() => handleToggleFeatured(item._id)}
-                        className={`w-8 h-4 flex items-center rounded-full p-1 duration-300 ease-in-out ${
-                          item.featured ? "bg-green-500" : "bg-gray-300"
-                        }`}
+                      <Link
+                        to={`/blogdetails-mobile/${item._id}`}
+                        className="text-[#1D3F3F] font-aeonik font-normal text-[10px] md:text-sm  flex text-center items-center justify-start underline"
                       >
-                        <div
-                          className={`bg-white w-3 h-3 rounded-full shadow-md transform duration-300 ease-in-out ${
-                            item.featured ? "translate-x-5" : ""
-                          }`}
-                        ></div>
-                      </button>
+                        Read more
+                        <IoIosArrowRoundForward className="text-xl" />
+                      </Link>
 
-                      <span className="text-[10px] md:text-sm text-[#1D3F3F]">
-                        Featured
-                      </span>
+                      <div className="flex items-center text-center gap-1">
+                        <button
+                          onClick={() => handleToggleFeatured(item._id)}
+                          className={`w-8 h-4 flex items-center rounded-full p-1 duration-300 ease-in-out ${
+                            item.isFeatured ? "bg-green-500" : "bg-gray-300"
+                          }`}
+                        >
+                          <div
+                            className={`bg-white w-3 h-3 rounded-full shadow-md transform duration-300 ease-in-out ${
+                              item.isFeatured ? "translate-x-4" : ""
+                            }`}
+                          ></div>
+                        </button>
+
+                        <span className="text-[10px] md:text-sm text-[#1D3F3F]">
+                          Featured
+                        </span>
+                      </div>
                     </div>
-                  </div>
                   </div>
                 </div>
               );
@@ -198,6 +207,16 @@ export default function BlogMobile() {
           totalPages={50}
           onPageChange={handlePageChange}
         />
+
+        {isSortOpen && (
+          <SortModal
+            isOpen={isSortOpen}
+            onClose={() => setIsSortOpen(false)}
+            position={sortPosition}
+            setSortOrderValue={setSortOrderValue}
+            ref={sortModalRef}
+          />
+        )}
 
         {/* Bottom Navigation */}
         <BottomNav />
