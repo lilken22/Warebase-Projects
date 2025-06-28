@@ -3,7 +3,7 @@ name: Deploy to cPanel
 on:
   workflow_dispatch:
   push:
-    branches: ["dev"]
+    branches: ["devv"]
     paths-ignore:
       - .github/**
 
@@ -34,7 +34,6 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-        working-directory: my-app
 
       - name: Copy env
         run: |
@@ -43,17 +42,15 @@ jobs:
       - name: Add Backend URL to env
         run: |
           sed -i "s|^VITE_API_URL=.*|VITE_API_URL=${{ secrets.DEV_API_URL }}|" .env.production
-        working-directory: my-app
           
       - name: Build app
         run: npm run build
-        working-directory: my-app
 
       - name: Archive Build Files
         uses: actions/upload-artifact@v4
         with:
           name: app
-          path: my-app/dist/
+          path: dist/
           retention-days: 2
   
   Deploy:
