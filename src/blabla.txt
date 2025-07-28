@@ -1,0 +1,515 @@
+{/* Images Section */}
+      <div className="">
+        <div className="grid grid-cols-4 gap-4 relative">
+          {/* Main Image */}
+          <div className="col-span-3 relative">
+            <img
+              src="/property one.jpg"
+              alt="Main Property"
+              className="w-full h-[380px] object-cover rounded-lg"
+            />
+            {/* Shared Label */}
+            <span className="absolute top-0 right-0  bg-white  text-black text-xs px-3 py-1 rounded font-aeonik shadow-md  rotate-[37deg] transform origin-top-right">
+              Shared (4)
+            </span>
+            {/* For Lease Label */}
+            <span className="absolute top-0 left-0 bg-red-600 text-white text-xs px-3 py-2 rounded">
+              For Lease
+            </span>
+          </div>
+
+          {/* Side Images */}
+          <div className="flex flex-col gap-3">
+            <img
+              src="/sideimage1.jpg"
+              alt="Property 1"
+              className="w-full h-[120px] object-cover rounded-lg"
+            />
+            <img
+              src="/sideimage2.jpg"
+              alt="Property 2"
+              className="w-full h-[120px] object-cover rounded-lg"
+            />
+            <img
+              src="/sideimage3.jpg"
+              alt="Property 3"
+              className="w-full h-[120px] object-cover rounded-lg"
+            />
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+
+
+
+      <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #top-bar{
+            height: 131px;
+            display: flex;
+            flex-direction: column;
+            background-color: aquamarine;
+        }
+        .top-tabs{
+            height: 48px;
+            padding: 1rem;
+            background-color: blue;
+        }
+        .inner-bar{
+            height: 83px;
+            padding-inline: 25px;
+            background-color: chartreuse;
+        }
+        .cards-wrapper{
+            height: 50px;
+            padding: 1rem;
+            background-color: chartreuse;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: nowrap;
+        }
+        .cards{
+            width: 205px;
+            height: 100%;
+            padding-right: 16px;
+            background-color: brown;
+            border-right: 1px solid gray;
+        }
+        @media screen and (max-width: 600px) {
+            .inner-bar{
+                height: fit-content;
+                padding-inline: 25px;
+                background-color: chartreuse;
+            }
+            .cards-wrapper{
+                height: fit-content;
+                padding: 1rem;
+                background-color: red;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            .cards{
+                width: 205px;
+                height: 50px;
+                padding-right: 16px;
+                background-color: white;
+                border: 1px solid gray;
+            }
+            .cards:nth-child(5){
+                width: 426px;
+                height: 50px;
+                padding-right: 16px;
+                background-color: white;
+                border: 1px solid gray;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <div id="top-bar">
+            <div class="top-tabs">
+ 
+            </div>
+            <div class="inner-bar">
+                <div class="cards-wrapper">
+                    <div class="cards">
+                   
+                    </div>
+                    <div class="cards"></div>
+                    <div class="cards"></div>
+                    <div class="cards"></div>
+                    <div class="cards"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
+
+padding{
+    top:10px;
+    right:20px;
+    bottom:10px;
+    left:20px;
+}
+
+
+
+
+
+
+
+
+
+
+
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import WarehouseFormModal from "./components/WarehouseFormModal";
+import ScrollToTop from "./components/ScrollToTop";
+import Landing from "./Pages/Landing";
+import About from "./Pages/About";
+import Listing from "./Pages/Listing";
+import Blog from "./Pages/Blog";
+import Contact from "./Pages/Contact";
+import "./index.css";
+import PropertyDetails from "./components/PropertyDetails";
+import Login from "./AdminLogin/Login";
+import EmailReset from "./AdminLogin/EmailReset";
+import CheckMail from "./AdminLogin/CheckMail";
+import PasswordReset from "./AdminLogin/PasswordReset";
+import PasswordSuccessful from "./AdminLogin/PasswordSucessful";
+import EmailTemplate from "./AdminLogin/EmailTemplate";
+import BlogDetails from "./components/BlogDetails";
+
+const App = () => {
+  return (
+    <Router>
+      <ScrollToTop />
+      <div className="flex flex-col min-h-screen">
+        {/* <Navbar /> */}
+        
+
+        <main className="flex-grow">
+          <Routes>
+            <Route path="/" element={<Landing />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/listing" element={<Listing />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/PropertyDetails/:id" element={<PropertyDetails />} />
+            <Route path="/Login" element={<Login />} />
+            <Route path="/EmailReset" element={<EmailReset />} />
+            <Route path="/CheckMail" element={<CheckMail />} />
+            <Route path="/PasswordReset" element={<PasswordReset />} />
+            <Route path="/PasswordSuccessful" element={<PasswordSuccessful />} />
+            <Route path="/EmailTemplate" element={<EmailTemplate />} />
+            <Route path="/blogdetails" element={<BlogDetails />} />
+          </Routes>
+        </main>
+
+        {/* <Footer /> */}
+      </div>
+    </Router>
+  );
+};
+
+export default App;
+
+
+
+
+
+
+
+
+
+
+// Mock data with proper image paths
+  // const properties = [
+  //   {
+  //     id: "WB01",
+  //     image: "/property four.jpg",
+  //     type: "For Sale",
+  //     shared: false,
+  //     name: "Fidel Warehouse",
+  //     price: "₦5,250,000/Month",
+  //   },
+  //   {
+  //     id: "WB02",
+  //     image: "/property five.jpg",
+  //     type: "For Rent",
+  //     shared: false,
+  //     name: "Fidel Warehouse",
+  //     price: "₦5,250,000/Month",
+  //   },
+  //   {
+  //     id: "WB03",
+  //     image: "/property three.jpg",
+  //     type: "For Lease",
+  //     shared: true,
+  //     name: "Fidel Warehouse",
+  //     price: "₦5,250,000/Month",
+  //   },
+  //   {
+  //     id: "WB04",
+  //     image: "/property six.jpg",
+  //     type: "For Sale",
+  //     shared: false,
+  //     name: "Fidel Warehouse",
+  //     price: "₦5,250,000/Month",
+  //   },
+  // ];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // useEffect(() => {
+  //   const handleClickOutside = (event) => {
+  //     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+  //       setIsDropdownOpen(false);
+  //     }
+  //     if (
+  //       orderModalRef.current &&
+  //       !orderModalRef.current.contains(event.target)
+  //     ) {
+  //       setIsOrderOpen(false);
+  //     }
+
+  //   };
+
+  //   document.addEventListener("mousedown", handleClickOutside);
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleClickOutside);
+  //   };
+  // }, []);
+
+  // useEffect(() => {
+  //   const handleClickOutside = (event) => {
+  //     if (
+  //       listModalOpen &&
+  //       listModalRef.current &&
+  //       !listModalRef.current.contains(event.target) &&
+  //       !event.target.closest(".three-dots-button")
+  //     ) {
+  //       setListModalOpen(false);
+  //     }
+  //   };
+
+  //   document.addEventListener("mousedown", handleClickOutside);
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleClickOutside);
+  //   };
+  // }, [listModalOpen]);
+
+  // Replace your existing useEffect with:
+  // useEffect(() => {
+  //   const handleClickOutside = (event) => {
+  //     const clickedOutsideAllModals =
+  //       (!dropdownRef.current || !dropdownRef.current.contains(event.target)) &&
+  //       (!orderModalRef.current ||
+  //         !orderModalRef.current.contains(event.target)) &&
+  //       (!listModalRef.current ||
+  //         !listModalRef.current.contains(event.target)) &&
+  //       !event.target.closest(".three-dots-button");
+
+  //     if (activeModal && clickedOutsideAllModals) {
+  //       closeTimerRef.current = setTimeout(() => {
+  //         closeAllModals();
+  //       }, 200);
+  //     }
+  //   };
+
+  //   document.addEventListener("mousedown", handleClickOutside);
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleClickOutside);
+  //     if (closeTimerRef.current) {
+  //       clearTimeout(closeTimerRef.current);
+  //     }
+  //   };
+  // }, [activeModal]);
+
+  // const handleThreeDotsClick = (e, propertyId) => {
+  //   const rect = e.currentTarget.getBoundingClientRect();
+  //   setSelectedPropertyId(propertyId);
+  //   setModalPosition({
+  //     top: rect.bottom + window.scrollY,
+  //     left: rect.left + window.scrollX,
+  //   });
+  //   setListModalOpen(true);
+  // };
+
+  //   const handleOptionSelection = (value) => {
+  //   setSortTenureValue(value);
+  //   setTimeout(() => closeAllModals(), 300);
+  // };
+
+
+
+  // const handleOrderToggle = () => {
+  //   if (orderButtonRef.current) {
+  //     const Rect = orderButtonRef.current.getBoundingClientRect();
+  //     setOrderPosition({
+  //       top: Rect.bottom + window.scrollY,
+  //       left: Rect.left + window.scrollX,
+  //     });
+  //   }
+  //   setIsOrderOpen((prev) => !prev);
+  // };
+
+
+  // const handleDropdownToggle = () => {
+  //   if (tenureButtonRef.current) {
+  //     const buttonRect = tenureButtonRef.current.getBoundingClientRect();
+  //     setDropdownPosition({
+  //       top: buttonRect.bottom + window.scrollY,
+  //       left: buttonRect.left + window.scrollX,
+  //     });
+  //   }
+  //   setIsDropdownOpen((prev) => !prev);
+  // };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  import React from "react";
+
+const OrderModal = React.forwardRef(({
+  isOpen,
+  position,
+  setSortOrderValue,
+  onClose,
+  onMouseEnter
+}, ref) => {
+  if (!isOpen || !position) return null;
+
+  const handleOptionChange = (e) => {
+    setSortOrderValue(e.target.value);
+    // Don't call onClose immediately to prevent race condition
+    setTimeout(() => onClose(), 500);
+  };
+
+  return (
+    <div
+      ref={ref}
+      onMouseEnter={onMouseEnter}
+      onTouchStart={onMouseEnter}
+      onMouseDown={(e) => e.stopPropagation()}
+      onClick={(e) => e.stopPropagation()}
+      className="fixed bg-white shadow-lg border border-gray-300 rounded-lg z-50 min-w-[180px]"
+      style={{
+        top: `${position.top + 8}px`,
+        left: `${Math.min(position.left, window.innerWidth - 200)}px`,
+      }}
+    >
+      <div className="p-2 space-y-2">
+        <label className="flex items-center text-sm font-medium text-[#1D3F3FDE] p-1 space-x-2">
+          <input
+            onChange={handleOptionChange}
+            type="radio"
+            name="Order"
+            value="DESC"
+            className="form-radio text-black"
+          />
+          <span>Newest - Oldest</span>
+        </label>
+
+        <label className="flex items-center text-sm font-medium text-[#1D3F3FDE] p-1 space-x-2">
+          <input
+            onChange={handleOptionChange}
+            type="radio"
+            name="Order"
+            value="ASC"
+            className="form-radio text-black"
+          />
+          <span>Oldest - Newest</span>
+        </label>
+      </div>
+    </div>
+  );
+});
+
+export default OrderModal;
+
+
+
+
+
+
+
+
+
+this is from the createblog
+  <textarea
+                    onChange={(e) => handleInputChange(e)}
+                    value={formData.article}
+                    name="article"
+                    className="w-full p-3 border rounded-lg min-h-[120px] bg-[#F3F3F3]"
+                    placeholder="Enter your blog content here..."
+                  />
+
+
+
+
+                  this is for the mobile of createblog
+                  <div>
+  <label className="block text-[#1C1C1C] font-normal font-aeonik text-base mt-5">
+    Article
+  </label>
+  <textarea
+    className="w-full p-3 border rounded-lg min-h-[120px] bg-[#F3F3F3]"
+    placeholder="Enter your blog content here..."
+  />
+</div>

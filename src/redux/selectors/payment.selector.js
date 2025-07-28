@@ -1,0 +1,1 @@
+export const selectPaymentSlice = (state) => state?.payment;

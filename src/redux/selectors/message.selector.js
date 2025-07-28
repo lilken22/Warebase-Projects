@@ -1,0 +1,1 @@
+export const selectMessageSlice = (state) => state?.message;

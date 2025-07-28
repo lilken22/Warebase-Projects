@@ -1,0 +1,81 @@
+@import "./fonts.css"; /* Adjust path if needed */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.custom-toast {
+  background-color: #c4f9e2 !important;
+  color: #004434 !important;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.custom-rotate {
+  position: absolute; 
+  transform: rotate(38deg);
+  width: 100px;  
+  height: 30px; 
+  text-align: center;
+  font-weight: 700; 
+  font-family: cursive;
+  background-color: white;
+  color: #1c1c1c;
+  
+  
+  /* display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px; */
+
+  
+   top: 8px;  
+   right: -25px;  
+} 
+
+
+
+@keyframes checkmark {
+  0% {
+    stroke-dashoffset: 100;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+.animate-checkmark path {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: checkmark 0.5s ease-in-out forwards;
+}
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Number of lines to show */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+
+/* Customize Quill editor to match your design */
+.ql-container {
+  min-height: 110px;
+  border: none !important;
+  background-color: #F3F3F3 !important;
+}
+
+.ql-toolbar {
+  background-color: #F3F3F3 !important;
+  border: none !important;
+  border-bottom: 1px solid #E0E0E0 !important;
+}
+
+.ql-editor {
+  min-height: 110px;
+  font-size: 16px;
+  color: #333;
+}
+
+  
+
